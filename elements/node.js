@@ -75,6 +75,7 @@ export class Node extends Element{
         aux.background = this.background
         aux.color = this.color
         aux.id = this.id
+        aux.selected = this.selected
         
         return aux
     }

@@ -2,6 +2,12 @@
 export function recordMemento() {
     const snapshot = generateSnapshot()
 
+    // Check if the the snapshot is prevented from being recorded
+    if (window.graph.preventMemento) {
+        window.graph.preventMemento = false
+        return
+    }
+
     // Check if the snapshot is different from the last one
     if (window.graph.memento.length > 0) {
         const lastSnapshot = window.graph.memento[window.graph.memento.length - 1]
@@ -36,9 +42,13 @@ export function redo() {
 
 // Generates a copy of the current graph state
 export function generateSnapshot() {
+    const auxNodes = window.graph.nodes.map(node => node.clone())
+    const auxEdges = window.graph.edges.map(edge => edge.clone())
+
     return {
-        nodes: window.graph.nodes.map(node => node.clone()),
-        edges: window.graph.edges.map(edge => edge.clone()),
+        nodes: auxNodes,
+        edges: auxEdges,
+        selected: auxNodes.filter(node => node.selected)
     }
 }
 
@@ -46,6 +56,7 @@ export function generateSnapshot() {
 export function restoreSnapshot(snapshot) {
     window.graph.nodes = snapshot.nodes
     window.graph.edges = snapshot.edges
+    window.graph.selected = snapshot.selected
 
     // Fix the references of the edges
     window.graph.edges.forEach(edge => {
@@ -56,9 +67,12 @@ export function restoreSnapshot(snapshot) {
 
 // Compares two snapshots
 export function snapshotEquals(snapshot1, snapshot2) {
+    // Fast check: compare the length of the nodes and edges arrays
     if (snapshot1.nodes.length !== snapshot2.nodes.length) return false
     if (snapshot1.edges.length !== snapshot2.edges.length) return false
+    if (snapshot1.selected.length !== snapshot2.selected.length) return false
 
+    // Slow check: compare each node and edge
     for (let i = 0; i < snapshot1.nodes.length; i++) {
         if (!snapshot1.nodes[i].equals(snapshot2.nodes[i])) return false
     }
@@ -67,5 +81,14 @@ export function snapshotEquals(snapshot1, snapshot2) {
         if (!snapshot1.edges[i].equals(snapshot2.edges[i])) return false
     }
 
+    for (let i = 0; i < snapshot1.selected.length; i++) {
+        if (snapshot1.selected[i].id !== snapshot2.selected[i].id) return false
+    }
+
     return true
+}
+
+
+export function discardLastSnapshot() {
+    window.graph.memento.pop()
 }

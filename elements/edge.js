@@ -119,7 +119,8 @@ export class Edge extends Element{
             this.weight === edge.weight,
             this.directed === edge.directed,
             this.color === edge.color,
-            this.thickness === edge.thickness
+            this.thickness === edge.thickness,
+            this.selected === edge.selected,
         ].every(e => e)
     }
 }

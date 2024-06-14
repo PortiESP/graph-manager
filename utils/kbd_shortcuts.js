@@ -26,7 +26,7 @@ export function handleShortcuts(code) {
         }
 
         // Undo
-        if (code === "KeyZ" && window.cvs.keysDown["ControlLeft"]) {
+        if (code === "KeyZ" && window.cvs.keysDown["ControlLeft"] && !window.cvs.keysDown["ShiftLeft"]) {
             undo()
         }
 

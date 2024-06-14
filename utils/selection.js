@@ -1,5 +1,6 @@
 import { stopDragging } from "./dragging"
 import { closestHoverElement, closestHoverNode } from "./find_elements"
+import { discardLastSnapshot } from "./memento"
 
 export function handlePrimaryBtnDown(button, mouse) {
 
@@ -16,12 +17,17 @@ export function handlePrimaryBtnDown(button, mouse) {
     } 
     // If shift is not pressed, allow deselect other nodes
     else {
-        if (window.graph.selected.length === 1) deselectAll()
-
         // If clicked on an element, select it
         if (e) e.select()
-            // If clicked on an empty space, deselect all nodes
-        else deselectAll()
+        // If clicked on an empty space, deselect all nodes
+        else {
+            // Discard the last snapshot if nothing was selected (e.g.: when clicking on an empty space, the app will create a new snapshot, this call will discard it)
+            if (window.graph.selected.length === 0)
+                discardLastSnapshot()  
+
+            // Deselect all nodes
+            deselectAll()
+        }
 
     }
 }
