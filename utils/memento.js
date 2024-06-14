@@ -46,6 +46,12 @@ export function generateSnapshot() {
 export function restoreSnapshot(snapshot) {
     window.graph.nodes = snapshot.nodes
     window.graph.edges = snapshot.edges
+
+    // Fix the references of the edges
+    window.graph.edges.forEach(edge => {
+        edge.src = window.graph.nodes.find(node => node.id === edge.src.id)
+        edge.dst = window.graph.nodes.find(node => node.id === edge.dst.id)
+    })
 }
 
 // Compares two snapshots

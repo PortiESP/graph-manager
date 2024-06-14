@@ -74,6 +74,7 @@ export class Node extends Element{
         const aux = new Node(this.x, this.y, this.r, this.label)
         aux.background = this.background
         aux.color = this.color
+        aux.id = this.id
         
         return aux
     }
