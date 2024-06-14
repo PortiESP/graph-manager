@@ -1,3 +1,4 @@
+import { undo, redo } from "./memento"
 import { deselectAll } from "./selection"
 import { activateToolByKeyCode, isTool } from "./tools/tools_callbacks"
 
@@ -22,6 +23,18 @@ export function handleShortcuts(code) {
         if (code === "KeyA" && window.cvs.keysDown["ControlLeft"]) {
             window.graph.nodes.forEach(n => n.select())
             window.graph.edges.forEach(e => e.select())
+        }
+
+        // Undo
+        if (code === "KeyZ" && window.cvs.keysDown["ControlLeft"]) {
+            undo()
+        }
+
+        // Redo
+        const ctrlY = code === "KeyY" && window.cvs.keysDown["ControlLeft"]
+        const ctrlShiftZ = code === "KeyZ" && window.cvs.keysDown["ControlLeft"] && window.cvs.keysDown["ShiftLeft"]
+        if (ctrlShiftZ || ctrlY) {
+            redo()
         }
     }
 }

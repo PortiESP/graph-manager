@@ -68,4 +68,23 @@ export class Node extends Element{
     isHover() {
         return this.distanceToCenter(window.cvs.x, window.cvs.y) <= this.r
     }
+
+    // Clone
+    clone() {
+        const aux = new Node(this.x, this.y, this.r, this.label)
+        aux.background = this.background
+        aux.color = this.color
+        
+        return aux
+    }
+
+    // Equals
+    equals(node) {
+        return [
+            this.x === node.x,
+            this.y === node.y,
+            this.r === node.r,
+            this.label === node.label
+        ].every(e => e)
+    }
 }

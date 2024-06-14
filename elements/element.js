@@ -36,4 +36,14 @@ export class Element {
     isHover() {
         throw new Error('Method not implemented.')
     }
+
+    // Clone (abstract method)
+    clone() {
+        throw new Error('Method not implemented.')
+    }
+
+    // equals (abstract method)
+    equals() {
+        throw new Error('Method not implemented.')
+    }
 }

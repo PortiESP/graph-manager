@@ -1,9 +1,13 @@
 import { handleSelectDragging } from "../dragging"
+import { recordMemento } from "../memento"
 import { handlePrimaryBtnDown, handlePrimaryBtnUp } from "../selection"
 
 export default {
     mouseDownCallback: (btn, mouse) => {
-        if (btn === 0) handlePrimaryBtnDown(btn, mouse)
+        if (btn === 0) {
+            recordMemento()
+            handlePrimaryBtnDown(btn, mouse)
+        }
     },
     mouseUpCallback: (btn, mouse) => {
         if (btn === 0) handlePrimaryBtnUp(btn, mouse)

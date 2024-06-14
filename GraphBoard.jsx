@@ -53,6 +53,7 @@ export default function Graph(props) {
                 "Edges: " + window.graph.edges.length,
                 "New edge: " + !!window.graph.newEdgeScr,
                 "Hover edge: " + window.graph.edges[0].isHover(),
+                "History stack: " + window.graph.memento.length,
             ])
         })
     }, [])

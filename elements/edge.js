@@ -9,8 +9,6 @@ export class Edge extends Element{
         this.weight = weight
         this.directed = directed
 
-        this.points = [] // Points that define the edge (src and dst not included)
-
         this.color = "#888"
         this.hover = false
         this.thickness = 4
@@ -39,11 +37,6 @@ export class Edge extends Element{
             this.color
         window.ctx.lineWidth = this.thickness
         window.ctx.moveTo(this.src.x + offsetSrc.x, this.src.y + offsetSrc.y)
-        if (this.points.length > 0) {
-            this.points.forEach(p => {
-                window.ctx.lineTo(p.x, p.y)
-            })
-        }
         window.ctx.lineTo(this.dst.x + offsetDst.x, this.dst.y + offsetDst.y)
         window.ctx.stroke()
 
@@ -108,4 +101,25 @@ export class Edge extends Element{
 
     // This method does nothing for edges
     moveBy(){}
+
+    // Clone the edge
+    clone() {
+        const aux = new Edge(this.src, this.dst, this.weight, this.directed)
+        aux.color = this.color
+        aux.thickness = this.thickness
+
+        return aux
+    }
+
+    // Check if two edges are equal
+    equals(edge) {
+        return [ 
+            this.src === edge.src,
+            this.dst === edge.dst,
+            this.weight === edge.weight,
+            this.directed === edge.directed,
+            this.color === edge.color,
+            this.thickness === edge.thickness
+        ].every(e => e)
+    }
 }

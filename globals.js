@@ -24,6 +24,10 @@ export function setupGraphGlobals() {
     window.graph.edges = [] // All edges
     window.graph.newEdgeScr = null // Source node for when the used is creating a new edge
 
+    // Memento
+    window.graph.memento = [] // Memento stack
+    window.graph.mementoRedo = [] // Redo stack
+
     // Tools
     activateTool(CONSTANTS.DEFAULT_TOOL) // Activate the default tool
 
