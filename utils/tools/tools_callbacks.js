@@ -21,8 +21,8 @@ export function activeToolCallback(name) {
         // Get the callback for the active tool
         let callback = toolsCallbacks[window.graph.tool][name]
 
-        // Ensure the shortcut callback is called
-        if (name === "keyDownCallback") handleShortcuts(...params)
+        // First, run the handleShortcuts function to run the default shortcuts, if a default action was executed, return (prevent the tool callback from being called)
+        if (name === "keyDownCallback") if (handleShortcuts(...params)) return
         
         // If the callback exists, call it
         if (callback) {
