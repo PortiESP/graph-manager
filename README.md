@@ -31,6 +31,8 @@ If the new feature is stored in an `element` object
 
 - Add a new key in the tools callbacks file in the `graph-manager/utils/tools/{your-tool}.js` file. The key should be uno of the callbacks supported that can be seen in the `canvas/utils/globals.js` file. The value should be the callback function.
 
+Additionally, you can use the `setup` and `clean` callbacks to execute code when the tool is activated and deactivated respectively.
+
 ### Assign a keybinding to a tool
 
 The app has some predefined keybindings that will be evaluated before the custom keybindings defined for a tool. The default keybindings are located in the file `canvas/utils/kbd_shortcuts.js`. To add a new keybinding for a tool, add it inside the callback function `keyDownCallback` in the `graph-manager/utils/tools/{your-tool}.js` file

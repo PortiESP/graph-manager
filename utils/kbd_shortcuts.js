@@ -8,7 +8,7 @@ import { activateToolByKeyCode, isTool } from "./tools/tools_callbacks"
  * @param {String} code KeyCode of the key pressed. e.g. "KeyA", "KeyZ", "Escape"
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
-export function handleShortcuts(code) {
+export function handleShortcutsKeyDown(code) {
     // The key pressed represents a tool
     if (isTool(code)) {
         activateToolByKeyCode(code)
@@ -52,5 +52,15 @@ export function handleShortcuts(code) {
         }
     }
 
+    return false
+}
+
+/**
+ * Handles the keyboard shortcuts.
+ * 
+ * @param {String} code KeyCode of the key pressed. e.g. "KeyA", "KeyZ", "Escape"
+ * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
+ */
+export function handleShortcutsKeyUp(code) {
     return false
 }

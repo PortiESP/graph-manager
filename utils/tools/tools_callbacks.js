@@ -1,5 +1,7 @@
 import CONSTANTS from "../constants"
-import { handleShortcuts } from "../kbd_shortcuts"
+import { handleShortcutsKeyDown, handleShortcutsKeyUp } from "../kbd_shortcuts"
+import { deselectAll } from "../selection"
+import drag_tool from "./drag_tool"
 import edit_tool from "./edit_tool"
 import select_tool from "./select_tool"
 
@@ -7,22 +9,26 @@ import select_tool from "./select_tool"
 export const toolsCallbacks = {
     "select": select_tool,
     "edit": edit_tool,
+    "drag": drag_tool,
 }
 
 /**
  * This function returns the callback for the active tool requested by the callback name provided.
  * 
- * @param {String} name Name of the callback. e.g. "mouseDownCallback"
+ * @param {String} cbkName Name of the callback. e.g. "mouseDownCallback"
  * @returns The callback for the active tool
  */
-export function activeToolCallback(name) {
+export function activeToolCallback(cbkName) {
+
+
     // Return a callback that calls the specified tool callback
     return (...params) => {
         // Get the callback for the active tool
-        let callback = toolsCallbacks[window.graph.tool][name]
+        let callback = toolsCallbacks[window.graph.tool][cbkName]
 
         // First, run the handleShortcuts function to run the default shortcuts, if a default action was executed, return (prevent the tool callback from being called)
-        if (name === "keyDownCallback") if (handleShortcuts(...params)) return
+        if (cbkName === "keyDownCallback") if (handleShortcutsKeyDown(...params)) return
+        if (cbkName === "keyUpCallback") if (handleShortcutsKeyUp(...params)) return
         
         // If the callback exists, call it
         if (callback) {
@@ -31,7 +37,7 @@ export function activeToolCallback(name) {
         }
 
         // If the callback does not exist, call the default callback
-        if (toolsCallbacks["select"][name]) toolsCallbacks["select"][name](...params)
+        if (toolsCallbacks["select"][cbkName]) toolsCallbacks["select"][cbkName](...params)
 
         // If the default callback does not exist, do nothing
     }
@@ -45,13 +51,16 @@ export function isTool(code){
 }
 
 export function anySpecialKeyPressed(){
-    if (window.cvs.keysDown["ControlLeft"] || window.cvs.keysDown["ControlRight"]) return false
-    if (window.cvs.keysDown["AltLeft"] || window.cvs.keysDown["AltRight"]) return false
-    if (window.cvs.keysDown["ShiftLeft"] || window.cvs.keysDown["ShiftRight"]) return false
-    return true
+    if (window.cvs.keysDown["ControlLeft"] || window.cvs.keysDown["ControlRight"]) return true
+    if (window.cvs.keysDown["AltLeft"] || window.cvs.keysDown["AltRight"]) return true
+    if (window.cvs.keysDown["ShiftLeft"] || window.cvs.keysDown["ShiftRight"]) return true
+    return false
 }
 
 export function activateTool(tool){
+    // Reset the tool states before changing the tool (the if avoids calling the clean method before the first tool is set)
+    if (window.graph.tool) activeToolCallback('clean')()
+
     // Set the current tool
     window.graph.tool = tool
     // Set the tool callbacks
@@ -67,5 +76,3 @@ export function activateToolByKeyCode(code){
     const tool = CONSTANTS.TOOLS_KEYS[code]
     activateTool(tool)
 }
-
-// Tools
