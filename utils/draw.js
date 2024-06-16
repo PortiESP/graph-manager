@@ -1,3 +1,13 @@
+import constants from "./constants"
+
+/**
+ * Draw all the elements of the graph
+ * - Grid
+ * - Edges
+ *      - Edges being created
+ * - Nodes
+ *     - Nodes being created
+ */
 export default function drawAll(){
     drawGrid()
 
@@ -30,26 +40,42 @@ export default function drawAll(){
     }
 }
 
-
+/**
+ * Draw the grid
+ */
 export function drawGrid(){
+    // Get the context and canvas
     const ctx = window.ctx
     const cvs = window.cvs
 
-    const gridSize = 50
-    const gridColor = "#ddd"
-    const gridThickness = 1
+    // Grid properties
+    const gridSize = constants.GRID_SIZE
+    const gridColor = constants.GRID_COLOR
+    const gridThickness = constants.GRID_THICKNESS
 
     // Draw the grid
     ctx.strokeStyle = gridColor
     ctx.lineWidth = gridThickness
+
+    // Extract the canvas size
     const width = cvs.$canvas.width
     const height = cvs.$canvas.height
+
+    // Get the offset
     const offsetX = window.graph.canvasDragOffset.x
     const offsetY = window.graph.canvasDragOffset.y
-    const iniX = -(2*gridSize) - Math.floor(offsetX / gridSize) * gridSize
-    const iniY = -(2*gridSize) - Math.floor(offsetY / gridSize) * gridSize
-    const finX = (2*gridSize) + width - Math.floor(offsetX / gridSize) * gridSize
-    const finY = (2*gridSize) + height - Math.floor(offsetY / gridSize) * gridSize
+
+    // Calculate the initial and final positions of the grid
+    const margin = 2*gridSize
+    const iniXStep = Math.floor(offsetX / gridSize) * gridSize
+    const iniYStep = Math.floor(offsetY / gridSize) * gridSize
+    
+    const iniX = -margin - iniXStep
+    const iniY = -margin - iniYStep
+    const finX = margin + width - iniXStep
+    const finY = margin + height - iniYStep
+
+    // Draw the grid vertical lines
     for (let x = iniX; x < finX; x += gridSize) {
         ctx.beginPath()
         ctx.moveTo(x, iniY)
@@ -58,6 +84,7 @@ export function drawGrid(){
         ctx.fillStyle = gridColor
         ctx.fillText(x, x+10, -offsetY+10)
     }
+    // Draw the grid horizontal lines
     for (let y = iniY; y < finY; y += gridSize) {
         ctx.beginPath()
         ctx.moveTo(iniX, y)

@@ -21,4 +21,9 @@ export default {
     EDGE_WEIGHT_KEY: "KeyW",
     PAN_KEY: "Space",
     PAN_MOUSE_BUTTON: 1,  // Middle mouse button
+
+    // Grid
+    GRID_SIZE: 50,
+    GRID_COLOR: "#ddd",
+    GRID_THICKNESS: 1,
 }
