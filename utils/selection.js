@@ -1,5 +1,4 @@
-import { stopDragging } from "./dragging"
-import { closestHoverElement, closestHoverNode } from "./find_elements"
+import { closestHoverElement } from "./find_elements"
 import { discardLastSnapshot } from "./memento"
 
 export function handlePrimaryBtnDown(button, mouse) {
@@ -34,9 +33,6 @@ export function handlePrimaryBtnDown(button, mouse) {
 
 
 export function handlePrimaryBtnUp(button, mouse) {
-
-    // Stop dragging
-    stopDragging()
 
     // Find the element under the mouse
     const e = closestHoverElement()

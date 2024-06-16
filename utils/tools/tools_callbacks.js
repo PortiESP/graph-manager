@@ -1,7 +1,5 @@
 import CONSTANTS from "../constants"
-import { handleShortcutsKeyDown, handleShortcutsKeyUp } from "../kbd_shortcuts"
-import { deselectAll } from "../selection"
-import drag_tool from "./drag_tool"
+import { handleShortcutsMouseDown, handleShortcutsKeyDown, handleShortcutsKeyUp, handleShortcutsMouseUp, handleShortcutsMouseMove } from "../shortcuts"
 import edit_tool from "./edit_tool"
 import select_tool from "./select_tool"
 
@@ -9,7 +7,6 @@ import select_tool from "./select_tool"
 export const toolsCallbacks = {
     "select": select_tool,
     "edit": edit_tool,
-    "drag": drag_tool,
 }
 
 /**
@@ -20,7 +17,6 @@ export const toolsCallbacks = {
  */
 export function activeToolCallback(cbkName) {
 
-
     // Return a callback that calls the specified tool callback
     return (...params) => {
         // Get the callback for the active tool
@@ -29,6 +25,9 @@ export function activeToolCallback(cbkName) {
         // First, run the handleShortcuts function to run the default shortcuts, if a default action was executed, return (prevent the tool callback from being called)
         if (cbkName === "keyDownCallback") if (handleShortcutsKeyDown(...params)) return
         if (cbkName === "keyUpCallback") if (handleShortcutsKeyUp(...params)) return
+        if (cbkName === "mouseDownCallback") if (handleShortcutsMouseDown(...params)) return 
+        if (cbkName === "mouseUpCallback") if (handleShortcutsMouseUp(...params)) return
+        if (cbkName === "mouseMoveCallback") if (handleShortcutsMouseMove(...params)) return
         
         // If the callback exists, call it
         if (callback) {

@@ -14,8 +14,18 @@ export function handleShortcutsKeyDown(code) {
         activateToolByKeyCode(code)
         return true
     }
-    // The key pressed is not a tool
+    // The key pressed is not a tool, check for GLOBAL shortcuts (custom shortcuts are handled by the active tool keyDownCallback)
     else{
+        // --- First we check the keys that are used by pressing them ---
+
+        // Drag
+        if (code === "Space") {
+            if (document.body.style.cursor !== "grabbing") document.body.style.cursor = "grab"
+            return true
+        }
+
+        // --- Single tap keys ---
+
         // Reset all states
         if (code === 'Escape') {
             deselectAll()
@@ -50,6 +60,7 @@ export function handleShortcutsKeyDown(code) {
             redo()
             return true
         }
+
     }
 
     return false
@@ -62,5 +73,44 @@ export function handleShortcutsKeyDown(code) {
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutsKeyUp(code) {
+    // Drag
+    if (code === "Space") {
+        document.body.style.cursor = "default"
+        return true
+    }
+
+    return false
+}
+
+export function handleShortcutsMouseDown(button, coords) {
+    // Drag
+    if (button === 0 && window.cvs.keysDown["Space"]) {
+        document.body.style.cursor = "grabbing"
+        return true
+    }
+
+    return false
+}
+
+export function handleShortcutsMouseUp(button, coords) {
+    // Drag
+    if (button === 0 && window.cvs.keysDown["Space"]) {
+        document.body.style.cursor = "grab"
+        return true
+    }
+
+    return false
+}
+
+export function handleShortcutsMouseMove(e, coords) {
+    // Drag the canvas
+    if (window.cvs.mouseDown === 0 && window.cvs.keysDown["Space"]) {
+        const {movementX: dx, movementY: dy} = e
+        window.cvs.canvasDragOffset = {x: window.cvs.canvasDragOffset.x + dx, y: window.cvs.canvasDragOffset.y + dy}
+        window.ctx.translate(dx, dy)
+
+        return true
+    }
+
     return false
 }

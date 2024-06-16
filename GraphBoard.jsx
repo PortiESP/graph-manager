@@ -45,7 +45,6 @@ export default function Graph(props) {
             // Draw debug info
             if (window.cvs.debug) window.cvs.drawDebugInfo([
                 "Selected: " + window.graph.selected.length,
-                "Dragging: " + !!window.graph.dragging,
                 "Prevent deselect: " + window.graph.prevent_deselect,
                 "Active tool: " + window.graph.tool || "None",
                 "Nodes: " + window.graph.nodes.length,

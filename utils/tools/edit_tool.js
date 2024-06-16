@@ -1,6 +1,5 @@
 import { Edge } from "../../elements/edge"
 import { Node } from "../../elements/node"
-import { startDragging, stopDragging } from "../dragging"
 import { closestHoverNode, findEdgesByCoords, findNodesByCoords } from "../find_elements"
 import { deselectAll } from "../selection"
 
@@ -35,13 +34,6 @@ export default {
 
             return
         }
-
-        // If the user is dragging an edge point, stop dragging
-        if (window.graph.dragging) {
-            stopDragging()
-            return
-        }
-
     },
     keyDownCallback: function (keyCode, mouse) {
         if (keyCode === "Backspace") {
