@@ -17,13 +17,19 @@ import { Element } from "./element"
  * 
  * ---
  * 
+ * @property {String} id - The id of the edge (inherited from Element)
  * @property {Node} src - The source node
  * @property {Node} dst - The destination node
  * @property {number} weight - The weight of the edge (default: 1)
  * @property {boolean} directed - Whether the edge is directed or not
- * @property {string} color - The color of the edge
  * @property {boolean} hover - Whether the edge is being hovered or not
+ * @property {boolean} selected - Whether the edge is selected or not (inherited from Element)
  * @property {number} thickness - The thickness of the edge
+ * @property {string} edgeColor - The color of the edge
+ * @property {string} edgeHoverColor - The color of the edge when hovered
+ * @property {string} edgeSelectedColor - The color of the edge when selected
+ * @property {string} weightColor - The color of the weight of the edge
+ * @property {string} weightBackgroundColor - The background color of the weight of the edge
  * 
  * **Methods**
  * 
@@ -187,8 +193,10 @@ export class Edge extends Element{
      * @returns Edge. A clone of the edge
      */
     clone() {
+        // Create a new edge with the same properties
         const aux = new Edge(this.src, this.dst, this.weight, this.directed)
-        aux.color = this.color
+        // Copy the rest of the properties
+        aux.selected = this.selected
         aux.thickness = this.thickness
         aux.edgeColor = this.edgeColor
         aux.edgeHoverColor = this.edgeHoverColor
@@ -197,7 +205,7 @@ export class Edge extends Element{
         aux.weightBackgroundColor = this.weightBackgroundColor
         aux.hover = this.hover
         aux.thickness = this.thickness
-
+        aux.id = this.id
 
         return aux
     }
