@@ -12,10 +12,10 @@ export default {
     mouseUpCallback: (btn, mouse) => {
         if (btn === 0) handlePrimaryBtnUp(btn, mouse)
     },
-    mouseMoveCallback: () => {
+    mouseMoveCallback: (e, mouse) => {
         // If the left mouse button is pressed
         if (window.cvs.mouseDown === 0) {
-            handleSelectDragging()
+            handleSelectDragging(e, mouse)
         }
     },
     mouseDoubleClickCallback: () => {

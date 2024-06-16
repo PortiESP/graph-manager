@@ -9,7 +9,7 @@ export function handleSelectDragging(e, mouse) {
     if (!window.graph.dragging) startDragging(closestHoverNode())
 
     // Calculate the offset
-    const offset = calcDragging()
+    const offset = {dx: e.movementX, dy: e.movementY}
 
     // Move the selected nodes
     window.graph.selected.forEach(e => e.moveBy(offset.dx, offset.dy))
@@ -24,15 +24,4 @@ export function startDragging(element) {
 export function stopDragging() {
     window.graph.dragging = null
     window.graph.dragging_prev = { x: undefined, y: undefined }
-}
-
-export function calcDragging() {
-    const x = window.cvs.x
-    const y = window.cvs.y
-    const dx = x - window.graph.dragging_prev.x
-    const dy = y - window.graph.dragging_prev.y
-
-    window.graph.dragging_prev = { x, y }
-
-    return { dx, dy }
 }

@@ -51,4 +51,8 @@ export default {
             window.graph.newNode = true
         }
     },
+    clean() {
+        window.graph.newEdgeScr = null
+        window.graph.newNode = false
+    }
 }
