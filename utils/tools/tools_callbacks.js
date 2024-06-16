@@ -3,7 +3,7 @@ import { handleShortcutsMouseDown, handleShortcutsKeyDown, handleShortcutsKeyUp,
 import edit_tool from "./edit_tool"
 import select_tool from "./select_tool"
 
-
+// Tool object with the callbacks for each tool. The keys are the tool names and the values are objects with the callbacks for each tool.
 export const toolsCallbacks = {
     "select": select_tool,
     "edit": edit_tool,
@@ -22,7 +22,8 @@ export function activeToolCallback(cbkName) {
         // Get the callback for the active tool
         let callback = toolsCallbacks[window.graph.tool][cbkName]
 
-        // First, run the handleShortcuts function to run the default shortcuts, if a default action was executed, return (prevent the tool callback from being called)
+        // Default actions
+        // First, run the handleShortcuts function to run the default shortcuts, if a default action was executed inside this default functions, return (prevent the tool callback from being called)
         if (cbkName === "keyDownCallback") if (handleShortcutsKeyDown(...params)) return
         if (cbkName === "keyUpCallback") if (handleShortcutsKeyUp(...params)) return
         if (cbkName === "mouseDownCallback") if (handleShortcutsMouseDown(...params)) return 
