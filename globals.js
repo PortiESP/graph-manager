@@ -24,6 +24,12 @@ export function setupGraphGlobals() {
     window.graph.memento = [] // Memento stack
     window.graph.mementoRedo = [] // Redo stack
 
+    // Drag and offsets
+    window.graph.canvasDragOffset = { x: 0, y: 0 } // Canvas drag offset
+
+    // Zoom
+    window.graph.zoom = 1 // Zoom level
+
 
     // Tools
     activateTool(CONSTANTS.DEFAULT_TOOL) // Activate the default tool

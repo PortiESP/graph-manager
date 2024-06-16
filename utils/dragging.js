@@ -11,8 +11,8 @@ export function handleSelectDragging(e, mouse) {
 
 
 export function resetDrag(){
-    window.ctx.translate(-window.cvs.canvasDragOffset.x, -window.cvs.canvasDragOffset.y)
-    window.cvs.canvasDragOffset = {x: 0, y: 0}
+    window.ctx.translate(-window.graph.canvasDragOffset.x, -window.graph.canvasDragOffset.y)
+    window.graph.canvasDragOffset = {x: 0, y: 0}
 }
 
 export function isDragging(){

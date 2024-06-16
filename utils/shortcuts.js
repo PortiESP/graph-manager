@@ -2,6 +2,7 @@ import { isDragging, resetDrag } from "./dragging"
 import { undo, redo } from "./memento"
 import { deselectAll } from "./selection"
 import { activateToolByKeyCode, isTool } from "./tools/tools_callbacks"
+import { resetZoom, zoomIn, zoomOut } from "./zoom"
 
 /**
  * Handles the keyboard shortcuts.
@@ -33,6 +34,7 @@ export function handleShortcutsKeyDown(code) {
             window.graph.newEdgeScr = null
             window.graph.newNode = false
             resetDrag()
+            resetZoom()
             return true
         }
 
@@ -113,11 +115,22 @@ export function handleShortcutsMouseMove(e, coords) {
     // Drag the canvas
     if (isDragging()) {
         const {movementX: dx, movementY: dy} = e
-        window.cvs.canvasDragOffset = {x: window.cvs.canvasDragOffset.x + dx, y: window.cvs.canvasDragOffset.y + dy}
+        window.graph.canvasDragOffset = {x: window.graph.canvasDragOffset.x + dx, y: window.graph.canvasDragOffset.y + dy}
         window.ctx.translate(dx, dy)
 
         return true
     }
 
     return false
+}
+
+
+export function handleShortcutsMouseScroll(delta, mouse) {
+    // Zoom in and out
+    if (delta > 0) zoomIn()
+    else if (delta < 0) zoomOut()
+    
+    console.log(window.graph.zoom)
+    
+    return true
 }

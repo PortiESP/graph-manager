@@ -1,5 +1,5 @@
 import CONSTANTS from "../constants"
-import { handleShortcutsMouseDown, handleShortcutsKeyDown, handleShortcutsKeyUp, handleShortcutsMouseUp, handleShortcutsMouseMove } from "../shortcuts"
+import { handleShortcutsMouseDown, handleShortcutsKeyDown, handleShortcutsKeyUp, handleShortcutsMouseUp, handleShortcutsMouseMove, handleShortcutsMouseScroll } from "../shortcuts"
 import edit_tool from "./edit_tool"
 import select_tool from "./select_tool"
 
@@ -28,6 +28,7 @@ export function activeToolCallback(cbkName) {
         if (cbkName === "mouseDownCallback") if (handleShortcutsMouseDown(...params)) return 
         if (cbkName === "mouseUpCallback") if (handleShortcutsMouseUp(...params)) return
         if (cbkName === "mouseMoveCallback") if (handleShortcutsMouseMove(...params)) return
+        if (cbkName === "mouseScrollCallback") if (handleShortcutsMouseScroll(...params)) return
         
         // If the callback exists, call it
         if (callback) {

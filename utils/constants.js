@@ -6,4 +6,5 @@ export default {
     },
     EDGE_DETECTION_RADIUS: 10,
     DOUBLE_CLICK_DELAY: 400,
+    ZOOM_FACTOR: 1.1
 }

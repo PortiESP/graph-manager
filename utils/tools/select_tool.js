@@ -20,5 +20,8 @@ export default {
     },
     mouseDoubleClickCallback: () => {
         console.log('Double click')
-    }
+    },
+    keyDownCallback: (key) => {
+        if (key === "KeyZ") window.ctx.scale(1.1, 1.1)
+    },
 }

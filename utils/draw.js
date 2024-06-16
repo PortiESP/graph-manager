@@ -44,8 +44,8 @@ export function drawGrid(){
     ctx.lineWidth = gridThickness
     const width = cvs.$canvas.width
     const height = cvs.$canvas.height
-    const offsetX = cvs.canvasDragOffset.x
-    const offsetY = cvs.canvasDragOffset.y
+    const offsetX = window.graph.canvasDragOffset.x
+    const offsetY = window.graph.canvasDragOffset.y
     const iniX = -(2*gridSize) - Math.floor(offsetX / gridSize) * gridSize
     const iniY = -(2*gridSize) - Math.floor(offsetY / gridSize) * gridSize
     const finX = (2*gridSize) + width - Math.floor(offsetX / gridSize) * gridSize

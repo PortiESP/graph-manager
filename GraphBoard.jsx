@@ -24,7 +24,7 @@ export default function Graph(props) {
             window.cvs.mouseDoubleClickCallback = activeToolCallback('mouseDoubleClickCallback')
             window.cvs.keyDownCallback = activeToolCallback('keyDownCallback')
             window.cvs.keyUpCallback = activeToolCallback('keyUpCallback')
-            window.cvs.scrollCallback = activeToolCallback('scrollCallback')
+            window.cvs.mouseScrollCallback = activeToolCallback('mouseScrollCallback')
             window.cvs.resizeCallback = activeToolCallback('resizeCallback')
 
 
@@ -54,6 +54,8 @@ export default function Graph(props) {
                 "Hover edge: " + window.graph.edges.filter(e => e.isHover()).length,
                 "History stack: " + window.graph.memento.length,
                 "Redo stack: " + window.graph.mementoRedo.length,
+                "Canvas drag offset: (" + window.graph.canvasDragOffset.x + ") - (" + window.graph.canvasDragOffset.y + ")",
+                "Zoom: " + window.graph.zoom,
             ])
         })
     }, [])
