@@ -2,7 +2,7 @@ import { isDragging, resetDrag } from "./dragging"
 import { undo, redo } from "./memento"
 import { deselectAll } from "./selection"
 import { activateToolByKeyCode, isTool } from "./tools/tools_callbacks"
-import { resetZoom, zoomIn, zoomOut } from "./zoom"
+import { getViewBox, resetZoom, zoomIn, zoomOut } from "./zoom"
 
 /**
  * Handles the keyboard shortcuts.
@@ -11,6 +11,7 @@ import { resetZoom, zoomIn, zoomOut } from "./zoom"
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutsKeyDown(code) {
+
     // The key pressed represents a tool
     if (isTool(code)) {
         activateToolByKeyCode(code)
@@ -149,6 +150,8 @@ export function handleShortcutsMouseUp(button, coords) {
 }
 
 export function handleShortcutsMouseMove(e, coords) {
+    console.log(getViewBox())
+
     // Drag the canvas
     if (isDragging()) {
         const { movementX: dx, movementY: dy } = e
@@ -166,8 +169,6 @@ export function handleShortcutsMouseScroll(delta, mouse) {
     // Zoom in and out
     if (delta < 0) zoomIn()
     else if (delta > 0) zoomOut()
-
-    console.log(window.graph.zoom)
 
     return true
 }

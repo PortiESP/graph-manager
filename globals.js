@@ -1,3 +1,4 @@
+import constants from "./utils/constants"
 import CONSTANTS from "./utils/constants"
 import { activateTool } from "./utils/tools/tools_callbacks"
 
@@ -28,7 +29,8 @@ export function setupGraphGlobals() {
     window.graph.canvasDragOffset = { x: 0, y: 0 } // Canvas drag offset
 
     // Zoom
-    window.graph.zoom = 1 // Zoom level
+    window.graph.zoom = 1 // Zoom factor
+    window.graph.zoomLevel = constants.ZOOM_LEVELS.indexOf(1) // Zoom level (index of the zoom factor in the zoom levels array at the constants file)
 
 
     // Tools

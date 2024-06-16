@@ -15,6 +15,7 @@ export default function Graph(props) {
         setupCanvas(() => {
             // --- Setup the graph globals--- 
             setupGraphGlobals()
+            window.ctx.save()
 
             // --- Setup callbacks ---
             // Mouse down and up callbacks
