@@ -28,6 +28,7 @@ export function setupGraphGlobals() {
     window.graph.memento = [] // Memento stack
     window.graph.mementoRedo = [] // Redo stack
 
+
     // Tools
     activateTool(CONSTANTS.DEFAULT_TOOL) // Activate the default tool
 

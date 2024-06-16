@@ -54,6 +54,7 @@ export default function Graph(props) {
                 "New edge: " + !!window.graph.newEdgeScr,
                 "Hover edge: " + window.graph.edges[0].isHover(),
                 "History stack: " + window.graph.memento.length,
+                "Redo stack: " + window.graph.mementoRedo.length,
             ])
         })
     }, [])
