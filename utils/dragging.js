@@ -14,3 +14,7 @@ export function resetDrag(){
     window.ctx.translate(-window.cvs.canvasDragOffset.x, -window.cvs.canvasDragOffset.y)
     window.cvs.canvasDragOffset = {x: 0, y: 0}
 }
+
+export function isDragging(){
+    return (window.cvs.keysDown["Space"] && window.cvs.mouseDown === 0) || window.cvs.mouseDown === 1
+}

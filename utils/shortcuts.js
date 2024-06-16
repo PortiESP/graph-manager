@@ -1,3 +1,4 @@
+import { isDragging, resetDrag } from "./dragging"
 import { undo, redo } from "./memento"
 import { deselectAll } from "./selection"
 import { activateToolByKeyCode, isTool } from "./tools/tools_callbacks"
@@ -31,6 +32,7 @@ export function handleShortcutsKeyDown(code) {
             deselectAll()
             window.graph.newEdgeScr = null
             window.graph.newNode = false
+            resetDrag()
             return true
         }
 
@@ -84,7 +86,7 @@ export function handleShortcutsKeyUp(code) {
 
 export function handleShortcutsMouseDown(button, coords) {
     // Drag
-    if (button === 0 && window.cvs.keysDown["Space"]) {
+    if (isDragging()) {
         document.body.style.cursor = "grabbing"
         return true
     }
@@ -94,8 +96,13 @@ export function handleShortcutsMouseDown(button, coords) {
 
 export function handleShortcutsMouseUp(button, coords) {
     // Drag
-    if (button === 0 && window.cvs.keysDown["Space"]) {
+    if (isDragging()) {
         document.body.style.cursor = "grab"
+        return true
+    }
+    // Release the drag
+    if (button === 1) {
+        document.body.style.cursor = "default"
         return true
     }
 
@@ -104,7 +111,7 @@ export function handleShortcutsMouseUp(button, coords) {
 
 export function handleShortcutsMouseMove(e, coords) {
     // Drag the canvas
-    if (window.cvs.mouseDown === 0 && window.cvs.keysDown["Space"]) {
+    if (isDragging()) {
         const {movementX: dx, movementY: dy} = e
         window.cvs.canvasDragOffset = {x: window.cvs.canvasDragOffset.x + dx, y: window.cvs.canvasDragOffset.y + dy}
         window.ctx.translate(dx, dy)
