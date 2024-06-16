@@ -42,3 +42,4 @@ The app has some predefined keybindings that will be evaluated before the custom
 ### Add a new element
 
 - Edit the keybind "delete" at the method `keyDownCallback` in the `utils/tools/edit_tool.js` file to add the new element to the list of elements that can be deleted.
+- Edit the method `findElementsByCoords` and the rest of the function related to generic elements in the `canvas/utils/find_elements.js` file to add the new element to the list of elements that can be selected.
