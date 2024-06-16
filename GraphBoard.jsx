@@ -1,5 +1,5 @@
 import { setupCanvas, mainLoop } from '../canvas/utils/setup'
-import { useLayoutEffect, useState } from 'react'
+import { useLayoutEffect } from 'react'
 import Canvas from '../canvas/Canvas'
 import { setupGraphGlobals } from './globals'
 import { Node } from './elements/node'
@@ -51,7 +51,7 @@ export default function Graph(props) {
                 "New node: " + window.graph.newNode,
                 "Edges: " + window.graph.edges.length,
                 "New edge: " + !!window.graph.newEdgeScr,
-                "Hover edge: " + window.graph.edges[0].isHover(),
+                "Hover edge: " + window.graph.edges.filter(e => e.isHover()).length,
                 "History stack: " + window.graph.memento.length,
                 "Redo stack: " + window.graph.mementoRedo.length,
             ])

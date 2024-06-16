@@ -123,4 +123,9 @@ export class Edge extends Element{
             this.selected === edge.selected,
         ].every(e => e)
     }
+
+    // Delete the edge
+    delete() {
+        window.graph.edges = window.graph.edges.filter(e => e !== this)
+    }
 }

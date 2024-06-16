@@ -89,4 +89,10 @@ export class Node extends Element{
             this.label === node.label
         ].every(e => e)
     }
+
+    // Delete
+    delete() {
+        window.graph.nodes = window.graph.nodes.filter(n => n !== this)
+        window.graph.edges = window.graph.edges.filter(e => e.src !== this && e.dst !== this)
+    }
 }

@@ -1,6 +1,7 @@
 import { Edge } from "../../elements/edge"
 import { Node } from "../../elements/node"
-import { closestHoverNode, findEdgesByCoords, findNodesByCoords } from "../find_elements"
+import { closestHoverNode } from "../find_elements"
+import { recordMemento } from "../memento"
 import { deselectAll } from "../selection"
 
 export default {
@@ -36,8 +37,16 @@ export default {
         }
     },
     keyDownCallback: function (keyCode, mouse) {
-        if (keyCode === "Backspace") {
-            window.graph.edges = window.graph.edges.filter(edge => !edge.isHover())
+        if (keyCode === "Delete") {
+            recordMemento()  // Record the current state before deleting the elements
+
+            // Delete the hovered elements
+            window.graph.edges.forEach(edge => {
+                if (edge.isHover()) edge.delete()
+            })
+            window.graph.nodes.forEach(node => {
+                if (node.isHover()) node.delete()
+            })
         }
         if (keyCode === "KeyN") {
             window.graph.newNode = true
