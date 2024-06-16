@@ -1,3 +1,5 @@
+import { getViewBox } from "./zoom"
+
 export function handleSelectDragging(e, mouse) {
     // Set the prevent_deselect flag to true
     window.graph.prevent_deselect = true
@@ -11,7 +13,8 @@ export function handleSelectDragging(e, mouse) {
 
 
 export function resetDrag(){
-    window.ctx.translate(-window.graph.canvasDragOffset.x, -window.graph.canvasDragOffset.y)
+    const {x, y} = getViewBox()
+    window.ctx.translate(x, y)
     window.graph.canvasDragOffset = {x: 0, y: 0}
 }
 
