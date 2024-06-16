@@ -1,8 +1,6 @@
 import constants from "./constants"
-import { resetDrag } from "./dragging"
 
 export function resetZoom(){
-    // window.ctx.restore()
     window.ctx.scale(1/window.graph.zoom, 1/window.graph.zoom)
     window.graph.canvasDragOffset = {x: 0, y: 0}
     window.graph.zoom = 1
@@ -24,15 +22,13 @@ export function getViewBox(){
 export function zoomCenter(zoomIn){
     const zoomFactor = zoomIn ? 1.1 : 0.9
     const newZoom = zoomIn ? window.graph.zoom * zoomFactor : window.graph.zoom * zoomFactor
-    const {x, y} = getViewBox()
+    const {x, y, width, height} = getViewBox()
     const centerX = x + window.cvs.$canvas.width/2
     const centerY = y + window.cvs.$canvas.height/2
     const userX = window.cvs.x
     const userY = window.cvs.y
-    const dx = (userX - centerX)/2
-    const dy = (userY - centerY)/2
-
-    console.log(dx, dy)
+    const dx = -(width*zoomFactor - width)/2
+    const dy = -(width*zoomFactor - width)/2
 
     window.ctx.translate(x, y)
     window.ctx.scale(zoomFactor, zoomFactor)
@@ -43,6 +39,10 @@ export function zoomCenter(zoomIn){
     window.graph.canvasDragOffset.y += dy
     
     window.graph.zoom = newZoom
+
+    // Update mouse position
+    window.cvs.x = userX-dx
+    window.cvs.y = userY-dy
 }
 
 export function zoomIn(){
