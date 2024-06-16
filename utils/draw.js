@@ -1,4 +1,5 @@
 import constants from "./constants"
+import { getViewBox } from "./zoom"
 
 /**
  * Draw all the elements of the graph
@@ -57,23 +58,18 @@ export function drawGrid(){
     ctx.strokeStyle = gridColor
     ctx.lineWidth = gridThickness
 
-    // Extract the canvas size
-    const width = cvs.$canvas.width
-    const height = cvs.$canvas.height
-
     // Get the offset
-    const offsetX = window.graph.canvasDragOffset.x
-    const offsetY = window.graph.canvasDragOffset.y
+    const coords = getViewBox()
 
     // Calculate the initial and final positions of the grid
     const margin = 2*gridSize
-    const iniXStep = Math.floor(offsetX / gridSize) * gridSize
-    const iniYStep = Math.floor(offsetY / gridSize) * gridSize
-    
-    const iniX = -margin - iniXStep
-    const iniY = -margin - iniYStep
-    const finX = margin + width - iniXStep
-    const finY = margin + height - iniYStep
+    const iniXStep = Math.floor(coords.x / gridSize) * gridSize
+    const iniYStep = Math.floor(coords.y / gridSize) * gridSize
+
+    const iniX = -margin + iniXStep
+    const iniY = -margin + iniYStep
+    const finX = margin + coords.x2
+    const finY = margin + coords.y2
 
     // Draw the grid vertical lines
     for (let x = iniX; x < finX; x += gridSize) {
@@ -82,7 +78,7 @@ export function drawGrid(){
         ctx.lineTo(x, finY)
         ctx.stroke()
         ctx.fillStyle = gridColor
-        ctx.fillText(x, x+10, -offsetY+10)
+        ctx.fillText(x, x+10, coords.y+10)
     }
     // Draw the grid horizontal lines
     for (let y = iniY; y < finY; y += gridSize) {
@@ -91,6 +87,6 @@ export function drawGrid(){
         ctx.lineTo(finX, y)
         ctx.stroke()
         ctx.fillStyle = gridColor
-        ctx.fillText(y, -offsetX+4, y+20)
+        ctx.fillText(y, coords.x+4, y+20)
     }
 }
