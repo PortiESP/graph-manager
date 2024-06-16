@@ -36,3 +36,9 @@ Additionally, you can use the `setup` and `clean` callbacks to execute code when
 ### Assign a keybinding to a tool
 
 The app has some predefined keybindings that will be evaluated before the custom keybindings defined for a tool. The default keybindings are located in the file `canvas/utils/kbd_shortcuts.js`. To add a new keybinding for a tool, add it inside the callback function `keyDownCallback` in the `graph-manager/utils/tools/{your-tool}.js` file
+
+## Elements
+
+### Add a new element
+
+- Edit the keybind "delete" at the method `keyDownCallback` in the `utils/tools/edit_tool.js` file to add the new element to the list of elements that can be deleted.

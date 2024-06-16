@@ -11,4 +11,10 @@ export default {
     ARROW_SIZE: 15,
     EDGE_WEIGHT_BOX_SIZE: 10,  // Horizontal padding of the box containing the weight of the edge
     EDGE_WEIGHT_FONT_SIZE: 16, // Font size of the weight of the edge
+    DEFAULT_NODE_RADIUS: 30,
+    DEFAULT_EDGE_WEIGHT: 1,
+
+    // Keybinds
+    DELETE_KEY: "Delete",
+    NODE_CREATION_KEY: "KeyN",
 }
