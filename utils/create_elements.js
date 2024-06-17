@@ -1,3 +1,5 @@
+import { Edge } from "../elements/edge"
+import { Node } from "../elements/node"
 import constants from "./constants"
 import { closestHoverNode } from "./find_elements"
 
