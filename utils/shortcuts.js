@@ -1,9 +1,9 @@
 import constants from "./constants"
-import { isDragging, resetDrag } from "./dragging"
 import { undo, redo } from "./memento"
 import { deselectAll } from "./selection"
 import { activateToolByKeyCode, isTool } from "./tools/tools_callbacks"
 import { getViewBox, resetZoom, zoomIn, zoomOut } from "../../canvas/utils/zoom"
+import { isDragging, resetPan } from "../../canvas/utils/pan"
 
 /**
  * Handles the keyboard down shortcuts.
@@ -48,7 +48,7 @@ export function handleShortcutsKeyDown(code) {
             deselectAll()  // Deselect all nodes
             window.graph.newEdgeScr = null  // Reset the edge creation
             window.graph.newNode = false    // Reset the node creation
-            resetDrag() // Reset the drag, go to the (0, 0) position
+            resetPan() // Reset the drag, go to the (0, 0) position
             resetZoom() // Reset the zoom level to 1
             return true
         }
@@ -84,19 +84,19 @@ export function handleShortcutsKeyDown(code) {
         if (window.cvs.keysDown["ControlLeft"] && code.includes("Arrow")) {
             // Move the selected elements
             if (code === "ArrowUp") {
-                window.cvs.canvasDragOffset.y -= 50
+                window.cvs.canvasPanOffset.y -= 50
                 window.ctx.translate(0, 50)
             }
             else if (code === "ArrowDown") {
-                window.cvs.canvasDragOffset.y += 50
+                window.cvs.canvasPanOffset.y += 50
                 window.ctx.translate(0, -50)
             }
             else if (code === "ArrowLeft") {
-                window.cvs.canvasDragOffset.x -= 50
+                window.cvs.canvasPanOffset.x -= 50
                 window.ctx.translate(50, 0)
             }
             else if (code === "ArrowRight") {
-                window.cvs.canvasDragOffset.x += 50
+                window.cvs.canvasPanOffset.x += 50
                 window.ctx.translate(-50, 0)
             }
             return true
@@ -177,7 +177,7 @@ export function handleShortcutsMouseMove(e, coords) {
     // Drag the canvas
     if (isDragging()) {
         const { movementX: dx, movementY: dy } = e
-        window.cvs.canvasDragOffset = { x: window.cvs.canvasDragOffset.x - dx, y: window.cvs.canvasDragOffset.y - dy }
+        window.cvs.canvasPanOffset = { x: window.cvs.canvasPanOffset.x - dx, y: window.cvs.canvasPanOffset.y - dy }
         window.ctx.translate(dx, dy)
 
         return true
