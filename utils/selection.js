@@ -1,8 +1,14 @@
 import { closestHoverElement } from "./find_elements"
 import { discardLastSnapshot } from "./memento"
 
-export function handlePrimaryBtnDown(button, mouse) {
 
+/**
+ * Handles the primary mouse button down event.
+ * 
+ * @param {number} button - The button that was pressed.
+ * @param {Object} mouse - The mouse event.
+ */
+export function handlePrimaryBtnDown(button, mouse) {
     // Find the element under the mouse
     const e = closestHoverElement()
 
@@ -31,7 +37,12 @@ export function handlePrimaryBtnDown(button, mouse) {
     }
 }
 
-
+/**
+ * Handles the primary mouse button up event.
+ * 
+ * @param {number} button - The button that was released.
+ * @param {Object} mouse - The mouse event.
+ */
 export function handlePrimaryBtnUp(button, mouse) {
 
     // Find the element under the mouse
@@ -51,8 +62,10 @@ export function handlePrimaryBtnUp(button, mouse) {
     if (e) e.select()
 }
 
-
+/**
+ * Deselects all the selected elements.
+ */
 export function deselectAll() {
     window.graph.selected.forEach(e => e.deselect())
-    window.graph.selected = []
+    window.graph.selected = []  // Redundant, but just to make sure
 }
