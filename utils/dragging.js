@@ -24,7 +24,7 @@ export function handleSelectDragging(e, mouse) {
 export function resetDrag(){
     const {x, y} = getViewBox()
     window.ctx.translate(x, y)
-    window.graph.canvasDragOffset = {x: 0, y: 0}
+    window.cvs.canvasDragOffset = {x: 0, y: 0}
 }
 
 /**

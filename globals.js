@@ -48,13 +48,6 @@ export function setupGraphGlobals() {
     window.graph.memento = [] // Memento stack
     window.graph.mementoRedo = [] // Redo stack
 
-    // Drag and offsets
-    window.graph.canvasDragOffset = { x: 0, y: 0 } // Coordinates of the canvas show at the top-left corner of the canvas
-
-    // Zoom
-    window.graph.zoom = 1 // Zoom factor
-    window.graph.zoomLevel = constants.ZOOM_LEVELS.indexOf(1) // Zoom level (index of the zoom factor in the zoom levels array at the constants file)
-
     // Activate the default tool
     activateTool(CONSTANTS.DEFAULT_TOOL) // Activate the default tool
 

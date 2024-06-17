@@ -84,19 +84,19 @@ export function handleShortcutsKeyDown(code) {
         if (window.cvs.keysDown["ControlLeft"] && code.includes("Arrow")) {
             // Move the selected elements
             if (code === "ArrowUp") {
-                window.graph.canvasDragOffset.y += 50
+                window.cvs.canvasDragOffset.y += 50
                 window.ctx.translate(0, -50)
             }
             else if (code === "ArrowDown") {
-                window.graph.canvasDragOffset.y -= 50
+                window.cvs.canvasDragOffset.y -= 50
                 window.ctx.translate(0, 50)
             }
             else if (code === "ArrowLeft") {
-                window.graph.canvasDragOffset.x += 50
+                window.cvs.canvasDragOffset.x += 50
                 window.ctx.translate(-50, 0)
             }
             else if (code === "ArrowRight") {
-                window.graph.canvasDragOffset.x -= 50
+                window.cvs.canvasDragOffset.x -= 50
                 window.ctx.translate(50, 0)
             }
             return true
@@ -177,7 +177,7 @@ export function handleShortcutsMouseMove(e, coords) {
     // Drag the canvas
     if (isDragging()) {
         const { movementX: dx, movementY: dy } = e
-        window.graph.canvasDragOffset = { x: window.graph.canvasDragOffset.x - dx, y: window.graph.canvasDragOffset.y - dy }
+        window.cvs.canvasDragOffset = { x: window.cvs.canvasDragOffset.x - dx, y: window.cvs.canvasDragOffset.y - dy }
         window.ctx.translate(dx, dy)
 
         return true

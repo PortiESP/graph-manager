@@ -4,8 +4,8 @@ import constants from "./constants"
  * Resets the zoom of the graph to the default value (1).
  */
 export function resetZoom(){
-    window.ctx.scale(1/window.graph.zoom, 1/window.graph.zoom)
-    window.graph.zoom = 1
+    window.ctx.scale(1/window.cvs.zoom, 1/window.cvs.zoom)
+    window.cvs.zoom = 1
 }
 
 /**
@@ -20,15 +20,15 @@ export function resetZoom(){
  * - y2: The y coordinate of the bottom-right corner of the canvas
  */
 export function getViewBox(){
-    const {x, y} = window.graph.canvasDragOffset
+    const {x, y} = window.cvs.canvasDragOffset
     const {width, height} = window.cvs.$canvas
     return {
         x,
         y,
-        width: width/window.graph.zoom,
-        height: height/window.graph.zoom,
-        x2: x + width/window.graph.zoom,
-        y2: y + height/window.graph.zoom
+        width: width/window.cvs.zoom,
+        height: height/window.cvs.zoom,
+        x2: x + width/window.cvs.zoom,
+        y2: y + height/window.cvs.zoom
     }
 }
 
@@ -41,7 +41,7 @@ export function zoomCenter(zoomIn){
     // Determine the zoom factor
     const zoomFactor = zoomIn ? 1.1 : 0.9
     // Calculate the new zoom level
-    const newZoom = zoomIn ? window.graph.zoom * zoomFactor : window.graph.zoom * zoomFactor
+    const newZoom = zoomIn ? window.cvs.zoom * zoomFactor : window.cvs.zoom * zoomFactor
 
     // Calculate the new canvas position
     const {x, y, width, height} = getViewBox()
@@ -57,11 +57,11 @@ export function zoomCenter(zoomIn){
     window.ctx.translate(dx,dy)  // Apply the padding
 
     // Update the canvas drag offset
-    window.graph.canvasDragOffset.x -= dx
-    window.graph.canvasDragOffset.y -= dy
+    window.cvs.canvasDragOffset.x -= dx
+    window.cvs.canvasDragOffset.y -= dy
     
     // Update the zoom level
-    window.graph.zoom = newZoom
+    window.cvs.zoom = newZoom
 
     // Update mouse position (to keep mouse position unchanged after zooming, this is necessary due to the translations applied to the canvas, this translations move the canvas, but the mouse position is not updated until the next mouseMove event so we need to update it manually just in case the user does not move the mouse after zooming)
     window.cvs.x = userX-dx
