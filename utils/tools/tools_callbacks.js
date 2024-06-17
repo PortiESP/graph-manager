@@ -1,3 +1,4 @@
+import { anySpecialKeyPressed } from "../../../canvas/utils/keyboard"
 import CONSTANTS from "../constants"
 import { handleShortcutsMouseDown, handleShortcutsKeyDown, handleShortcutsKeyUp, handleShortcutsMouseUp, handleShortcutsMouseMove, handleShortcutsMouseScroll } from "../shortcuts"
 import edit_tool from "./edit_tool"
@@ -49,13 +50,6 @@ export function activeToolCallback(cbkName) {
 export function isTool(code){
     if (anySpecialKeyPressed()) return false
     return !!CONSTANTS.TOOLS_KEYS[code]
-}
-
-export function anySpecialKeyPressed(){
-    if (window.cvs.keysDown["ControlLeft"] || window.cvs.keysDown["ControlRight"]) return true
-    if (window.cvs.keysDown["AltLeft"] || window.cvs.keysDown["AltRight"]) return true
-    if (window.cvs.keysDown["ShiftLeft"] || window.cvs.keysDown["ShiftRight"]) return true
-    return false
 }
 
 export function activateTool(tool){

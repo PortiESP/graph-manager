@@ -4,6 +4,7 @@ import { deselectAll } from "./selection"
 import { activateToolByKeyCode, isTool } from "./tools/tools_callbacks"
 import { resetZoom } from "../../canvas/utils/zoom"
 import { panBy, resetPan } from "../../canvas/utils/pan"
+import { checkShortcut } from "../../canvas/utils/keyboard"
 
 /**
  * Handles the keyboard down shortcuts.
@@ -23,14 +24,13 @@ export function handleShortcutsKeyDown(code) {
         // --- First we check the keys that are used by pressing them ---
 
         // Move the selected elements
-        if (!window.cvs.keysDown["ControlLeft"])
-        if (code === "ArrowUp" || code === "ArrowDown" || code === "ArrowLeft" || code === "ArrowRight") {
+        if (checkShortcut("arrow")) {
             // Move the selected elements
             window.graph.selected.forEach(e => {
                 if (code === "ArrowUp") e.moveBy(0, -1)
-                if (code === "ArrowDown") e.moveBy(0, 1)
-                if (code === "ArrowLeft") e.moveBy(-1, 0)
-                if (code === "ArrowRight") e.moveBy(1, 0)
+                else if (code === "ArrowDown") e.moveBy(0, 1)
+                else if (code === "ArrowLeft") e.moveBy(-1, 0)
+                else if (code === "ArrowRight") e.moveBy(1, 0)
             })
             return true
         }
@@ -38,7 +38,7 @@ export function handleShortcutsKeyDown(code) {
         // --- Single tap keys ---
 
         // Reset all states
-        if (code === constants.RESET) {
+        if (checkShortcut("Escape")) {
             deselectAll()  // Deselect all nodes
             window.graph.newEdgeScr = null  // Reset the edge creation
             window.graph.newNode = false    // Reset the node creation
@@ -48,34 +48,32 @@ export function handleShortcutsKeyDown(code) {
         }
 
         // Reload the page
-        if (code === "KeyR" && window.cvs.keysDown["ControlLeft"]) {
+        if (checkShortcut("control+r")) {
             location.reload()
             return true
         }
 
         // Select all elements
-        if (code === "KeyA" && window.cvs.keysDown["ControlLeft"]) {
+        if (checkShortcut("control+a")) {
             window.graph.nodes.forEach(n => n.select())
             window.graph.edges.forEach(e => e.select())
             return true
         }
 
         // Undo
-        if (code === "KeyZ" && window.cvs.keysDown["ControlLeft"] && !window.cvs.keysDown["ShiftLeft"]) {
+        if (checkShortcut("control+z")) {
             undo()
             return true
         }
 
         // Redo
-        const ctrlY = code === "KeyY" && window.cvs.keysDown["ControlLeft"]
-        const ctrlShiftZ = code === "KeyZ" && window.cvs.keysDown["ControlLeft"] && window.cvs.keysDown["ShiftLeft"]
-        if (ctrlShiftZ || ctrlY) {
+        if (checkShortcut("control+shift+z") || checkShortcut("control+y")) {
             redo()
             return true
         }
 
         // Arrow keys
-        if (window.cvs.keysDown["ControlLeft"] && code.includes("Arrow")) {
+        if (checkShortcut("control+arrow")) {
             // Move the selected elements
             if (code === "ArrowUp") {
                 panBy(0, 50)
