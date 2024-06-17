@@ -61,8 +61,6 @@ export default function Graph(props) {
                 "Hover edge: " + window.graph.edges.filter(e => e.isHover()).length,
                 "History stack: " + window.graph.memento.length,
                 "Redo stack: " + window.graph.mementoRedo.length,
-                "Canvas drag offset: (" + window.cvs.canvasDragOffset.x + ") - (" + window.cvs.canvasDragOffset.y + ")",
-                "Zoom: " + window.cvs.zoom,
             ])
         })
     }, [])

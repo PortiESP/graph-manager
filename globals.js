@@ -21,9 +21,6 @@ import { activateTool } from "./utils/tools/tools_callbacks"
  * @property {Object} newEdgeScr - Source node for when the used is creating a new edge
  * @property {Array} memento - Memento stack
  * @property {Array} mementoRedo - Redo stack
- * @property {Object} canvasDragOffset - Canvas drag offset
- * @property {number} zoom - Zoom factor
- * @property {number} zoomLevel - Zoom level (index of the zoom factor in the zoom levels array at the constants file)
  */
 export function setupGraphGlobals() {
     window.graph = {}

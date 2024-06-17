@@ -1,5 +1,5 @@
 import constants from "./constants"
-import { getViewBox } from "./zoom"
+import { getViewBox } from "../../canvas/utils/zoom"
 
 /**
  * Handles the dragging of elements in the canvas while in select mode.

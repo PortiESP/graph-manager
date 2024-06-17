@@ -1,5 +1,5 @@
 import constants from "./constants"
-import { getViewBox } from "./zoom"
+import { getViewBox } from "../../canvas/utils/zoom"
 
 /**
  * Draw all the elements of the graph

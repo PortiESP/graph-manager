@@ -3,7 +3,7 @@ import { isDragging, resetDrag } from "./dragging"
 import { undo, redo } from "./memento"
 import { deselectAll } from "./selection"
 import { activateToolByKeyCode, isTool } from "./tools/tools_callbacks"
-import { getViewBox, resetZoom, zoomIn, zoomOut } from "./zoom"
+import { getViewBox, resetZoom, zoomIn, zoomOut } from "../../canvas/utils/zoom"
 
 /**
  * Handles the keyboard down shortcuts.
@@ -84,20 +84,20 @@ export function handleShortcutsKeyDown(code) {
         if (window.cvs.keysDown["ControlLeft"] && code.includes("Arrow")) {
             // Move the selected elements
             if (code === "ArrowUp") {
-                window.cvs.canvasDragOffset.y += 50
-                window.ctx.translate(0, -50)
-            }
-            else if (code === "ArrowDown") {
                 window.cvs.canvasDragOffset.y -= 50
                 window.ctx.translate(0, 50)
             }
-            else if (code === "ArrowLeft") {
-                window.cvs.canvasDragOffset.x += 50
-                window.ctx.translate(-50, 0)
+            else if (code === "ArrowDown") {
+                window.cvs.canvasDragOffset.y += 50
+                window.ctx.translate(0, -50)
             }
-            else if (code === "ArrowRight") {
+            else if (code === "ArrowLeft") {
                 window.cvs.canvasDragOffset.x -= 50
                 window.ctx.translate(50, 0)
+            }
+            else if (code === "ArrowRight") {
+                window.cvs.canvasDragOffset.x += 50
+                window.ctx.translate(-50, 0)
             }
             return true
         }
