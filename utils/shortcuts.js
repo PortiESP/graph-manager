@@ -2,8 +2,8 @@ import constants from "./constants"
 import { undo, redo } from "./memento"
 import { deselectAll } from "./selection"
 import { activateToolByKeyCode, isTool } from "./tools/tools_callbacks"
-import { getViewBox, resetZoom, zoomIn, zoomOut } from "../../canvas/utils/zoom"
-import { isPanning, panBy, resetPan } from "../../canvas/utils/pan"
+import { resetZoom } from "../../canvas/utils/zoom"
+import { panBy, resetPan } from "../../canvas/utils/pan"
 
 /**
  * Handles the keyboard down shortcuts.
