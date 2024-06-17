@@ -2,7 +2,7 @@ import constants from "./constants"
 
 export function resetZoom(){
     window.ctx.scale(1/window.graph.zoom, 1/window.graph.zoom)
-    window.graph.canvasDragOffset = {x: 0, y: 0}
+    // window.graph.canvasDragOffset = {x: 0, y: 0}
     window.graph.zoom = 1
 }
 
