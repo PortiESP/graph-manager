@@ -190,9 +190,5 @@ export function handleShortcutsMouseMove(e, coords) {
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function. In this case, the default action is to zoom in or out, so it always returns true.
  */
 export function handleShortcutsMouseScroll(delta, mouse) {
-    // Zoom in and out
-    if (delta < 0) zoomIn()
-    else if (delta > 0) zoomOut()
-
     return true
 }
