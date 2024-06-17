@@ -54,9 +54,9 @@ export class Edge extends Element{
         this.directed = directed
 
         // Style properties
-        this.edgeColor = "#888"
-        this.edgeHoverColor = "#aaa"
-        this.edgeSelectedColor = "aquamarine"
+        this.color = "#888"
+        this.hoverColor = "#aaa"
+        this.selectedColor = "aquamarine"
         this.weightColor = "#eee8"
         this.weightBackgroundColor = "#8888"
         this.hover = false
@@ -85,9 +85,9 @@ export class Edge extends Element{
         // Draw the edge
         window.ctx.beginPath()
         window.ctx.strokeStyle = 
-            this.selected ? this.edgeSelectedColor : // If the edge is selected, draw it in aquamarine
-            this.isHover() ? this.edgeHoverColor :      // If the edge is being hovered, draw it in gray
-            this.edgeColor                     // Otherwise, draw it in its color
+            this.selected ? this.selectedColor : // If the edge is selected, draw it in aquamarine
+            this.isHover() ? this.hoverColor :      // If the edge is being hovered, draw it in gray
+            this.color                     // Otherwise, draw it in its color
         window.ctx.lineWidth = this.thickness
         window.ctx.moveTo(this.src.x + offsetSrc.x, this.src.y + offsetSrc.y)  // Move to the source node
         window.ctx.lineTo(this.dst.x + offsetDst.x, this.dst.y + offsetDst.y)  // Draw a line to the destination node
@@ -100,7 +100,7 @@ export class Edge extends Element{
 
             // Draw the arrow
             window.ctx.beginPath()
-            window.ctx.fillStyle = this.isHover() ? this.edgeHoverColor : this.edgeColor
+            window.ctx.fillStyle = this.isHover() ? this.hoverColor : this.color
             window.ctx.moveTo(this.dst.x + offsetDstArrow.x, this.dst.y + offsetDstArrow.y)
             window.ctx.lineTo(this.dst.x + offsetDstArrow.x - arrowSize * Math.cos(angle - arrowAngle), this.dst.y + offsetDstArrow.y - arrowSize * Math.sin(angle - arrowAngle))
             window.ctx.lineTo(this.dst.x + offsetDstArrow.x - arrowSize * Math.cos(angle + arrowAngle), this.dst.y + offsetDstArrow.y - arrowSize * Math.sin(angle + arrowAngle))
@@ -198,9 +198,9 @@ export class Edge extends Element{
         // Copy the rest of the properties
         aux.selected = this.selected
         aux.thickness = this.thickness
-        aux.edgeColor = this.edgeColor
-        aux.edgeHoverColor = this.edgeHoverColor
-        aux.edgeSelectedColor = this.edgeSelectedColor
+        aux.color = this.color
+        aux.hoverColor = this.hoverColor
+        aux.selectedColor = this.selectedColor
         aux.weightColor = this.weightColor
         aux.weightBackgroundColor = this.weightBackgroundColor
         aux.hover = this.hover
