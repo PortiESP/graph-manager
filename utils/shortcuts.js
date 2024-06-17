@@ -3,7 +3,7 @@ import { undo, redo } from "./memento"
 import { deselectAll } from "./selection"
 import { activateToolByKeyCode, isTool } from "./tools/tools_callbacks"
 import { getViewBox, resetZoom, zoomIn, zoomOut } from "../../canvas/utils/zoom"
-import { isDragging, panBy, resetPan } from "../../canvas/utils/pan"
+import { isPanning, panBy, resetPan } from "../../canvas/utils/pan"
 
 /**
  * Handles the keyboard down shortcuts.
@@ -21,12 +21,6 @@ export function handleShortcutsKeyDown(code) {
     // The key pressed is not a tool, check for GLOBAL shortcuts (custom shortcuts are handled by the active tool keyDownCallback)
     else {
         // --- First we check the keys that are used by pressing them ---
-
-        // Drag
-        if (code === constants.PAN_KEY) {
-            if (document.body.style.cursor !== "grabbing") document.body.style.cursor = "grab"
-            return true
-        }
 
         // Move the selected elements
         if (!window.cvs.keysDown["ControlLeft"])
@@ -112,7 +106,7 @@ export function handleShortcutsKeyDown(code) {
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutsKeyUp(code) {
-    // Drag
+    // Pan key
     if (code === constants.PAN_KEY) {
         document.body.style.cursor = "default"
         return true
@@ -129,12 +123,6 @@ export function handleShortcutsKeyUp(code) {
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutsMouseDown(button, coords) {
-    // Drag
-    if (isDragging()) {
-        document.body.style.cursor = "grabbing"
-        return true
-    }
-
     return false
 }
 
@@ -146,17 +134,6 @@ export function handleShortcutsMouseDown(button, coords) {
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutsMouseUp(button, coords) {
-    // Drag
-    if (isDragging()) {
-        document.body.style.cursor = "grab"
-        return true
-    }
-    // Release the drag
-    if (button === 1) {
-        document.body.style.cursor = "default"
-        return true
-    }
-
     return false
 }
 
@@ -168,18 +145,7 @@ export function handleShortcutsMouseUp(button, coords) {
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutsMouseMove(e, coords) {
-    console.log(getViewBox())
-
-    // Drag the canvas
-    if (isDragging()) {
-        const { movementX: dx, movementY: dy } = e
-        window.cvs.canvasPanOffset = { x: window.cvs.canvasPanOffset.x - dx, y: window.cvs.canvasPanOffset.y - dy }
-        window.ctx.translate(dx, dy)
-
-        return true
-    }
-
-    return false
+        return false
 }
 
 /**
