@@ -7,10 +7,14 @@ import { activeToolCallback } from './utils/tools/tools_callbacks'
 import drawAll from './utils/draw'
 import { Edge } from './elements/edge'
 
+/**
+ * Graph component
+ * 
+ * This component is responsible for setting up the graph tool.
+ */
 export default function Graph(props) {
 
     useLayoutEffect(() => {
-        
         // ---------------- Setup the canvas ----------------
         setupCanvas(() => {
             // --- Setup the graph globals--- 
@@ -28,7 +32,6 @@ export default function Graph(props) {
             window.cvs.mouseScrollCallback = activeToolCallback('mouseScrollCallback')
             window.cvs.resizeCallback = activeToolCallback('resizeCallback')
 
-
             // --- Config ---
             window.cvs.autoResize = true
 
@@ -41,7 +44,10 @@ export default function Graph(props) {
 
         // ---------------- Main loop ----------------
         mainLoop(() => {
+            // Draw all elements
             drawAll()
+
+            // There is nothing to update here since the events handle this for us (unless we want to update the graph in real-time or make some animations, etc.)
 
             // Draw debug info
             if (window.cvs.debug) window.cvs.drawDebugInfo([

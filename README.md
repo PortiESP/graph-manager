@@ -45,3 +45,9 @@ The app has some predefined keybindings that will be evaluated before the custom
 - Edit the method `findElementsByCoords` and the rest of the function related to generic elements in the `canvas/utils/find_elements.js` file to add the new element to the list of elements that can be selected.
 - Consider if memento should support the new element and its features. See the [memento section](#memento) for more information.
 - Implement the abstract class `Element` and add the abstract methods defined there. The class should be located in the `canvas/elements` directory.
+
+## Events
+
+### Add a new DOM event
+
+To add a new DOM event in order to be able to use it in the tools files `utils/tools/{your-tool}.js` take a event from the `Canvas` component that you have not used yet. and setup as it shows `window.cvs.{your-event} = activeToolCallback('{your-event}')` in the `GraphBoard.jsx` file.
