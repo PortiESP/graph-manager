@@ -23,12 +23,12 @@ export function getViewBox(){
     const {x, y} = window.graph.canvasDragOffset
     const {width, height} = window.cvs.$canvas
     return {
-        x: -x,
-        y: -y,
+        x,
+        y,
         width: width/window.graph.zoom,
         height: height/window.graph.zoom,
-        x2: -x + width/window.graph.zoom,
-        y2: -y + height/window.graph.zoom
+        x2: x + width/window.graph.zoom,
+        y2: y + height/window.graph.zoom
     }
 }
 
@@ -57,8 +57,8 @@ export function zoomCenter(zoomIn){
     window.ctx.translate(dx,dy)  // Apply the padding
 
     // Update the canvas drag offset
-    window.graph.canvasDragOffset.x += dx
-    window.graph.canvasDragOffset.y += dy
+    window.graph.canvasDragOffset.x -= dx
+    window.graph.canvasDragOffset.y -= dy
     
     // Update the zoom level
     window.graph.zoom = newZoom

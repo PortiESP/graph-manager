@@ -49,7 +49,7 @@ export function setupGraphGlobals() {
     window.graph.mementoRedo = [] // Redo stack
 
     // Drag and offsets
-    window.graph.canvasDragOffset = { x: 0, y: 0 } // Canvas drag offset
+    window.graph.canvasDragOffset = { x: 0, y: 0 } // Coordinates of the canvas show at the top-left corner of the canvas
 
     // Zoom
     window.graph.zoom = 1 // Zoom factor
