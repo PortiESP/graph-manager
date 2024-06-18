@@ -10,6 +10,10 @@ import { getViewBox } from "../../canvas/utils/zoom"
  *     - Nodes being created
  */
 export default function drawAll(){
+    // Reset styles
+    window.ctx.font = `${12/cvs.zoom}px Arial`
+    window.ctx.textAlign = 'left'
+    
     drawGrid()
 
     // --- Edges ---

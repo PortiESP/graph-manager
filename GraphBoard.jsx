@@ -39,6 +39,11 @@ export default function Graph(props) {
             const debugNodes = [new Node(100, 100, 30 ,"A"), new Node(200, 200, 30, "B"), new Node(300, 300, 30, "C")]
             window.graph.nodes.push(...debugNodes)
             window.graph.edges.push(new Edge(debugNodes[0], debugNodes[1]))
+            window.cvs.debugCommands.push({
+                label: 'Add node',
+                callback: () => window.graph.nodes.push(new Node(0, 0, 30))
+            })
+
 
         }, true)  // true = Enable debug
 
@@ -50,6 +55,7 @@ export default function Graph(props) {
             // There is nothing to update here since the events handle this for us (unless we want to update the graph in real-time or make some animations, etc.)
 
             // Draw debug info
+
             if (window.cvs.debug) window.cvs.drawDebugInfo([
                 "Selected: " + window.graph.selected.length,
                 "Prevent deselect: " + window.graph.prevent_deselect,
