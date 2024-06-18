@@ -124,3 +124,17 @@ export function closestHoverElement(){
         return acc
     }, {element: null, dist: Infinity}).element
 }
+
+
+export function findElementsWithin(x1, y1, x2, y2){
+    // Swap the coordinates if the selection box is drawn from right to left or bottom to top
+    if (x1 > x2) [x1, x2] = [x2, x1]
+    if (y1 > y2) [y1, y2] = [y2, y1]
+
+    // Return all elements that are inside the selection box
+    return window.graph.nodes.concat(window.graph.edges).filter(e => {
+        const x = e.x || e.src.x  // If the element is a node, use the x and y coordinates. If it is an edge, use the src and dst nodes as its coordinates
+        const y = e.y || e.src.y  // If the element is a node, use the x and y coordinates. If it is an edge, use the src and dst nodes as its coordinates
+        return x > x1 && x < x2 && y > y1 && y < y2
+    })
+}

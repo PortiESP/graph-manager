@@ -81,13 +81,13 @@ export class Edge extends Element{
         const offsetSrc = { x: rSrc * Math.cos(angle), y: rSrc * Math.sin(angle) } // Calculate the coordinates of the edge from the border of the node
         const offsetDst = { x: (rDst + arrowOffset) * Math.cos(angle + Math.PI), y: (rDst + arrowOffset) * Math.sin(angle + Math.PI) }  // Calculate the coordinates of the other end of the edge from the border of the node (if the edge is not directed, the arrowOffset is 0)
 
+        const color =   this.selected ? this.selectedColor :
+                        this.isHover() ? this.hoverColor : 
+                        this.color
 
         // Draw the edge
         window.ctx.beginPath()
-        window.ctx.strokeStyle = 
-            this.selected ? this.selectedColor : // If the edge is selected, draw it in aquamarine
-            this.isHover() ? this.hoverColor :      // If the edge is being hovered, draw it in gray
-            this.color                     // Otherwise, draw it in its color
+        window.ctx.strokeStyle = color
         window.ctx.lineWidth = this.thickness
         window.ctx.moveTo(this.src.x + offsetSrc.x, this.src.y + offsetSrc.y)  // Move to the source node
         window.ctx.lineTo(this.dst.x + offsetDst.x, this.dst.y + offsetDst.y)  // Draw a line to the destination node
@@ -100,7 +100,7 @@ export class Edge extends Element{
 
             // Draw the arrow
             window.ctx.beginPath()
-            window.ctx.fillStyle = this.isHover() ? this.hoverColor : this.color
+            window.ctx.fillStyle = color
             window.ctx.moveTo(this.dst.x + offsetDstArrow.x, this.dst.y + offsetDstArrow.y)
             window.ctx.lineTo(this.dst.x + offsetDstArrow.x - arrowSize * Math.cos(angle - arrowAngle), this.dst.y + offsetDstArrow.y - arrowSize * Math.sin(angle - arrowAngle))
             window.ctx.lineTo(this.dst.x + offsetDstArrow.x - arrowSize * Math.cos(angle + arrowAngle), this.dst.y + offsetDstArrow.y - arrowSize * Math.sin(angle + arrowAngle))

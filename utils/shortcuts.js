@@ -1,11 +1,11 @@
 import constants from "./constants"
 import { undo, redo } from "./memento"
-import { deselectAll } from "./selection"
+import { deselectAll, endSelectionBox, startSelectionBox, updateSelectionBox } from "./selection"
 import { activateToolByKeyCode, isTool } from "./tools/tools_callbacks"
 import { resetZoom } from "../../canvas/utils/zoom"
 import { panBy, resetPan } from "../../canvas/utils/pan"
 import { checkShortcut } from "../../canvas/utils/keyboard"
-import { closestHoverElement } from "./find_elements"
+import { closestHoverElement, findElementsWithin } from "./find_elements"
 
 /**
  * Handles the keyboard down shortcuts.
@@ -131,12 +131,7 @@ export function handleShortcutMouseDown(button, mouse) {
         window.graph.doubleClickTarget = null
 
         // Prepare create a selection box
-        window.graph.selectionBox = {
-            x1: mouse.x,
-            y1: mouse.y,
-            x2: undefined,
-            y2: undefined
-        }
+        startSelectionBox()
     }
     return false
 }
@@ -154,18 +149,7 @@ export function handleShortcutMouseUp(button, coords) {
 
     // If the user is creating a selection box
     if (window.graph.selectionBox) {
-        // Get the elements inside the selection box
-        const elements = window.graph.nodes.concat(window.graph.edges).filter(e => {
-            const x = e.x || e.src.x
-            const y = e.y || e.src.y
-            return x > window.graph.selectionBox.x1 && x < window.graph.selectionBox.x2 && y > window.graph.selectionBox.y1 && y < window.graph.selectionBox.y2
-        })
-
-        // Select the elements
-        elements.forEach(e => e.select())
-
-        // Reset the selection box
-        window.graph.selectionBox = null
+        endSelectionBox()
     }
 
     return false
@@ -188,8 +172,7 @@ export function handleShortcutMouseMove(e, coords) {
 
     // If the user is creating a selection box
     if (window.graph.selectionBox) {
-        window.graph.selectionBox.x2 = coords.x
-        window.graph.selectionBox.y2 = coords.y
+        updateSelectionBox(coords)
     }
 
     return false

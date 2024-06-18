@@ -1,16 +1,16 @@
 import { handleSelectDragging } from "../dragging"
 import { recordMemento } from "../memento"
-import { handlePrimaryBtnDown, handlePrimaryBtnUp } from "../selection"
+import { handleSelectionPrimaryBtnDown, handleSelectionPrimaryBtnUp } from "../selection"
 
 export default {
     mouseDownCallback: (btn, mouse) => {
         if (btn === 0) {
             recordMemento()
-            handlePrimaryBtnDown(btn, mouse)
+            handleSelectionPrimaryBtnDown(btn, mouse)
         }
     },
     mouseUpCallback: (btn, mouse) => {
-        if (btn === 0) handlePrimaryBtnUp(btn, mouse)
+        if (btn === 0) handleSelectionPrimaryBtnUp(btn, mouse)
     },
     mouseMoveCallback: (e, mouse) => {
         // If the left mouse button is pressed

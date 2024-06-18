@@ -1,5 +1,5 @@
 import { checkShortcut } from "../../canvas/utils/keyboard"
-import { closestHoverElement } from "./find_elements"
+import { closestHoverElement, findElementsWithin } from "./find_elements"
 import { discardLastSnapshot } from "./memento"
 
 
@@ -9,7 +9,7 @@ import { discardLastSnapshot } from "./memento"
  * @param {number} button - The button that was pressed.
  * @param {Object} mouse - The mouse event.
  */
-export function handlePrimaryBtnDown(button, mouse) {
+export function handleSelectionPrimaryBtnDown(button, mouse) {
     // Find the element under the mouse
     const e = closestHoverElement()
 
@@ -46,7 +46,7 @@ export function handlePrimaryBtnDown(button, mouse) {
  * @param {number} button - The button that was released.
  * @param {Object} mouse - The mouse event.
  */
-export function handlePrimaryBtnUp(button, mouse) {
+export function handleSelectionPrimaryBtnUp(button, mouse) {
 
     // Find the element under the mouse
     const e = closestHoverElement()
@@ -71,4 +71,34 @@ export function handlePrimaryBtnUp(button, mouse) {
 export function deselectAll() {
     window.graph.selected.forEach(e => e.deselect())
     window.graph.selected = []  // Redundant, but just to make sure
+}
+
+
+export function startSelectionBox(){
+    window.graph.selectionBox = {
+        x1: window.cvs.x,
+        y1: window.cvs.y,
+        x2: undefined,
+        y2: undefined
+    }
+}
+
+
+export function endSelectionBox(){
+    // Get the elements inside the selection box
+    const { x1, y1, x2, y2 } = window.graph.selectionBox
+    const elements = findElementsWithin(x1, y1, x2, y2)
+
+    // Select the elements
+    elements.forEach(e => e.select())
+
+    // Reset the selection box
+    window.graph.selectionBox = null
+}
+
+
+export function updateSelectionBox(coords){
+    // Update the selection box
+    window.graph.selectionBox.x2 = coords.x
+    window.graph.selectionBox.y2 = coords.y
 }
