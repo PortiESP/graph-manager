@@ -122,6 +122,12 @@ export function handleShortcutKeyUp(code) {
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutMouseDown(button, mouse) {
+
+    // If the user clicked an empty space
+    const element = closestHoverElement(mouse.x, mouse.y)
+    if (!element) {
+        window.graph.doubleClickTarget = null
+    }
     return false
 }
 
@@ -134,7 +140,6 @@ export function handleShortcutMouseDown(button, mouse) {
  */
 export function handleShortcutMouseUp(button, coords) {
     // Reset the double click target
-    window.doubleClickTarget = null
     document.body.style.cursor = "default"
 
     return false
@@ -181,10 +186,10 @@ export function handleShortcutDoubleClick(e, mouse) {
     const element = closestHoverElement(mouse.x, mouse.y)
     
     // If the element is an element, store it as the double click target
-    if (element) window.doubleClickTarget = element
+    if (element) window.graph.doubleClickTarget = element
     // If the element is not an element, reset the double click target and prepare to pan the canvas
     else {
-        window.doubleClickTarget = null
+        window.graph.doubleClickTarget = null
         document.body.style.cursor = "grabbing"
     }
 

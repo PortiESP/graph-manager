@@ -16,7 +16,6 @@ import { activateTool } from "./utils/tools/tools_callbacks"
  * @property {boolean} prevent_deselect - Prevent deselecting nodes (used after dragging nodes)
  * @property {boolean} showWeights - Show weights on edges
  * @property {boolean} newNode - New node being created
- * @property {Object} dragging_edge - Dragging an edge
  * @property {Array} edges - All edges
  * @property {Object} newEdgeScr - Source node for when the used is creating a new edge
  * @property {Array} memento - Memento stack
@@ -37,7 +36,6 @@ export function setupGraphGlobals() {
     window.graph.newNode = false // New node being created
 
     // Edges
-    window.dragging_edge = null // Dragging an edge
     window.graph.edges = [] // All edges
     window.graph.newEdgeScr = null // Source node for when the used is creating a new edge
 

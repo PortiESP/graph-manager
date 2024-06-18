@@ -6,7 +6,7 @@ export function focusOnElement(element) {
     const {x: eX, y: eY} = element
 
     // // Get the current viewbox
-    const {x, y, width, height} = getViewBox()
+    const {width, height} = getViewBox()
 
     // // Calculate the new viewbox
     const newX = eX - width / 2
