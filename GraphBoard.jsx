@@ -7,6 +7,7 @@ import { activeToolCallback } from './utils/tools/tools_callbacks'
 import drawAll from './utils/draw'
 import { Edge } from './elements/edge'
 import { focusOnAll, focusOnElement } from './utils/view'
+import { getViewBox } from '../canvas/utils/zoom'
 
 /**
  * Graph component
@@ -37,6 +38,19 @@ export default function Graph(props) {
             window.cvs.autoResize = true
 
             // --- Debug ---
+            window.cvs.debug = true
+            window.cvs.debugData = () => ([
+                "Selected: " + window.graph.selected.length,
+                "Prevent deselect: " + window.graph.prevent_deselect,
+                "Active tool: " + window.graph.tool || "None",
+                "Nodes: " + window.graph.nodes.length,
+                "New node: " + window.graph.newNode,
+                "Edges: " + window.graph.edges.length,
+                "New edge: " + !!window.graph.newEdgeScr,
+                "Hover edge: " + window.graph.edges.filter(e => e.isHover()).length,
+                "History stack: " + window.graph.memento.length,
+                "Redo stack: " + window.graph.mementoRedo.length,
+            ])
             const debugNodes = [new Node(100, 100, 30 ,"A"), new Node(200, 200, 30, "B"), new Node(300, 300, 30, "C")]
             window.graph.nodes.push(...debugNodes)
             window.graph.edges.push(new Edge(debugNodes[0], debugNodes[1]))
@@ -50,10 +64,17 @@ export default function Graph(props) {
                     callback: () => focusOnAll()
                 }
             ])
-            window.graph.update = ()=> {window.cvs.clear();drawAll()}
+
+            // Redraw the graph
+            window.graph.update = ()=> {
+                    const coords = getViewBox()  // Get the coordinates of the view box
+                    const margin = 10000  // Margin to clear the canvas and avoid artifacts
+                    window.ctx.clearRect(coords.x - margin, coords.y - margin, coords.width + margin*2, coords.height + margin*2)
+                    drawAll()
+            }
 
 
-        }, true)  // true = Enable debug
+        })
 
         // ---------------- Main loop ----------------
         mainLoop(() => {
@@ -61,21 +82,6 @@ export default function Graph(props) {
             drawAll()
 
             // There is nothing to update here since the events handle this for us (unless we want to update the graph in real-time or make some animations, etc.)
-
-            // Draw debug info
-
-            if (window.cvs.debug) window.cvs.drawDebugInfo([
-                "Selected: " + window.graph.selected.length,
-                "Prevent deselect: " + window.graph.prevent_deselect,
-                "Active tool: " + window.graph.tool || "None",
-                "Nodes: " + window.graph.nodes.length,
-                "New node: " + window.graph.newNode,
-                "Edges: " + window.graph.edges.length,
-                "New edge: " + !!window.graph.newEdgeScr,
-                "Hover edge: " + window.graph.edges.filter(e => e.isHover()).length,
-                "History stack: " + window.graph.memento.length,
-                "Redo stack: " + window.graph.mementoRedo.length,
-            ])
         })
     }, [])
 

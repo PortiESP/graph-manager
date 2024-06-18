@@ -43,6 +43,8 @@ export default function drawAll(){
         window.ctx.arc(window.cvs.x, window.cvs.y, 30, 0, Math.PI * 2)
         window.ctx.fill()
     }
+
+    if (window.cvs.debug) window.cvs.drawDebugInfo(window.cvs.debugData())
 }
 
 /**
