@@ -2,7 +2,7 @@
 
 ## Keybinds
 
-The keybindings are defined in the `canvas/utils/kbd_shortcuts.js` file. To add a new keybinding add the corresponding lines of code on the `handleShortcuts` function on the same file.
+The keybindings are defined in the `canvas/utils/kbd_shortcuts.js` file. To add a new keybinding add the corresponding lines of code on the `handleShortcut` function on the same file.
 
 ## Memento
 

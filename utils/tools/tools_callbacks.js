@@ -1,6 +1,6 @@
 import { anySpecialKeyPressed } from "../../../canvas/utils/keyboard"
 import CONSTANTS from "../constants"
-import { handleShortcutsMouseDown, handleShortcutsKeyDown, handleShortcutsKeyUp, handleShortcutsMouseUp, handleShortcutsMouseMove, handleShortcutsMouseScroll } from "../shortcuts"
+import { handleShortcutMouseDown, handleShortcutKeyDown, handleShortcutKeyUp, handleShortcutMouseUp, handleShortcutMouseMove, handleShortcutMouseScroll, handleShortcutDoubleClick } from "../shortcuts"
 import edit_tool from "./edit_tool"
 import select_tool from "./select_tool"
 
@@ -24,13 +24,14 @@ export function activeToolCallback(cbkName) {
         let callback = toolsCallbacks[window.graph.tool][cbkName]
 
         // Default actions
-        // First, run the handleShortcuts function to run the default shortcuts, if a default action was executed inside this default functions, return (prevent the tool callback from being called)
-        if (cbkName === "keyDownCallback") if (handleShortcutsKeyDown(...params)) return
-        if (cbkName === "keyUpCallback") if (handleShortcutsKeyUp(...params)) return
-        if (cbkName === "mouseDownCallback") if (handleShortcutsMouseDown(...params)) return 
-        if (cbkName === "mouseUpCallback") if (handleShortcutsMouseUp(...params)) return
-        if (cbkName === "mouseMoveCallback") if (handleShortcutsMouseMove(...params)) return
-        if (cbkName === "mouseScrollCallback") if (handleShortcutsMouseScroll(...params)) return
+        // First, run the handleShortcut function to run the default shortcuts, if a default action was executed inside this default functions, return (prevent the tool callback from being called)
+        if (cbkName === "keyDownCallback") if (handleShortcutKeyDown(...params)) return
+        if (cbkName === "keyUpCallback") if (handleShortcutKeyUp(...params)) return
+        if (cbkName === "mouseDoubleClickCallback") if (handleShortcutDoubleClick(...params)) return
+        if (cbkName === "mouseDownCallback") if (handleShortcutMouseDown(...params)) return 
+        if (cbkName === "mouseUpCallback") if (handleShortcutMouseUp(...params)) return
+        if (cbkName === "mouseMoveCallback") if (handleShortcutMouseMove(...params)) return
+        if (cbkName === "mouseScrollCallback") if (handleShortcutMouseScroll(...params)) return
         
         // If the callback exists, call it
         if (callback) {

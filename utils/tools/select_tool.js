@@ -19,7 +19,7 @@ export default {
         }
     },
     mouseDoubleClickCallback: () => {
-        if (window.cvs.debug) console.log('Double click')
+        if (window.cvs.debug) console.log('Double click from tool')
     },
     keyDownCallback: (key) => {
         if (key === "KeyZ") window.ctx.scale(1.1, 1.1)

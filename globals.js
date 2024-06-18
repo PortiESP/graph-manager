@@ -45,6 +45,10 @@ export function setupGraphGlobals() {
     window.graph.memento = [] // Memento stack
     window.graph.mementoRedo = [] // Redo stack
 
+    // Double click
+    window.graph.doubleClickTarget = null, // The target of the double click event (set to the target of the mouse down event when a double click is detected, and reset to null on the next mouse up event)
+
+
     // Activate the default tool
     activateTool(CONSTANTS.DEFAULT_TOOL) // Activate the default tool
 

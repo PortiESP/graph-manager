@@ -5,6 +5,7 @@ import { activateToolByKeyCode, isTool } from "./tools/tools_callbacks"
 import { resetZoom } from "../../canvas/utils/zoom"
 import { panBy, resetPan } from "../../canvas/utils/pan"
 import { checkShortcut } from "../../canvas/utils/keyboard"
+import { closestHoverElement } from "./find_elements"
 
 /**
  * Handles the keyboard down shortcuts.
@@ -12,7 +13,7 @@ import { checkShortcut } from "../../canvas/utils/keyboard"
  * @param {String} code KeyCode of the key pressed. e.g. "KeyA", "KeyZ", "Escape"
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
-export function handleShortcutsKeyDown(code) {
+export function handleShortcutKeyDown(code) {
 
     // The key pressed represents a tool
     if (isTool(code)) {
@@ -103,7 +104,7 @@ export function handleShortcutsKeyDown(code) {
  * @param {String} code KeyCode of the key pressed. e.g. "KeyA", "KeyZ", "Escape"
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
-export function handleShortcutsKeyUp(code) {
+export function handleShortcutKeyUp(code) {
     // Pan key
     if (code === constants.PAN_KEY) {
         document.body.style.cursor = "default"
@@ -117,10 +118,10 @@ export function handleShortcutsKeyUp(code) {
  * Handles the mouse down shortcuts.
  * 
  * @param {number} button - The button that was pressed.
- * @param {Object} coords - The coordinates of the mouse.
+ * @param {Object} mouse - The coordinates of the mouse.
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
-export function handleShortcutsMouseDown(button, coords) {
+export function handleShortcutMouseDown(button, mouse) {
     return false
 }
 
@@ -131,7 +132,11 @@ export function handleShortcutsMouseDown(button, coords) {
  * @param {Object} coords - The coordinates of the mouse.
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
-export function handleShortcutsMouseUp(button, coords) {
+export function handleShortcutMouseUp(button, coords) {
+    // Reset the double click target
+    window.doubleClickTarget = null
+    document.body.style.cursor = "default"
+
     return false
 }
 
@@ -142,8 +147,15 @@ export function handleShortcutsMouseUp(button, coords) {
  * @param {Object} coords - The coordinates of the mouse.
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
-export function handleShortcutsMouseMove(e, coords) {
-        return false
+export function handleShortcutMouseMove(e, coords) {
+    // If the used double clicked in an empty space of the canvas, pan the canvas
+    if (window.cvs.doubleClick && !window.graph.doubleClickTarget){
+        panBy(e.movementX, e.movementY)
+
+        return true
+    }
+
+    return false
 }
 
 /**
@@ -153,6 +165,28 @@ export function handleShortcutsMouseMove(e, coords) {
  * @param {Object} mouse - The mouse event.
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function. In this case, the default action is to zoom in or out, so it always returns true.
  */
-export function handleShortcutsMouseScroll(delta, mouse) {
+export function handleShortcutMouseScroll(delta, mouse) {
     return true
+}
+
+/**
+ * Handles the mouse double click shortcuts.
+ * 
+ * @param {Object} e - The mouse event.
+ * @param {Object} mouse - The mouse event.
+ * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
+ */
+export function handleShortcutDoubleClick(e, mouse) {
+    // Get the closest element to the mouse
+    const element = closestHoverElement(mouse.x, mouse.y)
+    
+    // If the element is an element, store it as the double click target
+    if (element) window.doubleClickTarget = element
+    // If the element is not an element, reset the double click target and prepare to pan the canvas
+    else {
+        window.doubleClickTarget = null
+        document.body.style.cursor = "grabbing"
+    }
+
+    return false
 }
