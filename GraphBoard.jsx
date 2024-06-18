@@ -6,6 +6,7 @@ import { Node } from './elements/node'
 import { activeToolCallback } from './utils/tools/tools_callbacks'
 import drawAll from './utils/draw'
 import { Edge } from './elements/edge'
+import { focusOnAll, focusOnElement } from './utils/view'
 
 /**
  * Graph component
@@ -39,10 +40,17 @@ export default function Graph(props) {
             const debugNodes = [new Node(100, 100, 30 ,"A"), new Node(200, 200, 30, "B"), new Node(300, 300, 30, "C")]
             window.graph.nodes.push(...debugNodes)
             window.graph.edges.push(new Edge(debugNodes[0], debugNodes[1]))
-            window.cvs.debugCommands.push({
-                label: 'Add node',
-                callback: () => window.graph.nodes.push(new Node(0, 0, 30))
-            })
+            window.cvs.debugCommands = window.cvs.debugCommands.concat([
+                {
+                    label: 'Focus node',
+                    callback: () => focusOnElement(debugNodes[0])
+                },
+                {
+                    label: 'Focus all',
+                    callback: () => focusOnAll()
+                }
+            ])
+            window.graph.update = ()=> {window.cvs.clear();drawAll()}
 
 
         }, true)  // true = Enable debug
