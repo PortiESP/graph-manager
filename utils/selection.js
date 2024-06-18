@@ -1,3 +1,4 @@
+import { checkShortcut } from "../../canvas/utils/keyboard"
 import { closestHoverElement } from "./find_elements"
 import { discardLastSnapshot } from "./memento"
 
@@ -12,18 +13,20 @@ export function handlePrimaryBtnDown(button, mouse) {
     // Find the element under the mouse
     const e = closestHoverElement()
 
-    // Shift key is pressed
-    const isShift = window.cvs.key === 'ShiftLeft' || window.cvs.key === 'ShiftRight'
-
     // If shift is pressed, prevent deselect other nodes
-    if (isShift) {
+    if (checkShortcut("shift")) {
         // If clicked on an element, toggle its selection
         if (e) e.toggleSelect()
     } 
     // If shift is not pressed, allow deselect other nodes
     else {
         // If clicked on an element, select it
-        if (e) e.select()
+        if (e) {
+            if (!e.selected) {
+                deselectAll()
+                e.select()
+            }
+        }
         // If clicked on an empty space, deselect all nodes
         else {
             // Discard the last snapshot if nothing was selected (e.g.: when clicking on an empty space, the app will create a new snapshot, this call will discard it)
