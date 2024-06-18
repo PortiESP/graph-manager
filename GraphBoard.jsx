@@ -53,6 +53,7 @@ export default function Graph(props) {
                 "History stack: " + window.graph.memento.length,
                 "Redo stack: " + window.graph.mementoRedo.length,
                 "Double click target: " + window.graph.doubleClickTarget,
+                "Snapping: " + `${window.graph.snapReference?.x}, ${window.graph.snapReference?.y}`
             ])
             const debugNodes = [new Node(100, 100, 30 ,"A"), new Node(200, 200, 30, "B"), new Node(300, 300, 30, "C")]
             window.graph.nodes.push(...debugNodes)

@@ -5,7 +5,7 @@ import { activateToolByKeyCode, isTool } from "./tools/tools_callbacks"
 import { resetZoom } from "../../canvas/utils/zoom"
 import { panBy, resetPan } from "../../canvas/utils/pan"
 import { checkShortcut } from "../../canvas/utils/keyboard"
-import { closestHoverElement, findElementsWithin } from "./find_elements"
+import { closestHoverElement } from "./find_elements"
 
 /**
  * Handles the keyboard down shortcuts.

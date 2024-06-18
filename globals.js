@@ -31,6 +31,10 @@ export function setupGraphGlobals() {
     // Config
     window.graph.prevent_deselect = false // Prevent deselecting nodes (used after dragging nodes)
     window.graph.showWeights = true // Show weights on edges
+    
+    // Snap to grid
+    window.graph.snapToGrid = true // Snap nodes to the grid
+    window.graph.snapReference = null, // Reference point for snapping (used when dragging nodes while on snap mode)
 
     // Nodes
     window.graph.newNode = false // New node being created

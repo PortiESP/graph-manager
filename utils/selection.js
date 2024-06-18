@@ -51,9 +51,12 @@ export function handleSelectionPrimaryBtnUp(button, mouse) {
     // Find the element under the mouse
     const e = closestHoverElement()
 
-    // Prevent deselect all nodes if the flag is set (used after moving nodes)
+    // After dragging
     if (window.graph.prevent_deselect) {
+        // Prevent deselect all nodes if the flag is set
         window.graph.prevent_deselect = false
+        // Reset the snap reference
+        window.graph.snapReference = null
         return
     }
 
