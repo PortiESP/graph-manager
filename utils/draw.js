@@ -62,14 +62,16 @@ export function drawGrid(){
     const coords = getViewBox()
 
     // Calculate the initial and final positions of the grid
-    const margin = 2*gridSize
+    const gridOverflowMargin = 2*gridSize
     const iniXStep = Math.floor(coords.x / gridSize) * gridSize
     const iniYStep = Math.floor(coords.y / gridSize) * gridSize
 
-    const iniX = -margin + iniXStep
-    const iniY = -margin + iniYStep
-    const finX = margin + coords.x2
-    const finY = margin + coords.y2
+    const iniX = -gridOverflowMargin + iniXStep
+    const iniY = -gridOverflowMargin + iniYStep
+    const finX = gridOverflowMargin + coords.x2
+    const finY = gridOverflowMargin + coords.y2
+
+    const labelMargin = 10/cvs.zoom
 
     // Draw the grid vertical lines
     for (let x = iniX; x < finX; x += gridSize) {
@@ -78,7 +80,7 @@ export function drawGrid(){
         ctx.lineTo(x, finY)
         ctx.stroke()
         ctx.fillStyle = gridColor
-        ctx.fillText(x, x+10, coords.y+10)
+        ctx.fillText(x, x+labelMargin, coords.y+labelMargin)
     }
     // Draw the grid horizontal lines
     for (let y = iniY; y < finY; y += gridSize) {
@@ -87,6 +89,6 @@ export function drawGrid(){
         ctx.lineTo(finX, y)
         ctx.stroke()
         ctx.fillStyle = gridColor
-        ctx.fillText(y, coords.x+4, y+20)
+        ctx.fillText(y, coords.x+labelMargin, y+labelMargin)
     }
 }
