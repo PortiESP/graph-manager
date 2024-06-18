@@ -53,6 +53,7 @@ export default function Graph(props) {
                 "History stack: " + window.graph.memento.length,
                 "Redo stack: " + window.graph.mementoRedo.length,
                 "Double click target: " + window.graph.doubleClickTarget,
+                "Snap to grid: " + window.graph.snapToGrid,
                 "Snapping: " + `${window.graph.snapReference?.x}, ${window.graph.snapReference?.y}`
             ])
             const debugNodes = [new Node(100, 100, 30 ,"A"), new Node(200, 200, 30, "B"), new Node(300, 300, 30, "C")]
@@ -66,6 +67,10 @@ export default function Graph(props) {
                 {
                     label: 'Load test graph',
                     callback: () => loadFromJSON(constants.TEMPLATE_GRAPH)
+                },
+                {
+                    label: 'Toggle snap to grid',
+                    callback: () => window.graph.snapToGrid = !window.graph.snapToGrid
                 }
             ])
 
