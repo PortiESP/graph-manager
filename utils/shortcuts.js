@@ -123,10 +123,20 @@ export function handleShortcutKeyUp(code) {
  */
 export function handleShortcutMouseDown(button, mouse) {
 
-    // If the user clicked an empty space
     const element = closestHoverElement(mouse.x, mouse.y)
+
+    // If the user clicked an empty space
     if (!element) {
+        // Reset the double click target
         window.graph.doubleClickTarget = null
+
+        // Prepare create a selection box
+        window.graph.selectionBox = {
+            x1: mouse.x,
+            y1: mouse.y,
+            x2: undefined,
+            y2: undefined
+        }
     }
     return false
 }
@@ -141,6 +151,22 @@ export function handleShortcutMouseDown(button, mouse) {
 export function handleShortcutMouseUp(button, coords) {
     // Reset the double click target
     document.body.style.cursor = "default"
+
+    // If the user is creating a selection box
+    if (window.graph.selectionBox) {
+        // Get the elements inside the selection box
+        const elements = window.graph.nodes.concat(window.graph.edges).filter(e => {
+            const x = e.x || e.src.x
+            const y = e.y || e.src.y
+            return x > window.graph.selectionBox.x1 && x < window.graph.selectionBox.x2 && y > window.graph.selectionBox.y1 && y < window.graph.selectionBox.y2
+        })
+
+        // Select the elements
+        elements.forEach(e => e.select())
+
+        // Reset the selection box
+        window.graph.selectionBox = null
+    }
 
     return false
 }
@@ -158,6 +184,12 @@ export function handleShortcutMouseMove(e, coords) {
         panBy(e.movementX, e.movementY)
 
         return true
+    }
+
+    // If the user is creating a selection box
+    if (window.graph.selectionBox) {
+        window.graph.selectionBox.x2 = coords.x
+        window.graph.selectionBox.y2 = coords.y
     }
 
     return false

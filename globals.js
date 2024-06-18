@@ -1,4 +1,3 @@
-import constants from "./utils/constants"
 import CONSTANTS from "./utils/constants"
 import { activateTool } from "./utils/tools/tools_callbacks"
 
@@ -27,6 +26,7 @@ export function setupGraphGlobals() {
     // Graph data
     window.graph.nodes = [] // All nodes
     window.graph.selected = [] // Selected nodes
+    window.graph.selectionBox = null // Selection box
 
     // Config
     window.graph.prevent_deselect = false // Prevent deselecting nodes (used after dragging nodes)

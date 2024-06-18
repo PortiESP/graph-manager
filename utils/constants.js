@@ -23,4 +23,25 @@ export default {
     GRID_SIZE: 50,
     GRID_COLOR: "#ddd",
     GRID_THICKNESS: 1,
+
+    // Selection box
+    SELECTION_BOX_STROKE: "blue",
+    SELECTION_BOX_FILL: "rgba(0, 0, 255, 0.1)",
+    SELECTION_BOX_THICKNESS: 1,
+
+    // Debug
+    TEMPLATE_GRAPH: {
+        nodes: [
+            {x: 300, y: 300, r: 30, label: "A"},
+            {x: 300, y: 400, r: 30, label: "B"},
+            {x: 400, y: 400, r: 30, label: "C"},
+            {x: 400, y: 500, r: 30, label: "D"},
+        ],
+        edges: [
+            {src: "A", dst: "C", weight: 1},
+            {src: "B", dst: "C", weight: 3},
+            {src: "C", dst: "D", weight: 5},
+            {src: "D", dst: "B", weight: 2, directed: true},
+        ]
+    }
 }

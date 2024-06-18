@@ -23,7 +23,7 @@ import { Element } from "./element"
  */
 export class Node extends Element{
     constructor(x, y, r, label = null) {
-        super()
+        super(label)
 
         // Data properties
         this.x = x

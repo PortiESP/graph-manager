@@ -44,6 +44,9 @@ export default function drawAll(){
         window.ctx.fill()
     }
 
+    // --- Selection box ---
+    drawSelectionBox()
+
     if (window.cvs.debug) window.cvs.drawDebugInfo(window.cvs.debugData())
 }
 
@@ -97,4 +100,18 @@ export function drawGrid(){
         ctx.fillStyle = gridColor
         ctx.fillText(y, coords.x+labelMargin, y+labelMargin)
     }
+}
+
+
+export function drawSelectionBox(){
+    if (!window.graph.selectionBox) return
+
+    const ctx = window.ctx
+    const selectionBox = window.graph.selectionBox
+
+    ctx.strokeStyle = constants.SELECTION_BOX_STROKE
+    ctx.lineWidth = constants.SELECTION_BOX_THICKNESS
+    ctx.fillStyle = constants.SELECTION_BOX_FILL
+    ctx.fillRect(selectionBox.x1, selectionBox.y1, selectionBox.x2 - selectionBox.x1, selectionBox.y2 - selectionBox.y1)
+    ctx.strokeRect(selectionBox.x1, selectionBox.y1, selectionBox.x2 - selectionBox.x1, selectionBox.y2 - selectionBox.y1)
 }

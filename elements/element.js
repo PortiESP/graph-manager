@@ -26,9 +26,9 @@
  * @method delete - Abstract method. Deletes the element
  */
 export class Element {
-    constructor(){
+    constructor(id){
         // Random id
-        this.id = Math.random().toString(36).slice(2)
+        this.id = id || Math.random().toString(36).slice(2)
         this.selected = false
     }
 
@@ -58,6 +58,10 @@ export class Element {
     toggleSelect() {
         if (this.selected) this.deselect()
         else this.select()
+    }
+
+    toString() {
+        return `[${this.constructor.name}: ${this.id}]`
     }
 
     // ======================================================= Abstract methods =======================================================
