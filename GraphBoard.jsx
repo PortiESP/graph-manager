@@ -8,7 +8,7 @@ import drawAll from './utils/draw'
 import { Edge } from './elements/edge'
 import { focusOnAll, focusOnElement } from './utils/view'
 import { getViewBox } from '../canvas/utils/zoom'
-import { loadFromJSON } from './utils/load_graph'
+import { loadFromEdgePlainTextList, loadFromJSON } from './utils/load_graph'
 import constants from './utils/constants'
 
 /**
@@ -66,7 +66,7 @@ export default function Graph(props) {
                 },
                 {
                     label: 'Load test graph',
-                    callback: () => loadFromJSON(constants.TEMPLATE_GRAPH)
+                    callback: () => loadFromEdgePlainTextList(constants.TEMPLATE_GRAPH_2)
                 },
                 {
                     label: 'Toggle snap to grid',
