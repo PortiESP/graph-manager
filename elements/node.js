@@ -29,7 +29,7 @@ export class Node extends Element{
         this.x = x
         this.y = y
         this.r = r
-        this.label = label || this.id
+        this.label = label ?? this.id
 
         // Style properties
         this.backgroundColor = 'black'
@@ -63,13 +63,11 @@ export class Node extends Element{
         }
 
         // Draw the label
-        if (this.label) {
-            ctx.fillStyle = this.labelColor
-            ctx.textAlign = 'center'
-            ctx.textBaseline = 'middle'
-            ctx.font = 'bold ' + this.fontSize + 'px Arial'
-            ctx.fillText(this.label, this.x, this.y)
-        }
+        ctx.fillStyle = this.labelColor
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+        ctx.font = 'bold ' + this.fontSize + 'px Arial'
+        ctx.fillText(this.label, this.x, this.y)
     }
 
     /**

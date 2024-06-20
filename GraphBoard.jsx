@@ -8,7 +8,7 @@ import drawAll from './utils/draw'
 import { Edge } from './elements/edge'
 import { focusOnAll, focusOnElement } from './utils/view'
 import { getViewBox } from '../canvas/utils/zoom'
-import { loadFromEdgePlainTextList, loadFromJSON } from './utils/load_graph'
+import { loadFromEdgeArray, loadFromEdgePlainTextList, loadFromJSON } from './utils/load_graph'
 import constants from './utils/constants'
 import { circularArrange, sequenceArrange, toposortArrange, treeArrange } from './utils/arrangements'
 import { generateGraphArray } from './utils/algorithms/generate_graph'
@@ -85,7 +85,7 @@ export default function Graph(props) {
                 {
                     label: 'Load test graph',
                     callback: () => {
-                        loadFromEdgePlainTextList(constants.TEMPLATE_GRAPH_2)
+                        loadFromEdgeArray(constants.TEMPLATE_GRAPH_3)
                         circularArrange(window.graph.nodes)
                         focusOnAll()
                     }

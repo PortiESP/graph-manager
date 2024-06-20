@@ -28,7 +28,7 @@
 export class Element {
     constructor(id){
         // Random id
-        this.id = id || Math.random().toString(36).slice(2)
+        this.id = id ?? Math.random().toString(36).slice(2)
         this.selected = false
     }
 

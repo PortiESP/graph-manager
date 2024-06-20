@@ -92,3 +92,34 @@ export function parseEdge(edgeString){
     return { src, weight, dst, directed }    
 }
 
+
+// List of edges as a multidiemnsional array
+export function loadFromEdgeArray(edgeArray, directed=false) {
+    // Clear the current graph and reset all the graph global variables
+    setupGraphGlobals()
+
+    // Get nodes and edges from the edge list
+    const nodes = {}
+    const edges = []
+    edgeArray.forEach(edgeList => {
+        edgeList.forEach(([src, dst, weight]) => {
+            // If the src node does not exist, create it
+            if (!nodes[src]) {
+                nodes[src] = new Node(0, 0, constants.DEFAULT_NODE_RADIUS, src)
+            }
+            // If the dst node does not exist, create it
+            if (!nodes[dst]) {
+                nodes[dst] = new Node(0, 0, constants.DEFAULT_NODE_RADIUS, dst)
+            }
+
+            // Create the edge object
+            const srcNode = nodes[src]
+            const dstNode = nodes[dst]
+            edges.push(new Edge(srcNode, dstNode, weight, directed))
+        })
+    })
+
+    // Add the nodes and edges to the graph
+    window.graph.nodes.push(...Object.values(nodes))
+    window.graph.edges.push(...edges)
+}
