@@ -95,11 +95,17 @@ export function findElementsByCoords(x, y) {
  */
 export function findElementsByHover() {
     const result = []
+    // Nodes
     window.graph.nodes.forEach(node => {
         if (node.isHover()) result.push(node)
     })
+    // Edges
     window.graph.edges.forEach(edge => {
         if (edge.isHover()) result.push(edge)
+    })
+    // Info
+    window.graph.info.forEach(info => {
+        if (info.isHover()) result.push(info)
     })
 
     return result

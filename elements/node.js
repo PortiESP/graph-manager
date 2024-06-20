@@ -85,20 +85,6 @@ export class Node extends Element{
     }
 
     /**
-     * Move the node by dx, dy
-     * 
-     * @param {number} dx - The number of coordinates to move in the x axis
-     * @param {number} dy - The number of coordinates to move in the y axis
-     */
-    // Move the node by dx, dy
-    moveBy(dx, dy) {
-        this.x += dx
-        this.y += dy
-    }
-
-
-
-    /**
      * Distance from a point to the center of the node
      * 
      * @param {number} x - The x coordinate of the point

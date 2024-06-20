@@ -64,6 +64,17 @@ export class Element {
         return `[${this.constructor.name}: ${this.id}]`
     }
 
+    /**
+     * Move the node by dx, dy
+     * 
+     * @param {number} dx - The number of coordinates to move in the x axis
+     * @param {number} dy - The number of coordinates to move in the y axis
+     */
+    moveBy(dx, dy) {
+        this.x += dx
+        this.y += dy
+    }
+
     // ======================================================= Abstract methods =======================================================
     // Distance (abstract method)
     distance(x, y) {

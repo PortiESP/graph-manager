@@ -50,6 +50,8 @@ export function setupGraphGlobals() {
     // Double click
     window.graph.doubleClickTarget = null, // The target of the double click event (set to the target of the mouse down event when a double click is detected, and reset to null on the next mouse up event)
 
+    // Information and annotations
+    window.graph.info = [] // Information elements
 
     // Activate the default tool
     activateTool(CONSTANTS.DEFAULT_TOOL) // Activate the default tool

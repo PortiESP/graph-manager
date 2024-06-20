@@ -16,6 +16,8 @@ import { toposortKahn } from './utils/algorithms/toposort'
 import bfs from './utils/algorithms/bfs'
 import { generateLevelsByPredecessors } from './utils/algorithms/convertions'
 import { dfs } from './utils/algorithms/dfs'
+import { Info } from './elements/Info'
+import { closestHoverElement } from './utils/find_elements'
 
 /**
  * Graph component
@@ -46,25 +48,33 @@ export default function Graph(props) {
             window.cvs.autoResize = true
 
             // --- Debug ---
-            window.cvs.debug = true
-            window.cvs.debugData = () => ([
-                "Selected: " + window.graph.selected.length,
-                "Prevent deselect: " + window.graph.prevent_deselect,
-                "Active tool: " + window.graph.tool || "None",
-                "Nodes: " + window.graph.nodes.length,
-                "New node: " + window.graph.newNode,
-                "Edges: " + window.graph.edges.length,
-                "New edge: " + !!window.graph.newEdgeScr,
-                "Hover edge: " + window.graph.edges.filter(e => e.isHover()).length,
-                "History stack: " + window.graph.memento.length,
-                "Redo stack: " + window.graph.mementoRedo.length,
-                "Double click target: " + window.graph.doubleClickTarget,
-                "Snap to grid: " + window.graph.snapToGrid,
-                "Snapping: " + `${window.graph.snapReference?.x}, ${window.graph.snapReference?.y}`
-            ])
             loadFromEdgePlainTextList(constants.TEMPLATE_GRAPH_2)
             circularArrange(window.graph.nodes)
             focusOnAll()
+            window.graph.info = [
+                new Info(400, 400, "This is a test"),
+            ]
+
+            window.cvs.debug = true
+            window.cvs.debugData = () => ([
+                "----------- Data -----------",
+                "Nodes: " + window.graph.nodes.length,
+                "Edges: " + window.graph.edges.length,
+                "Selected: " + window.graph.selected.length,
+                "History stack: " + window.graph.memento.length,
+                "Redo stack: " + window.graph.mementoRedo.length,
+                "Active tool: " + window.graph.tool || "None",
+                "Snapping: " + `${window.graph.snapReference?.x}, ${window.graph.snapReference?.y}`,
+                "Hover: " + closestHoverElement() || "None",
+                "----------- Edit -----------",
+                "New node: " + window.graph.newNode,
+                "New edge: " + !!window.graph.newEdgeScr,
+                "Double click target: " + window.graph.doubleClickTarget,
+                "----------- Config -----------",
+                "Prevent deselect: " + window.graph.prevent_deselect,
+                "Snap to grid: " + window.graph.snapToGrid,
+            ])
+
             window.cvs.debugCommands = window.cvs.debugCommands.concat([
                 {
                     label: 'Toggle snap to grid',

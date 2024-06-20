@@ -44,6 +44,12 @@ export default function drawAll(){
         window.ctx.fill()
     }
 
+    // --- Information ---
+    // Draw information elements
+    window.graph.info.forEach(e => {
+        e.draw()
+    })
+
     // --- Selection box ---
     drawSelectionBox()
 
