@@ -1,6 +1,7 @@
 import { Edge } from "../elements/edge";
 import { Node } from "../elements/node";
 import { setupGraphGlobals } from "../globals";
+import constants from "./constants";
 
 export function loadFromJSON(json) {
     // Clear the current graph and reset all the graph global variables
@@ -55,7 +56,7 @@ export function loadFromEdgePlainTextList(edgeList) {
 
         // If the src node does not exist, create it
         if (!nodes[src]) {
-            nodes[src] = new Node(undefined, undefined, undefined, src)
+            nodes[src] = new Node(0, 0, constants.NODE_DEFAULT_RADIUS, src)
         }
         // If the dst node does not exist, create it
         if (!nodes[dst]) {

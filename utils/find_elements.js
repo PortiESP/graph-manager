@@ -133,8 +133,16 @@ export function findElementsWithin(x1, y1, x2, y2){
 
     // Return all elements that are inside the selection box
     return window.graph.nodes.concat(window.graph.edges).filter(e => {
-        const x = e.x || e.src.x  // If the element is a node, use the x and y coordinates. If it is an edge, use the src and dst nodes as its coordinates
-        const y = e.y || e.src.y  // If the element is a node, use the x and y coordinates. If it is an edge, use the src and dst nodes as its coordinates
+        const eType = e.constructor.name
+        let x, y
+        // If the element is an edge, get the coordinates of the source and destination nodes, otherwise get the coordinates of the element
+        if (eType === "Edge") {
+            x = e.src.x
+            y = e.src.y
+        } else {
+            x = e.x
+            y = e.y
+        }
         return x > x1 && x < x2 && y > y1 && y < y2
     })
 }
