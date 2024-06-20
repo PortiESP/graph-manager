@@ -1,38 +1,14 @@
-import { dfs } from "./dfs"
-
-export default function toposortDFS(graph) {
-    // Create a stack and add the start node
-    const stack = []
-    let visited = {}
-    const result = []
-    const edges = [] // Add edges variable to store the edges of the result
-
-    // For each node in the graph
-    for (const node in graph) {
-        if (!visited[node]) {
-            const { result: dfsResult, edges: dfsEdges, visited: dfsVisited } = dfs(graph, node, visited)
-            stack.push(...dfsResult)
-            edges.push(...dfsEdges)
-            visited = dfsVisited
-        }
-    }
-
-    // Reverse the stack to get the topological order
-    while (stack.length) {
-        result.push(stack.pop())
-    }
-
-    return { result, edges }
-}
 export function toposortKahn(graph) {
     const inDegree = {}
     const result = []
     const edges = [] // Add edges variable to store the edges of the result
     const queue = []
+    const levels = {} // Add levels variable to store the levels of each node
 
-    // Initialize the inDegree of all nodes
+    // Initialize the inDegree and levels of all nodes
     for (const node in graph) {
         inDegree[node] = 0
+        levels[node] = 0
     }
 
     // Calculate the inDegree of all nodes
@@ -57,6 +33,7 @@ export function toposortKahn(graph) {
         // For each neighbor of the node
         for (const [src, dst, w] of graph[node]) {
             inDegree[dst]--
+            levels[dst] = Math.max(levels[dst], levels[src] + 1) // Update the level of the neighbor node
 
             // If the dst has inDegree 0, add it to the queue
             if (inDegree[dst] === 0) {
@@ -70,5 +47,5 @@ export function toposortKahn(graph) {
     const hasCycle = result.length !== Object.keys(graph).length
     const remainingNodes = Object.keys(graph).filter(node => !result.includes(node))
 
-    return { result, edges, hasCycle, remainingNodes}
+    return { result, edges, hasCycle, remainingNodes, levels}
 }

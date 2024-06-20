@@ -46,12 +46,12 @@ export default {
         ]
     },
     TEMPLATE_GRAPH_2: `
-        A-{5}->B
-        C->D
-        C-{5.8}->A
-        C->E
-        D->A
-        D->E
+        A-{5}-B
+        C-D
+        C-{5.8}-A
+        C-E
+        D-A
+        D-E
         X
         Y
         Z

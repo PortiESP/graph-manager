@@ -10,11 +10,12 @@ import { focusOnAll, focusOnElement } from './utils/view'
 import { getViewBox } from '../canvas/utils/zoom'
 import { loadFromEdgePlainTextList, loadFromJSON } from './utils/load_graph'
 import constants from './utils/constants'
-import { circularArrange, sequenceArrange } from './utils/arrangements'
+import { circularArrange, sequenceArrange, toposortArrange, treeArrange } from './utils/arrangements'
 import { generateGraphArray } from './utils/algorithms/generate_graph'
+import { toposortKahn } from './utils/algorithms/toposort'
 import bfs from './utils/algorithms/bfs'
+import { generateLevelsByPredecessors } from './utils/algorithms/convertions'
 import { dfs } from './utils/algorithms/dfs'
-import toposortDFS, { toposortKahn } from './utils/algorithms/toposort'
 
 /**
  * Graph component
@@ -62,24 +63,16 @@ export default function Graph(props) {
                 "Snapping: " + `${window.graph.snapReference?.x}, ${window.graph.snapReference?.y}`
             ])
             loadFromEdgePlainTextList(constants.TEMPLATE_GRAPH_2)
-            circularArrange()
+            circularArrange(window.graph.nodes)
             focusOnAll()
             window.cvs.debugCommands = window.cvs.debugCommands.concat([
                 {
-                    label: 'Focus all',
-                    callback: () => focusOnAll()
-                },
-                {
-                    label: 'Load test graph',
-                    callback: () => {
-                        loadFromEdgePlainTextList(constants.TEMPLATE_GRAPH_2)
-                        circularArrange()
-                        focusOnAll()
-                    }
-                },
-                {
                     label: 'Toggle snap to grid',
                     callback: () => window.graph.snapToGrid = !window.graph.snapToGrid
+                },
+                {
+                    label: 'Focus all',
+                    callback: () => focusOnAll()
                 },
                 {
                     label: 'Generate graph array',
@@ -88,7 +81,41 @@ export default function Graph(props) {
                         console.log(g)
                         console.log(toposortKahn(g))
                     }
-                }
+                },
+                {
+                    label: 'Load test graph',
+                    callback: () => {
+                        loadFromEdgePlainTextList(constants.TEMPLATE_GRAPH_2)
+                        circularArrange(window.graph.nodes)
+                        focusOnAll()
+                    }
+                },
+                {
+                    label: "Toposort arrange",
+                    callback: () => {
+                        const g = generateGraphArray()
+                        toposortArrange(g)
+                        focusOnAll()
+                    }
+                },
+                {
+                    label: 'Tree BFS arrange',
+                    callback: () => {
+                        const g = generateGraphArray()
+                        const bfsData = bfs(g, "A")
+                        treeArrange(bfsData)
+                        focusOnAll()
+                    }
+                },
+                {
+                    label: 'Tree BFS arrange (all)',
+                    callback: () => {
+                        const g = generateGraphArray()
+                        const bfsData = bfs(g, "A")
+                        treeArrange(bfsData, true)
+                        focusOnAll()
+                    }
+                },
             ])
 
             // Redraw the graph
