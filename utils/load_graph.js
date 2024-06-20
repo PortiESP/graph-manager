@@ -32,6 +32,11 @@ export function loadFromJSON(json) {
     - `src` -----------------> declare single node with no edges (not added to the edge list, but the node will be created)
 */
 export function loadFromEdgePlainTextList(edgeList) {
+    const createNode = (label) => {
+        if (!nodes[label]) {
+            nodes[label] = new Node(0, 0, constants.DEFAULT_NODE_RADIUS, label)
+        }
+    }
     // Clear the current graph and reset all the graph global variables
     setupGraphGlobals()
 
@@ -46,22 +51,16 @@ export function loadFromEdgePlainTextList(edgeList) {
 
         // Single node edge
         if (edge.match(/^\w+$/)) {
-            if (!nodes[edge]) {
-                nodes[edge] = new Node(undefined, undefined, undefined, edge)
-            }
+            createNode(edge)
             return
         }
 
         const { src, dst, weight, directed } = parseEdge(edge)
 
         // If the src node does not exist, create it
-        if (!nodes[src]) {
-            nodes[src] = new Node(0, 0, constants.NODE_DEFAULT_RADIUS, src)
-        }
+        createNode(src)
         // If the dst node does not exist, create it
-        if (!nodes[dst]) {
-            nodes[dst] = new Node(undefined, undefined, undefined, dst)
-        }
+        createNode(dst)
 
         // Create the edge object
         const srcNode = nodes[src]

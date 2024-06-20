@@ -10,6 +10,11 @@ import { focusOnAll, focusOnElement } from './utils/view'
 import { getViewBox } from '../canvas/utils/zoom'
 import { loadFromEdgePlainTextList, loadFromJSON } from './utils/load_graph'
 import constants from './utils/constants'
+import { circularArrange, sequenceArrange } from './utils/arrangements'
+import { generateGraphArray } from './utils/algorithms/generate_graph'
+import bfs from './utils/algorithms/bfs'
+import { dfs } from './utils/algorithms/dfs'
+import toposortDFS, { toposortKahn } from './utils/algorithms/toposort'
 
 /**
  * Graph component
@@ -56,9 +61,9 @@ export default function Graph(props) {
                 "Snap to grid: " + window.graph.snapToGrid,
                 "Snapping: " + `${window.graph.snapReference?.x}, ${window.graph.snapReference?.y}`
             ])
-            const debugNodes = [new Node(100, 100, 30 ,"A"), new Node(200, 200, 30, "B"), new Node(300, 300, 30, "C")]
-            window.graph.nodes.push(...debugNodes)
-            window.graph.edges.push(new Edge(debugNodes[0], debugNodes[1]))
+            loadFromEdgePlainTextList(constants.TEMPLATE_GRAPH_2)
+            circularArrange()
+            focusOnAll()
             window.cvs.debugCommands = window.cvs.debugCommands.concat([
                 {
                     label: 'Focus all',
@@ -66,11 +71,23 @@ export default function Graph(props) {
                 },
                 {
                     label: 'Load test graph',
-                    callback: () => loadFromEdgePlainTextList(constants.TEMPLATE_GRAPH_2)
+                    callback: () => {
+                        loadFromEdgePlainTextList(constants.TEMPLATE_GRAPH_2)
+                        circularArrange()
+                        focusOnAll()
+                    }
                 },
                 {
                     label: 'Toggle snap to grid',
                     callback: () => window.graph.snapToGrid = !window.graph.snapToGrid
+                },
+                {
+                    label: 'Generate graph array',
+                    callback: () => {
+                        const g = generateGraphArray()
+                        console.log(g)
+                        console.log(toposortKahn(g))
+                    }
                 }
             ])
 
