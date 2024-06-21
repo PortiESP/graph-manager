@@ -1,4 +1,6 @@
 import constants from "../utils/constants"
+import { drawFunction } from "../utils/draw"
+import { findElementsWithin } from "../utils/find_elements"
 import { Element } from "./element"
 
 /**
@@ -166,19 +168,41 @@ export class Edge extends Element{
     isHover() {
         const x = window.cvs.x
         const y = window.cvs.y
+        
+        const THRESHOLD = this.thickness*2
+        const slope = (this.dst.y - this.src.y) / (this.dst.x - this.src.x)
 
-        const x1 = Math.min(this.src.x, this.dst.x)
-        const x2 = Math.max(this.src.x, this.dst.x)
-        const y1 = Math.min(this.src.y, this.dst.y)
-        const y2 = Math.max(this.src.y, this.dst.y)
+        if (slope === Infinity || slope === -Infinity) return Math.abs(x - this.src.x) < THRESHOLD && y > Math.min(this.src.y, this.dst.y) && y < Math.max(this.src.y, this.dst.y)
 
-        // Check if the point is outside the bounding box of the edge
-        if (x < x1 || x > x2 || y < y1 || y > y2) return false
+        const angle = Math.atan(slope)
+        const angleSign = Math.sign(angle)
+        const anglePerpendicular = angle + Math.PI / 2
+        const slopePerpendicular = Math.tan(anglePerpendicular)
+        const boundsX = [Math.min(this.src.x, this.dst.x), Math.max(this.src.x, this.dst.x)]
 
-        // If the point is hovering any of the nodes, return false
-        if (this.src.isHover() || this.dst.isHover()) return false
+        // Function defining the edge
+        const f = (x) => slope * x + this.src.y - slope * this.src.x
+        const fp1 = (x) => slopePerpendicular * x + (f(boundsX[0]) - slopePerpendicular * boundsX[0])  // Perpendicular function to f(x) intersecting the most left point of the edge
+        const fp2 = (x) => slopePerpendicular * x + (f(boundsX[1]) - slopePerpendicular * boundsX[1])  // Perpendicular function to f(x) intersecting the most right point of the edge
+        const fpm = (x) => slopePerpendicular * x + window.cvs.y - slopePerpendicular * window.cvs.x  // Function defining mouse to line
 
-        return this.distance(window.cvs.x, window.cvs.y) <= this.thickness  
+        const inFp1 = (x, y) => angleSign*y > angleSign*fp1(x)  // Check if the point is above the perpendicular function intersecting the most left point of the edge
+        const inFp2 = (x, y) => angleSign*y < angleSign*fp2(x)  // Check if the point is below the perpendicular function intersecting the most right point of the edge
+        // Distance from the mouse to closest point of the edge
+        const A = this.src.y - this.dst.y
+        const B = this.dst.x - this.src.x
+        const C = this.src.x * this.dst.y - this.dst.x * this.src.y
+        const dist = (x,y) => Math.abs(A * x + B * y + C) / Math.sqrt(A * A + B * B)
+        const isCloseToF = dist(x,y) < THRESHOLD
+
+        if (this === window.graph.edges[2]){
+            window.cvs.debugFunctions["edge"] = () => drawFunction(fpm, "red")
+            window.cvs.debugFunctions["edge2"] = () => drawFunction(f, "red")
+            console.log("Edge", inFp1(x, y), inFp2(x, y), isCloseToF, f(x), fpm(x), dist(x,y))
+        }
+
+        // Check if the point is inside the bounding box of the edge
+        return inFp1(x, y) && inFp2(x, y) && isCloseToF
     }
 
     /**

@@ -121,3 +121,13 @@ export function drawSelectionBox(){
     ctx.fillRect(selectionBox.x1, selectionBox.y1, selectionBox.x2 - selectionBox.x1, selectionBox.y2 - selectionBox.y1)
     ctx.strokeRect(selectionBox.x1, selectionBox.y1, selectionBox.x2 - selectionBox.x1, selectionBox.y2 - selectionBox.y1)
 }
+
+
+export function drawFunction(fx, color){
+    ctx.beginPath()
+    ctx.strokeStyle = color
+    ctx.lineWidth = 2
+    ctx.moveTo(0, fx(0))
+    ctx.lineTo(window.cvs.$canvas.width, fx(window.cvs.$canvas.width))
+    ctx.stroke()
+}

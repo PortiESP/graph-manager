@@ -75,6 +75,10 @@ export class Element {
         this.y += dy
     }
 
+    angleTo(x, y){
+        return Math.atan2(y - this.y, x - this.x)
+    }
+
     // ======================================================= Abstract methods =======================================================
     // Distance (abstract method)
     distance(x, y) {

@@ -48,11 +48,16 @@ export default function Graph(props) {
             window.cvs.autoResize = true
 
             // --- Debug ---
-            loadFromEdgePlainTextList(constants.TEMPLATE_GRAPH_2)
+            
+            // loadFromJSON(constants.TEMPLATE_GRAPH)
+            
+            loadFromEdgeArray(constants.TEMPLATE_GRAPH_3)
             circularArrange(window.graph.nodes)
             focusOnAll()
+
+            focusOnAll()
             window.graph.info = [
-                new Info(400, 400, "This is a test"),
+                new Info(500, 400, "This is a test"),
             ]
 
             window.cvs.debug = true
@@ -66,6 +71,7 @@ export default function Graph(props) {
                 "Active tool: " + window.graph.tool || "None",
                 "Snapping: " + `${window.graph.snapReference?.x}, ${window.graph.snapReference?.y}`,
                 "Hover: " + closestHoverElement() || "None",
+                "Angle selected-mouse: " + window.graph.selected[0]?.angleTo(window.cvs.x, window.cvs.y) || "None",
                 "----------- Edit -----------",
                 "New node: " + window.graph.newNode,
                 "New edge: " + !!window.graph.newEdgeScr,
