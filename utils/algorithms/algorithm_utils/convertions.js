@@ -1,3 +1,12 @@
+import { getNodeById } from "../../arrangements"
+
+/**
+ * 
+ * @param {Object} predecessors Object representing the predecessors of each node: {Node: Node, ...}
+ * @returns {Object} An object with the following properties:
+ * - levels: The level of each node in the graph. If the node was not visited (mostly due to a cycle), the level is null
+ * - maxLevel: The maximum level of the graph
+ */
 export function generateLevelsByPredecessors(predecessors) {
     const levels = Object.fromEntries(Object.keys(predecessors).map(node => [node, undefined]))
     let maxLevel = 0
@@ -29,6 +38,13 @@ export function generateLevelsByPredecessors(predecessors) {
     return { levels, maxLevel }
 }
 
+
+/**
+ * Generate the successors of each node based on the predecessors
+ * 
+ * @param {Object} predecessors Object representing the predecessors of each node: {Node: Node, ...}
+ * @returns {Object} An object with the successors of each node: {Node: [Node, ...], ...}
+ */
 export function generateSuccessorsByPredecessors(predecessors) {
     const successors = Object.fromEntries(Object.keys(predecessors).map(node => [node, []]))
 
@@ -36,32 +52,8 @@ export function generateSuccessorsByPredecessors(predecessors) {
         const pre = predecessors[node]
         if (pre === null) continue
 
-        successors[pre].push(node)
+        successors[pre].push(getNodeById(node))
     }
 
     return successors
-}
-
-export function generateBranchesBySuccessors(successors) {
-    const branches = Object.fromEntries(Object.keys(successors).map(node => [node, []]))
-
-    for (const node in successors) {
-        const suc = successors[node]
-        for (const s of suc) {
-            branches[s].push(node)
-        }
-    }
-}
-
-export function generateBranchesByPredecessors(predecessors) {
-    const branches = Object.fromEntries(Object.keys(predecessors).map(node => [node, []]))
-
-    for (const node in predecessors) {
-        const pre = predecessors[node]
-        if (pre === null) continue
-
-        branches[pre].push(node)
-    }
-
-    return branches
 }

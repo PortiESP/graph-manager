@@ -62,5 +62,13 @@ export default {
         // [["C", "B", 1], ["C", "D", 1], ["C", "E", 1]],
         // [["D", "E", 1]],
         // [["E", "D", 1]]
-    ]
+    ],
+    TEMPLATE_GRAPH_TOPO: `
+        A->B
+        A->C
+        B->D
+        C->D
+        D->E
+        E
+    `
 }

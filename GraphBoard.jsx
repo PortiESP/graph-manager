@@ -6,7 +6,7 @@ import { activeToolCallback } from './utils/tools/tools_callbacks'
 import drawAll from './utils/draw'
 import { focusOnAll } from './utils/view'
 import { getViewBox } from '../canvas/utils/zoom'
-import { loadFromEdgeArray, loadFromJSON } from './utils/load_graph'
+import { loadFromEdgeArray, loadFromEdgePlainTextList, loadFromJSON } from './utils/load_graph'
 import constants from './utils/constants'
 import { circularArrange, toposortArrange, treeArrange } from './utils/arrangements'
 import { generateGraphArray } from './utils/algorithms/algorithm_utils/generate_graph'
@@ -102,6 +102,14 @@ export default function Graph(props) {
                     }
                 },
                 {
+                    label: 'Load test graph for toposort',
+                    callback: () => {
+                        loadFromEdgePlainTextList(constants.TEMPLATE_GRAPH_TOPO)
+                        circularArrange(window.graph.nodes)
+                        focusOnAll()
+                    }
+                },
+                {
                     label: "Toposort arrange",
                     callback: () => {
                         const g = generateGraphArray()
@@ -122,8 +130,16 @@ export default function Graph(props) {
                     label: 'Tree BFS arrange (all)',
                     callback: () => {
                         const g = generateGraphArray()
-                        const bfsData = bfs(g, window.graph.nodes[0])
-                        treeArrange(bfsData, true)
+                        const visited = {}
+                        const conexComponents = []
+                        for (const node of window.graph.nodes)
+                            if (!visited[node]) conexComponents.push(bfs(g, node, visited))
+                        const data = conexComponents.reduce((acc, val) => {
+                            acc.result = acc.result.concat(val.result)
+                            acc.prevNode = { ...acc.prevNode, ...val.prevNode }
+                            return acc
+                        }, { result: [], prevNode: {} })
+                        treeArrange(data, true)
                         focusOnAll()
                     }
                 },

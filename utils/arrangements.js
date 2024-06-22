@@ -1,4 +1,4 @@
-import { generateBranchesByPredecessors } from "./algorithms/algorithm_utils/convertions"
+import { generateSuccessorsByPredecessors } from "./algorithms/algorithm_utils/convertions"
 import { toposortKahn } from "./algorithms/toposort"
 import constants from "./constants"
 
@@ -65,7 +65,7 @@ export function toposortArrange(g){
 
 export function treeArrange(data, all=false){
     const { result, prevNode } = data
-    const branches = generateBranchesByPredecessors(prevNode)
+    const branches = generateSuccessorsByPredecessors(prevNode)
 
     // Arrange the nodes in a sequence
     const margin = constants.DEFAULT_NODE_RADIUS * 5
