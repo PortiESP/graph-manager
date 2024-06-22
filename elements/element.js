@@ -70,7 +70,7 @@ export class Element {
      * @returns {string} A string representation of the element
      */
     toString() {
-        return `[${this.constructor.name}: ${this.id}]`
+        return `${this.id}`
     }
 
     /**

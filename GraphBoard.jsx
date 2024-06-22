@@ -2,20 +2,16 @@ import { setupCanvas, mainLoop } from '../canvas/utils/setup'
 import { useLayoutEffect } from 'react'
 import Canvas from '../canvas/Canvas'
 import { setupGraphGlobals } from './globals'
-import { Node } from './elements/node'
 import { activeToolCallback } from './utils/tools/tools_callbacks'
 import drawAll from './utils/draw'
-import { Edge } from './elements/edge'
-import { focusOnAll, focusOnElement } from './utils/view'
+import { focusOnAll } from './utils/view'
 import { getViewBox } from '../canvas/utils/zoom'
-import { loadFromEdgeArray, loadFromEdgePlainTextList, loadFromJSON } from './utils/load_graph'
+import { loadFromEdgeArray, loadFromJSON } from './utils/load_graph'
 import constants from './utils/constants'
-import { circularArrange, sequenceArrange, toposortArrange, treeArrange } from './utils/arrangements'
-import { generateGraphArray } from './utils/algorithms/generate_graph'
+import { circularArrange, toposortArrange, treeArrange } from './utils/arrangements'
+import { generateGraphArray } from './utils/algorithms/algorithm_utils/generate_graph'
 import { toposortKahn } from './utils/algorithms/toposort'
 import bfs from './utils/algorithms/bfs'
-import { generateLevelsByPredecessors } from './utils/algorithms/convertions'
-import { dfs } from './utils/algorithms/dfs'
 import { Info } from './elements/Info'
 import { closestHoverElement } from './utils/find_elements'
 
@@ -117,7 +113,7 @@ export default function Graph(props) {
                     label: 'Tree BFS arrange',
                     callback: () => {
                         const g = generateGraphArray()
-                        const bfsData = bfs(g, "A")
+                        const bfsData = bfs(g, window.graph.nodes[0])
                         treeArrange(bfsData)
                         focusOnAll()
                     }
@@ -126,7 +122,7 @@ export default function Graph(props) {
                     label: 'Tree BFS arrange (all)',
                     callback: () => {
                         const g = generateGraphArray()
-                        const bfsData = bfs(g, "A")
+                        const bfsData = bfs(g, window.graph.nodes[0])
                         treeArrange(bfsData, true)
                         focusOnAll()
                     }

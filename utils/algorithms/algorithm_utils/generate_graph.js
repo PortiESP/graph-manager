@@ -3,20 +3,16 @@ export function generateGraphArray(){
 
     // Generate the nodes
     window.graph.nodes.forEach(node => {
-        graph[node.id] = []
+        graph[node] = []
     })
 
     // Generate the edges
     window.graph.edges.forEach(edge => {
         // Edge format in the graph array: [src, dst, weight]
-        const src = edge.src.id
-        const dst = edge.dst.id
-        const weight = edge.weight
-
         // Add the edge to the graph
-        graph[edge.src.id].push([src, dst, weight])
+        graph[edge.src].push(edge)
         // Add the edge to the graph if it is not directed
-        if (!edge.directed) graph[edge.dst.id].push([dst, src, weight])
+        if (!edge.directed) graph[edge.dst].push(edge)
     })
 
     return graph

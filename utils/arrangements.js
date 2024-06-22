@@ -1,11 +1,11 @@
-import { generateBranchesByPredecessors, generateBranchesBySuccessors } from "./algorithms/convertions"
+import { generateBranchesByPredecessors } from "./algorithms/algorithm_utils/convertions"
 import { toposortKahn } from "./algorithms/toposort"
 import constants from "./constants"
 
 
 // ------------------------------- Helper functions -------------------------------
 export function getNodeById(id){
-    return window.graph.nodes.find(node => node.id === id)
+    return window.graph.nodes.find(node => node.id == id)
 }
 
 // ------------------------------- Arrange functions -------------------------------
@@ -47,14 +47,17 @@ export function toposortArrange(g){
     const cols = {}
 
     Object.entries(levels).forEach(([node, level]) => {
+        if (level === null) return
         if (!cols[level]) cols[level] = []
-        cols[level].push(getNodeById(node))
+        cols[level].push(node)
     })
 
-    Object.values(cols).forEach((col, i) => {
-        col.forEach((node, j) => {
-            node.x = margin + i * margin
-            node.y = margin + j * margin
+    const nodes = Object.fromEntries(window.graph.nodes.map(node => [node.id, node]))
+
+    Object.keys(cols).sort().forEach((col, i) => {
+        cols[col].forEach((node, j) => {
+            nodes[node].x = margin + i * margin
+            nodes[node].y = margin + j * margin
         })
     })
 }
@@ -96,9 +99,9 @@ export function treeArrange(data, all=false){
         recBranch(result[0], 0, 0)
     }
 
-    for (const node in matrix) {
+    for (const node of data.result) {
         const { row, col } = matrix[node]
-        getNodeById(node).x = margin + col * margin
-        getNodeById(node).y = margin + row * margin
+        node.x = margin + col * margin
+        node.y = margin + row * margin
     }
 }
