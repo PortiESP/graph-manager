@@ -11,7 +11,7 @@
  * - visited: The visited nodes
  * - prevNode: The previous node for each node
  */
-export function dfs(graph, start, visited=undefined) {
+export default function dfs(graph, start, visited=undefined) {
     if (graph===undefined || start===undefined) throw new Error('Invalid graph or start node')
     if (graph[start] === undefined) throw new Error('Start node not found in the graph')
 
@@ -34,13 +34,13 @@ export function dfs(graph, start, visited=undefined) {
         const node = stack.pop()
 
         // Mark the node as visited (explored and added to the result list)
-        visited[dst] = true  
+        visited[node] = true  
         // Add the node to the result
         result.push(node)
 
         // Get the neighbors of the node
         const neighbors = graph[node] || []
-        for (const [src, dst, weight] of neighbors) {
+        for (const {src, dst, weight} of neighbors) {
             if (!visited[dst]) {     // If the neighbor is not visited (visited represents the nodes that has been explored and added to the result list)
                 stack.push(dst)      // Add the neighbor to the stack
                 prevNode[dst] = node // Save the previous node
