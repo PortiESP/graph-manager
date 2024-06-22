@@ -21,6 +21,7 @@
  * @method toggleSelect - Toggles the selection state of the element
  * @method distance - Abstract method. Calculates the distance between the element and the point (x, y)
  * @method toString - Generate a string representation of the element
+ * @method draw - Abstract method. Draw the element
  * @method moveBy - Move the node by dx, dy
  * @method isHover - Abstract method. Checks if the element is hover
  * @method clone - Abstract method. Clones the element
@@ -84,6 +85,11 @@ export class Element {
     }
 
     // ======================================================= Abstract methods =======================================================
+    // Draw (abstract method)
+    draw() {
+        throw new Error('Method not implemented.')
+    }
+
     // Distance (abstract method)
     distance(x, y) {
         throw new Error('Method not implemented.')

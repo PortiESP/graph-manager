@@ -67,6 +67,8 @@ export class Edge extends Element{
      * Draw the edge
      */
     draw() {
+        window.ctx.save()  // Save the current state of the canvas
+
         // Extract the radius of the nodes (used to draw the edge from border to border of the nodes instead of the center)
         const rDst = this.dst.r
         // Arrow head size
@@ -119,6 +121,7 @@ export class Edge extends Element{
             window.ctx.fillText(this.weight, centerX, centerY)
         }
             
+        window.ctx.restore()  // Restore the previous state of the canvas
     }
 
 
