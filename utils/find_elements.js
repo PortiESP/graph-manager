@@ -141,10 +141,11 @@ export function findElementsWithin(x1, y1, x2, y2){
     return window.graph.nodes.concat(window.graph.edges).filter(e => {
         const eType = e.constructor.name
         let x, y
-        // If the element is an edge, get the coordinates of the source and destination nodes, otherwise get the coordinates of the element
+        // If the element is an edge, use the center of the edge, otherwise get the coordinates of the element
         if (eType === "Edge") {
-            x = e.src.x
-            y = e.src.y
+            const coords = e.nodesIntersectionBorderCoords()
+            x = (coords.src.x + coords.dst.x) / 2
+            y = (coords.src.y + coords.dst.y) / 2
         } else {
             x = e.x
             y = e.y
