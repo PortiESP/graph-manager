@@ -71,7 +71,6 @@ export default function Graph(props) {
                 "Active tool: " + window.graph.tool || "None",
                 "Snapping: " + `${window.graph.snapReference?.x}, ${window.graph.snapReference?.y}`,
                 "Hover: " + closestHoverElement() || "None",
-                "Angle selected-mouse: " + window.graph.selected[0]?.angleTo(window.cvs.x, window.cvs.y) || "None",
                 "----------- Edit -----------",
                 "New node: " + window.graph.newNode,
                 "New edge: " + !!window.graph.newEdgeScr,

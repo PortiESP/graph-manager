@@ -20,6 +20,8 @@
  * @method deselect - Deactivates the selection state of the element and remove it from the selected elements array in the graph
  * @method toggleSelect - Toggles the selection state of the element
  * @method distance - Abstract method. Calculates the distance between the element and the point (x, y)
+ * @method toString - Generate a string representation of the element
+ * @method moveBy - Move the node by dx, dy
  * @method isHover - Abstract method. Checks if the element is hover
  * @method clone - Abstract method. Clones the element
  * @method equals - Abstract method. Checks if the element is equal to another element
@@ -60,6 +62,12 @@ export class Element {
         else this.select()
     }
 
+
+    /**
+     * Generate a string representation of the element
+     * 
+     * @returns {string} A string representation of the element
+     */
     toString() {
         return `[${this.constructor.name}: ${this.id}]`
     }
@@ -73,10 +81,6 @@ export class Element {
     moveBy(dx, dy) {
         this.x += dx
         this.y += dy
-    }
-
-    angleTo(x, y){
-        return Math.atan2(y - this.y, x - this.x)
     }
 
     // ======================================================= Abstract methods =======================================================
