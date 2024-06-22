@@ -122,7 +122,7 @@ export default function Graph(props) {
                     callback: () => {
                         const g = generateGraphArray()
                         const bfsData = bfs(g, window.graph.nodes[0])
-                        treeArrange(bfsData)
+                        treeArrange(window.graph.nodes, bfsData.prevNode, bfsData.result[0])
                         focusOnAll()
                     }
                 },
@@ -139,7 +139,7 @@ export default function Graph(props) {
                             acc.prevNode = { ...acc.prevNode, ...val.prevNode }
                             return acc
                         }, { result: [], prevNode: {} })
-                        treeArrange(data, true)
+                        treeArrange(window.graph.nodes, data.prevNode)
                         focusOnAll()
                     }
                 },
