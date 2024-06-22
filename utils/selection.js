@@ -77,6 +77,11 @@ export function deselectAll() {
 }
 
 
+/**
+ * Configures the selection box to start.
+ * 
+ * This function will set the initial coordinates of the selection box.
+ */
 export function startSelectionBox(){
     window.graph.selectionBox = {
         x1: window.cvs.x,
@@ -87,6 +92,11 @@ export function startSelectionBox(){
 }
 
 
+/**
+ * Configures the selection box to end.
+ * 
+ * This function will select the elements inside the selection box and reset the selection box.
+ */
 export function endSelectionBox(){
     // Get the elements inside the selection box
     const { x1, y1, x2, y2 } = window.graph.selectionBox
@@ -100,6 +110,13 @@ export function endSelectionBox(){
 }
 
 
+/**
+ * Updates the selection box.
+ * 
+ * This function will update the selection box with the new coordinates to expand or shrink the current selection box.
+ * 
+ * @param {Object} coords - The new coordinates of the selection box.
+ */
 export function updateSelectionBox(coords){
     // Update the selection box
     window.graph.selectionBox.x2 = coords.x
