@@ -1,6 +1,4 @@
 import constants from "../utils/constants"
-import { drawFunction } from "../utils/draw"
-import { findElementsWithin } from "../utils/find_elements"
 import { Element } from "./element"
 
 /**
@@ -70,19 +68,14 @@ export class Edge extends Element{
      */
     draw() {
         // Extract the radius of the nodes (used to draw the edge from border to border of the nodes instead of the center)
-        const rSrc = this.src.r
         const rDst = this.dst.r
         // Arrow head size
         const arrowSize = constants.ARROW_SIZE
+        // Calculate edge parameters
+        const angle = Math.atan2(this.dst.y - this.src.y, this.dst.x - this.src.x)  // Calculate the angle between the two nodes
+        const {src: offsetSrc, dst: offsetDst} = this.nodesIntersectionBorderCoords(0, this.directed ? arrowSize*0.8 : 0) // Calculate the coordinates of the edge from border to border of the nodes instead of the center
 
-        // Calculate the angle between the two nodes
-        const angle = Math.atan2(this.dst.y - this.src.y, this.dst.x - this.src.x)
-
-        // Calculate the offset from the center of the node
-        const arrowOffset = this.directed ? arrowSize*0.8 : 0  // If the edge is directed, stop before the border to leave space for the arrow
-        const offsetSrc = { x: rSrc * Math.cos(angle), y: rSrc * Math.sin(angle) } // Calculate the coordinates of the edge from the border of the node
-        const offsetDst = { x: (rDst + arrowOffset) * Math.cos(angle + Math.PI), y: (rDst + arrowOffset) * Math.sin(angle + Math.PI) }  // Calculate the coordinates of the other end of the edge from the border of the node (if the edge is not directed, the arrowOffset is 0)
-
+        // Determine the color of the edge
         const color =   this.selected ? this.selectedColor :
                         this.isHover() ? this.hoverColor : 
                         this.color
@@ -91,8 +84,8 @@ export class Edge extends Element{
         window.ctx.beginPath()
         window.ctx.strokeStyle = color
         window.ctx.lineWidth = this.thickness
-        window.ctx.moveTo(this.src.x + offsetSrc.x, this.src.y + offsetSrc.y)  // Move to the source node
-        window.ctx.lineTo(this.dst.x + offsetDst.x, this.dst.y + offsetDst.y)  // Draw a line to the destination node
+        window.ctx.moveTo(offsetSrc.x, offsetSrc.y)  // Move to the source node
+        window.ctx.lineTo(offsetDst.x, offsetDst.y)  // Draw a line to the destination node
         window.ctx.stroke()
 
         // If the edge is directed, draw an arrow
@@ -128,6 +121,32 @@ export class Edge extends Element{
             
     }
 
+
+    /**
+     * Calculate the coordinates of the edge from the border of the nodes instead of the center
+     * 
+     * @param {Number} offsetSrc Offset from border of the source node (positive values move the edge away from the node, negative values move the edge towards the node)
+     * @param {Number} offsetDst Offset from border of the destination node (positive values move the edge away from the node, negative values move the edge towards the node)
+     * @returns Object. The coordinates of the edge {src: {x, y}, dst: {x, y}}
+     */
+    nodesIntersectionBorderCoords(offsetSrc=0, offsetDst=0) {
+        // Extract the radius of the nodes (used to draw the edge from border to border of the nodes instead of the center)
+        const rSrc = this.src.r
+        const rDst = this.dst.r
+
+        // Calculate the angle between the two nodes
+        const angle = Math.atan2(this.dst.y - this.src.y, this.dst.x - this.src.x)
+
+        // Calculate the offset from the center of the node
+        const newSrc = { x: (rSrc+offsetSrc) * Math.cos(angle), y: (rSrc+offsetSrc) * Math.sin(angle) } // Calculate the coordinates of the edge from the border of the node
+        const newDst = { x: (rDst+offsetDst) * Math.cos(angle + Math.PI), y: (rDst+offsetDst) * Math.sin(angle + Math.PI) }  // Calculate the coordinates of the other end of the edge from the border of the node (if the edge is not directed, the arrowOffset is 0)
+
+        return {
+            src: { x: this.src.x + newSrc.x, y: this.src.y + newSrc.y },
+            dst: { x: this.dst.x + newDst.x, y: this.dst.y + newDst.y }
+        }
+    }
+
     /**
      * Calculate the distance between the closest point of the edge and a point
      * 
@@ -161,48 +180,68 @@ export class Edge extends Element{
     }
 
     /**
-     * Similar to the distance method, but returns a boolean indicating whether the edge is being hovered or not. 
-     * Also, it only checks if the point is inside the bounding box of the edge
+     * Determine if the edge is being hovered by the mouse
+     * 
+     * Similar to the distance method, but returns a boolean indicating whether the edge is being hovered or not (plus a slight margin). 
+     * 
+     * The method used to determine if the mouse is hovering the edge is to calculate a bounding box around the edge considering the slope of the edge as the rotation angle of the bounding box. The bounding box is defined by math functions that verify if a point in the in-side of the bounding box.
+     * 
      * @returns Boolean. Whether the edge is being hovered or not
      */
     isHover() {
+        // Get the mouse coordinates
         const x = window.cvs.x
         const y = window.cvs.y
+
+        // Src and dst coordinates of the edge (from border to border of the nodes instead of the center)
+        const {src, dst} = this.nodesIntersectionBorderCoords()
         
-        const THRESHOLD = this.thickness*2
-        const slope = (this.dst.y - this.src.y) / (this.dst.x - this.src.x)
+        // Define some constants
+        const THRESHOLD = this.thickness * constants.EDGE_HOVER_THRESHOLD_FACTOR  // The threshold to consider the edge as hovered
 
-        if (slope === Infinity || slope === -Infinity) return Math.abs(x - this.src.x) < THRESHOLD && y > Math.min(this.src.y, this.dst.y) && y < Math.max(this.src.y, this.dst.y)
+        // Calculate the slope of the edge
+        const slope = (dst.y - src.y) / (dst.x - src.x)
 
-        const angle = Math.atan(slope)
-        const angleSign = Math.sign(angle)
-        const anglePerpendicular = angle + Math.PI / 2
-        const slopePerpendicular = Math.tan(anglePerpendicular)
-        const boundsX = [Math.min(this.src.x, this.dst.x), Math.max(this.src.x, this.dst.x)]
+        // Check if the edge is vertical, and if so, check if the mouse is close to the edge using the method for vertical lines, regular non-rotated rectangles. 
+        // Checks if the mouse is inside the bounding box of the edge
+        if (slope === Infinity || slope === -Infinity) return Math.abs(x - src.x) < THRESHOLD && y > Math.min(src.y, dst.y) && y < Math.max(src.y, dst.y)
 
-        // Function defining the edge
-        const f = (x) => slope * x + this.src.y - slope * this.src.x
+        // If the edge is not vertical...
+
+        // Calculate some properties of the edge
+        const angle = Math.atan(slope)                                    // Angle of the edge
+        const angleSign = Math.sign(angle)                                // Sign of the angle (+/-) (used to determine in which side of the edge a point is)
+        const anglePerpendicular = angle + Math.PI / 2                    // Angle perpendicular to the edge (used to define the functions intersecting the nodes defining the edge, and that will be used to check if the mouse is inside a rotated bounding box of the edge)
+        const slopePerpendicular = Math.tan(anglePerpendicular)           // Slope of the perpendicular line to the edge
+        const boundsX = [Math.min(src.x, dst.x), Math.max(src.x, dst.x)] // The leftmost and rightmost x coordinates of the edge: [leftmost, rightmost]
+
+        // Mathematical functions defining the edge and the perpendicular lines intersecting the nodes defining the edge
+        const f = (x) => slope * x + src.y - slope * src.x                                   // Function defining the edge
         const fp1 = (x) => slopePerpendicular * x + (f(boundsX[0]) - slopePerpendicular * boundsX[0])  // Perpendicular function to f(x) intersecting the most left point of the edge
         const fp2 = (x) => slopePerpendicular * x + (f(boundsX[1]) - slopePerpendicular * boundsX[1])  // Perpendicular function to f(x) intersecting the most right point of the edge
-        const fpm = (x) => slopePerpendicular * x + window.cvs.y - slopePerpendicular * window.cvs.x  // Function defining mouse to line
 
-        const inFp1 = (x, y) => angleSign*y > angleSign*fp1(x)  // Check if the point is above the perpendicular function intersecting the most left point of the edge
-        const inFp2 = (x, y) => angleSign*y < angleSign*fp2(x)  // Check if the point is below the perpendicular function intersecting the most right point of the edge
-        // Distance from the mouse to closest point of the edge
-        const A = this.src.y - this.dst.y
-        const B = this.dst.x - this.src.x
-        const C = this.src.x * this.dst.y - this.dst.x * this.src.y
+        // Functions to check the side of the edge a point is
+        // The `angleSign` is used to "flip" the inequality sign depending on the slope of the edge
+        const inFp1 = (x, y) => angleSign*y > angleSign*fp1(x)  // Check if the point is below the perpendicular function intersecting the most left point of the edge
+        const inFp2 = (x, y) => angleSign*y < angleSign*fp2(x)  // Check if the point is above the perpendicular function intersecting the most right point of the edge
+
+        // Distance from the mouse to closest point of the edge (well-known formula for distance from a point to a line)
+        const A = src.y - dst.y
+        const B = dst.x - src.x
+        const C = src.x * dst.y - dst.x * src.y
         const dist = (x,y) => Math.abs(A * x + B * y + C) / Math.sqrt(A * A + B * B)
+
+        // Check if the point is close enough to the edge to be considered hovered
         const isCloseToF = dist(x,y) < THRESHOLD
 
-        // Check if the point is inside the bounding box of the edge
+        // The math functions and the distance to the edge are used to determine if the mouse is inside the bounding box of the edge
         return inFp1(x, y) && inFp2(x, y) && isCloseToF
     }
 
     /**
      * This method is not implemented for edges, but its necessary to keep the interface consistent with the Node class. 
      * 
-     * [i] This is due to the ability to select multiple elements at once being some of those elements nodes and edges, but edges position is determined by the position of the nodes they are connected to.
+     * [i] This is due to the fact that edges position is determined by the position of the nodes they connect, and not by their own position.
      */
     moveBy(){}
 

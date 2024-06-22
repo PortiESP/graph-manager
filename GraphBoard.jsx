@@ -49,11 +49,11 @@ export default function Graph(props) {
 
             // --- Debug ---
             
-            // loadFromJSON(constants.TEMPLATE_GRAPH)
+            loadFromJSON(constants.TEMPLATE_GRAPH)
             
-            loadFromEdgeArray(constants.TEMPLATE_GRAPH_3)
-            circularArrange(window.graph.nodes)
-            focusOnAll()
+            // loadFromEdgeArray(constants.TEMPLATE_GRAPH_3)
+            // circularArrange(window.graph.nodes)
+            // focusOnAll()
 
             focusOnAll()
             window.graph.info = [

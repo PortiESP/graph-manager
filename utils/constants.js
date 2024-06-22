@@ -4,7 +4,7 @@ export default {
         KeyS: "select",
         KeyE: "edit",
     },
-    EDGE_DETECTION_RADIUS: 10,
+    EDGE_HOVER_THRESHOLD_FACTOR: 2, // The factor to multiply the edge thickness to determine the hover threshold
     ARROW_SIZE: 15,
     EDGE_WEIGHT_BOX_SIZE: 10,  // Horizontal padding of the box containing the weight of the edge
     EDGE_WEIGHT_FONT_SIZE: 16, // Font size of the weight of the edge
@@ -39,6 +39,7 @@ export default {
         ],
         edges: [
             {src: "A", dst: "B", weight: 1},
+            {src: "B", dst: "C", weight: 1, directed: true},
         ]
     },
     TEMPLATE_GRAPH_2: `
