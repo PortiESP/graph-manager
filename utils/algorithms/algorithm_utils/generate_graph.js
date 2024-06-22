@@ -12,7 +12,12 @@ export function generateGraphArray(){
         // Add the edge to the graph
         graph[edge.src].push(edge)
         // Add the edge to the graph if it is not directed
-        if (!edge.directed) graph[edge.dst].push(edge)
+        if (!edge.directed) {
+            const newE = edge.clone()
+            newE.src = edge.dst
+            newE.dst = edge.src
+            graph[edge.dst].push(newE)
+        }
     })
 
     return graph
