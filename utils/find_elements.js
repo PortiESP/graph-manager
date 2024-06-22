@@ -132,6 +132,15 @@ export function closestHoverElement(){
 }
 
 
+/**
+ * Find all elements that are within the selection box.
+ * 
+ * @param {number} x1 - The x coordinate of the first corner of the selection box.
+ * @param {number} y1 - The y coordinate of the first corner of the selection box.
+ * @param {number} x2 - The x coordinate of the second corner of the selection box.
+ * @param {number} y2 - The y coordinate of the second corner of the selection box.
+ * @returns {Element[]} All elements that are within the selection box.
+ */
 export function findElementsWithin(x1, y1, x2, y2){
     // Swap the coordinates if the selection box is drawn from right to left or bottom to top
     if (x1 > x2) [x1, x2] = [x2, x1]

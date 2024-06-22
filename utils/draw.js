@@ -11,6 +11,8 @@ import { drawDebugInfo } from "../../canvas/utils/canvas_utils"
  *     - Nodes being created
  */
 export default function drawAll(){
+    window.ctx.save() // Save the current context state
+
     // Reset styles
     window.ctx.font = `${12/cvs.zoom}px Arial`
     window.ctx.textAlign = 'left'
@@ -54,7 +56,10 @@ export default function drawAll(){
     // --- Selection box ---
     drawSelectionBox()
 
+    // --- Debug info ---
     if (window.cvs.debug) drawDebugInfo(window.cvs.debugData())
+
+    window.ctx.restore() // Restore the context state
 }
 
 /**
@@ -110,6 +115,9 @@ export function drawGrid(){
 }
 
 
+/**
+ * Draw the selection box
+ */
 export function drawSelectionBox(){
     if (!window.graph.selectionBox) return
 
