@@ -195,12 +195,6 @@ export class Edge extends Element{
         const dist = (x,y) => Math.abs(A * x + B * y + C) / Math.sqrt(A * A + B * B)
         const isCloseToF = dist(x,y) < THRESHOLD
 
-        if (this === window.graph.edges[2]){
-            window.cvs.debugFunctions["edge"] = () => drawFunction(fpm, "red")
-            window.cvs.debugFunctions["edge2"] = () => drawFunction(f, "red")
-            console.log("Edge", inFp1(x, y), inFp2(x, y), isCloseToF, f(x), fpm(x), dist(x,y))
-        }
-
         // Check if the point is inside the bounding box of the edge
         return inFp1(x, y) && inFp2(x, y) && isCloseToF
     }

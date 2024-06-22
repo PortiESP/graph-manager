@@ -37,6 +37,7 @@ export function loadFromEdgePlainTextList(edgeList) {
             nodes[label] = new Node(0, 0, constants.DEFAULT_NODE_RADIUS, label)
         }
     }
+    
     // Clear the current graph and reset all the graph global variables
     setupGraphGlobals()
 

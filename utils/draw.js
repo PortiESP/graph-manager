@@ -1,5 +1,6 @@
 import constants from "./constants"
 import { getViewBox } from "../../canvas/utils/zoom"
+import { drawDebugInfo } from "../../canvas/utils/canvas_utils"
 
 /**
  * Draw all the elements of the graph
@@ -53,7 +54,7 @@ export default function drawAll(){
     // --- Selection box ---
     drawSelectionBox()
 
-    if (window.cvs.debug) window.cvs.drawDebugInfo(window.cvs.debugData())
+    if (window.cvs.debug) drawDebugInfo(window.cvs.debugData())
 }
 
 /**
