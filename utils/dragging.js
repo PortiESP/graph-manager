@@ -23,13 +23,13 @@ export function handleSelectDragging(e, mouse) {
 }
 
 
-export function calcDraggingOffset(e, mouse) {
-    const originX = window.CSSMathValue.draggingOrigin.x
-    const originY = window.CSSMathValue.draggingOrigin.y
-
-    return {dx: mouse.x - originX, dy: mouse.y - originY}
-}
-
+/**
+ * Handles the dragging of elements when the snap mode is enabled.
+ * 
+ * This function will return the offset to be applied to the dragged element to ensure it snaps to the grid.
+ * 
+ * @returns {Object} An object with the dx and dy offset to be applied to the dragged element (should be +/- the grid size)
+ */
 export function snapToGrid() {
     const gridSize = constants.GRID_SIZE
     const {x, y} = window.cvs
