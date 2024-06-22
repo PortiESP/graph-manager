@@ -1,4 +1,5 @@
 import { generateSuccessorsByPredecessors } from "./algorithms/algorithm_utils/convertions"
+import dfs from "./algorithms/dfs"
 import { toposortKahn } from "./algorithms/toposort"
 import constants from "./constants"
 
@@ -162,4 +163,13 @@ export function treeArrangeFromPrevsList(nodes, prevsList, root=undefined){
         node.x = topMargin + col * hGap
         node.y = leftMargin + row * vGap
     }
+}
+
+
+export function treeArrange(g, root){
+    // Generate the path
+    const data = dfs(g, root)
+
+    // Arrange the nodes
+    treeArrangeFromPrevsList(window.graph.nodes, data.prevNode, root)
 }
