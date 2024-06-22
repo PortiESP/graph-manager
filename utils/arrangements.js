@@ -106,7 +106,7 @@ export function toposortArrange(g){
  * @param {Object} prevsList Object representing the predecessors of each node: {Node: Node, ...}
  * @param {String} root Root node of the tree (optional) (if not passed, the tree is arranged from all possible roots)
  */
-export function treeArrange(nodes, prevsList, root=undefined){
+export function treeArrangeFromPrevsList(nodes, prevsList, root=undefined){
     // Generate the successors of each node based on the predecessors
     const succ = generateSuccessorsByPredecessors(prevsList)
 

@@ -8,7 +8,7 @@ import { focusOnAll } from './utils/view'
 import { getViewBox } from '../canvas/utils/zoom'
 import { loadFromEdgeArray, loadFromEdgePlainTextList, loadFromJSON } from './utils/load_graph'
 import constants from './utils/constants'
-import { circularArrange, toposortArrange, treeArrange } from './utils/arrangements'
+import { circularArrange, toposortArrange, treeArrangeFromPrevsList } from './utils/arrangements'
 import { generateGraphArray } from './utils/algorithms/algorithm_utils/generate_graph'
 import { toposortKahn } from './utils/algorithms/toposort'
 import bfs from './utils/algorithms/bfs'
@@ -122,7 +122,7 @@ export default function Graph(props) {
                     callback: () => {
                         const g = generateGraphArray()
                         const bfsData = bfs(g, window.graph.nodes[0])
-                        treeArrange(window.graph.nodes, bfsData.prevNode, bfsData.result[0])
+                        treeArrangeFromPrevsList(window.graph.nodes, bfsData.prevNode, bfsData.result[0])
                         focusOnAll()
                     }
                 },
@@ -139,7 +139,7 @@ export default function Graph(props) {
                             acc.prevNode = { ...acc.prevNode, ...val.prevNode }
                             return acc
                         }, { result: [], prevNode: {} })
-                        treeArrange(window.graph.nodes, data.prevNode)
+                        treeArrangeFromPrevsList(window.graph.nodes, data.prevNode)
                         focusOnAll()
                     }
                 },
