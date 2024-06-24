@@ -4,7 +4,7 @@ import Canvas from '../canvas/Canvas'
 import { setupGraphGlobals } from './globals'
 import { activeToolCallback } from './utils/tools/tools_callbacks'
 import drawAll from './utils/draw'
-import { focusOnAll } from './utils/view'
+import { focusOnAllNodes } from './utils/view'
 import { getViewBox } from '../canvas/utils/zoom'
 import { loadFromEdgeArray, loadFromEdgePlainTextList, loadFromJSON } from './utils/load_graph'
 import constants from './utils/constants'
@@ -49,9 +49,9 @@ export default function Graph(props) {
             
             // loadFromEdgeArray(constants.TEMPLATE_GRAPH_3)
             // circularArrange(window.graph.nodes)
-            // focusOnAll()
+            // focusOnAllNodes()
 
-            focusOnAll()
+            focusOnAllNodes()
             window.graph.info = [
                 new Info(500, 400, "This is a test"),
             ]
@@ -83,7 +83,7 @@ export default function Graph(props) {
                 },
                 {
                     label: 'Focus all',
-                    callback: () => focusOnAll()
+                    callback: () => focusOnAllNodes()
                 },
                 {
                     label: 'Generate graph array',
@@ -98,7 +98,7 @@ export default function Graph(props) {
                     callback: () => {
                         loadFromEdgeArray(constants.TEMPLATE_GRAPH_3)
                         circularArrange(window.graph.nodes)
-                        focusOnAll()
+                        focusOnAllNodes()
                     }
                 },
                 {
@@ -106,7 +106,7 @@ export default function Graph(props) {
                     callback: () => {
                         loadFromEdgePlainTextList(constants.TEMPLATE_GRAPH_TOPO)
                         circularArrange(window.graph.nodes)
-                        focusOnAll()
+                        focusOnAllNodes()
                     }
                 },
                 {
@@ -114,7 +114,7 @@ export default function Graph(props) {
                     callback: () => {
                         const g = generateGraphArray()
                         toposortArrange(g)
-                        focusOnAll()
+                        focusOnAllNodes()
                     }
                 },
                 {
@@ -122,7 +122,7 @@ export default function Graph(props) {
                     callback: () => {
                         const g = generateGraphArray()
                         treeArrange(g, window.graph.nodes[0])
-                        focusOnAll()
+                        focusOnAllNodes()
                     }
                 },
                 {
@@ -131,7 +131,7 @@ export default function Graph(props) {
                         const g = generateGraphArray()
                         const data = bfs(g, window.graph.nodes[0])
                         treeArrangeFromPrevsList(window.graph.nodes, data.prevNode, window.graph.nodes[0])
-                        focusOnAll()
+                        focusOnAllNodes()
                     }
                 },
                 {
@@ -148,7 +148,7 @@ export default function Graph(props) {
                             return acc
                         }, { result: [], prevNode: {} })
                         treeArrangeFromPrevsList(window.graph.nodes, data.prevNode)
-                        focusOnAll()
+                        focusOnAllNodes()
                     }
                 },
             ])

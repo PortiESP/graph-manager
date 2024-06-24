@@ -26,14 +26,15 @@ export function focusOnElement(element) {
 /**
  * Pans the canvas to focus on all the elements by centering them on the screen.
  */
-export function focusOnAll(){
+export function focusOnAllNodes(){
     let x1 = Infinity
     let y1 = Infinity
     let x2 = -Infinity
     let y2 = -Infinity
+    const graph = window.graph
 
     // Iterate over all the nodes to get the coordinates of a bounding box that contains all the nodes
-    for (const node of window.graph.nodes){
+    for (const node of graph.nodes){
         x1 = Math.min(x1, node.x-node.r*2)
         y1 = Math.min(y1, node.y-node.r*2)
         x2 = Math.max(x2, node.x+node.r*2)

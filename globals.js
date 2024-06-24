@@ -59,4 +59,8 @@ export class Graph {
         this.memento = [] // Memento stack
         this.mementoRedo = [] // Redo stack
     }
+
+    getElements(){
+        return this.nodes.concat(this.edges).concat(this.info)
+    }
 }
