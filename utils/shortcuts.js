@@ -131,9 +131,6 @@ export function handleShortcutKeyUp(code) {
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutMouseDown(button, mouse) {
-
-    const element = closestHoverElement(mouse.x, mouse.y)
-
     // If the user is creating a new node, drop it on the canvas
     if (button === 0 && window.graph.newNode) {
         window.graph.addNodeToGraph(window.cvs.x, window.cvs.y)
@@ -141,14 +138,6 @@ export function handleShortcutMouseDown(button, mouse) {
         return
     }
 
-    // If the user clicked an empty space
-    if (!element) {
-        // Reset the double click target
-        window.graph.doubleClickTarget = null
-
-        // Prepare create a selection box
-        startSelectionBox()
-    }
     return false
 }
 
@@ -160,14 +149,6 @@ export function handleShortcutMouseDown(button, mouse) {
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutMouseUp(button, coords) {
-    // Reset the double click target
-    document.body.style.cursor = "default"
-
-    // If the user is creating a selection box
-    if (window.graph.selectionBox) {
-        endSelectionBox()
-    }
-
     // If the user is panning the canvas
     if (isPanning()) {
         stopPanning()
@@ -189,11 +170,6 @@ export function handleShortcutMouseMove(e, coords) {
         panBy(e.movementX, e.movementY)
 
         return true
-    }
-
-    // If the user is creating a selection box
-    if (window.graph.selectionBox) {
-        updateSelectionBox(coords)
     }
 
     return false
