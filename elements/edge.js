@@ -67,6 +67,8 @@ export class Edge extends Element{
      * Draw the edge
      */
     draw() {
+        if (this.hidden) return
+
         window.ctx.save()  // Save the current state of the canvas
 
         // Extract the radius of the nodes (used to draw the edge from border to border of the nodes instead of the center)

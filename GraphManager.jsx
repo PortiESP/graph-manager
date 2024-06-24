@@ -14,6 +14,7 @@ import { toposortKahn } from './utils/algorithms/toposort'
 import bfs from './utils/algorithms/bfs'
 import { Info } from './elements/Info'
 import { closestHoverElement } from './utils/find_elements'
+import { getEdgesByPredecessors } from './utils/algorithms/algorithm_utils/convertions'
 
 /**
  * Graph component
@@ -130,6 +131,9 @@ export default function Graph(props) {
                         const g = generateGraphArray()
                         const data = bfs(g, window.graph.nodes[0])
                         treeArrangeFromPrevsList(window.graph.nodes, data.prevNode, window.graph.nodes[0])
+                        const edges = getEdgesByPredecessors(data.prevNode)
+                        const elements = edges.concat(window.graph.nodes)
+                        window.graph.hideAllBut(elements)
                         focusOnAllNodes()
                     }
                 },

@@ -161,5 +161,22 @@ export class Graph {
     isCreatingEdge() {
         return this.newEdgeScr !== null
     }
+
+
+    findEdgeByNodes(srcId, dstId) {
+        // If the source and destination nodes are a Node object, get their id
+        if (srcId instanceof Node) srcId = srcId.id
+        if (dstId instanceof Node) dstId = dstId.id
+
+        // Get the edge with the given source and destination nodes
+        return this.edges.find(e => {
+            if (e.directed) return e.src.id === srcId && e.dst.id === dstId
+            else return (e.src.id === srcId && e.dst.id === dstId) || (e.src.id === dstId && e.dst.id === srcId)
+        })
+    }
+
+    hideAllBut(elements){
+        this.getElements().forEach(e => e.hidden = !elements.includes(e))
+    }
 }
 

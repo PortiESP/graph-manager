@@ -47,6 +47,8 @@ export class Info extends Element {
      * Draw the info element on the canvas
      */
     draw() {
+        if (this.hidden) return
+
         const ctx = window.ctx
         ctx.save() // Save the current context state
 

@@ -57,3 +57,15 @@ export function generateSuccessorsByPredecessors(predecessors) {
 
     return successors
 }
+
+export function getEdgesByPredecessors(predecessors) {
+    const edges = []
+    for (const node in predecessors) {
+        const pre = predecessors[node]
+        if (pre === null) continue
+
+        edges.push(window.graph.findEdgeByNodes(pre, node))
+    }
+
+    return edges
+}

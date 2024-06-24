@@ -48,6 +48,8 @@ export class Node extends Element{
      * Draw the node
      */
     draw() {
+        if (this.hidden) return
+
         const ctx = window.ctx
         ctx.save()
 
