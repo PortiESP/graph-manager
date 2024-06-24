@@ -3,7 +3,7 @@ import { undo, redo } from "./memento"
 import { deselectAll, endSelectionBox, startSelectionBox, updateSelectionBox } from "./selection"
 import { activateToolByKeyCode, isTool } from "./tools/tools_callbacks"
 import { resetZoom } from "../../canvas/utils/zoom"
-import { panBy, resetPan } from "../../canvas/utils/pan"
+import { isPanning, panBy, resetPan, startPanning, stopPanning } from "../../canvas/utils/pan"
 import { checkShortcut } from "../../canvas/utils/keyboard"
 import { closestHoverElement } from "./find_elements"
 
@@ -152,6 +152,11 @@ export function handleShortcutMouseUp(button, coords) {
         endSelectionBox()
     }
 
+    // If the user is panning the canvas
+    if (isPanning()) {
+        stopPanning()
+    }
+
     return false
 }
 
@@ -205,7 +210,7 @@ export function handleShortcutDoubleClick(e, mouse) {
     // If the element is not an element, reset the double click target and prepare to pan the canvas
     else {
         window.graph.doubleClickTarget = null
-        document.body.style.cursor = "grabbing"
+        startPanning()
     }
 
     return false
