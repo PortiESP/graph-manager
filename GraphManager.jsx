@@ -29,7 +29,7 @@ export default function Graph(props) {
             setupGraphGlobals()
             window.ctx.save()
 
-            // --- Setup callbacks ---
+            // --- Setup automatic tool callbacks ---
             // Mouse down and up callbacks
             window.cvs.mouseDownCallback = activeToolCallback('mouseDownCallback') 
             window.cvs.mouseUpCallback = activeToolCallback('mouseUpCallback')
@@ -44,7 +44,6 @@ export default function Graph(props) {
             window.cvs.autoResize = true
 
             // --- Debug ---
-            
             loadFromJSON(constants.TEMPLATE_GRAPH)
             
             // loadFromEdgeArray(constants.TEMPLATE_GRAPH_3)
@@ -96,7 +95,7 @@ export default function Graph(props) {
                 {
                     label: 'Load test graph',
                     callback: () => {
-                        loadFromEdgeArray(constants.TEMPLATE_GRAPH_3)
+                        loadFromEdgePlainTextList(constants.TEMPLATE_GRAPH_2)
                         circularArrange(window.graph.nodes)
                         focusOnAllNodes()
                     }
@@ -153,7 +152,7 @@ export default function Graph(props) {
                 },
             ])
 
-            // Redraw the graph
+            // Redraw the graph (debug)
             window.graph.update = ()=> {
                     const coords = getViewBox()  // Get the coordinates of the view box
                     const margin = 10000  // Margin to clear the canvas and avoid artifacts

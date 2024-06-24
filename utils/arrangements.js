@@ -137,7 +137,9 @@ export function treeArrangeFromPrevsList(nodes, prevsList, root=undefined){
 
         // Make the recursive call for each child
         children.forEach((child, k) => {
-            const newRow = k===0 ? i : i+1  // If it is the first child, keep the same row. Otherwise, increment the row (this means that first child is placed in the same row as the parent, and the others are placed in the following rows)
+            const newRow = k===0 ? // If it is the first child
+                            i : // Keep the same row (this means that first child is placed in the same row as the parent, and the others are placed in the following rows)
+                            Math.max(i+1, maxRow+1) // Place the following children in the last row (the bottom-most row) 
             const newCol = j + 1  // Increment the column  (the children of any node are placed in the next column)
             recBranch(child, newRow, newCol)
         })
