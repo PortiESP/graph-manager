@@ -48,15 +48,15 @@ export class Graph {
         this.selected = [] // Selected nodes
         this.selectionBox = null // Object representing the selection box: {x1, y1, x2, y2}
         // Double click
-        this.doubleClickTarget = null, // The target of the double click event (set to the target of the mouse down event when a double click is detected, and reset to null on the next mouse up event)
-        
+        this.doubleClickTarget = null // The target of the double click event (set to the target of the mouse down event when a double click is detected, and reset to null on the next mouse up event)
+
         // Config
         this.prevent_deselect = false // Prevent deselecting nodes (used after dragging nodes)
         this.showWeights = true // Show weights on edges
         this.snapToGrid = true // Snap nodes to the grid
-        
+
         // Snap
-        this.snapReference = null, // Reference point for snapping (used when dragging nodes while on snap mode)
+        this.snapReference = null // Reference point for snapping (used when dragging nodes while on snap mode)
 
         // Flags
         this.newNode = false // New node being created
@@ -67,11 +67,11 @@ export class Graph {
         this.mementoRedo = [] // Redo stack
     }
 
-    getElements(){
+    getElements() {
         return this.nodes.concat(this.edges).concat(this.info)
     }
 
-    resetAll(){
+    resetAll() {
         deselectAll()  // Deselect all nodes
         this.newEdgeScr = null  // Reset the edge creation
         this.newNode = false    // Reset the node creation
@@ -82,84 +82,84 @@ export class Graph {
 
 
     // Set the hidden property of all elements to false
-    showAll(){
+    showAll() {
         this.getElements().forEach(e => e.hidden = false)
     }
 
-    
-/**
- * Adds a new node to the graph global variable.
- * 
- * @param {number} x - The x coordinate of the node.
- * @param {number} y - The y coordinate of the node.
- * @param {number} r - The radius of the node.
- * @param {string} label - The label of the node.
- */
-addNodeToGraph(x, y, r, label = null) {
-    // Default radius
-    if (r === undefined) r = constants.DEFAULT_NODE_RADIUS
 
-    // Append the node to the list of nodes
-    this.nodes.push(new Node(x, y, r, label))
-}
+    /**
+     * Adds a new node to the graph global variable.
+     * 
+     * @param {number} x - The x coordinate of the node.
+     * @param {number} y - The y coordinate of the node.
+     * @param {number} r - The radius of the node.
+     * @param {string} label - The label of the node.
+     */
+    addNodeToGraph(x, y, r, label = null) {
+        // Default radius
+        if (r === undefined) r = constants.DEFAULT_NODE_RADIUS
 
-/**
- * Adds a new edge to the graph global variable.
- * 
- * @param {Node} src - The source node of the edge.
- * @param {Node} dst - The destination node of the edge.
- * @param {number} weight - The weight of the edge.
- */
-addEdgeToGraph(src, dst, weight) {
-    // Default weight
-    if (!weight) weight = constants.DEFAULT_EDGE_WEIGHT
-
-    // If the source and destination nodes are valid and different, add the edge to the list of edges
-    if (src && dst && src !== dst) {
-        this.edges.push(new Edge(src, dst, weight))
+        // Append the node to the list of nodes
+        this.nodes.push(new Node(x, y, r, label))
     }
 
-    stopCreatingEdge()
-}
+    /**
+     * Adds a new edge to the graph global variable.
+     * 
+     * @param {Node} src - The source node of the edge.
+     * @param {Node} dst - The destination node of the edge.
+     * @param {number} weight - The weight of the edge.
+     */
+    addEdgeToGraph(src, dst, weight) {
+        // Default weight
+        if (!weight) weight = constants.DEFAULT_EDGE_WEIGHT
 
-/**
- * Starts the process of creating a new node.
- */
-startCreatingNode() {
-    this.newNode = true
-}
+        // If the source and destination nodes are valid and different, add the edge to the list of edges
+        if (src && dst && src !== dst) {
+            this.edges.push(new Edge(src, dst, weight))
+        }
 
-/**
- * Stops the process of creating a new node. This function will not instantiate a new node nor add it to the graph.
- */
-stopCreatingNode() {
-    this.newNode = false
-}
+        this.stopCreatingEdge()
+    }
 
-/**
- * Returns whether the user is creating a new node.
- *  
- * @returns {boolean} Whether the user was hovering a node to start creating a new edge. If true, the user is creating a new edge. If false, the user is not creating a new edge.
- */
-startCreatingEdge() {
-    this.newEdgeScr = closestHoverNode()
-    return this.newEdgeScr
-}
+    /**
+     * Starts the process of creating a new node.
+     */
+    startCreatingNode() {
+        this.newNode = true
+    }
 
-/**
- * Stops the process of creating a new edge. This function will not instantiate a new edge nor add it to the graph.
- */
-stopCreatingEdge() {
-    this.newEdgeScr = null
-}
+    /**
+     * Stops the process of creating a new node. This function will not instantiate a new node nor add it to the graph.
+     */
+    stopCreatingNode() {
+        this.newNode = false
+    }
 
-/**
- * Returns whether the user is creating a new edge.
- *  
- * @returns {boolean} Whether the user is creating a new edge. If true, the user is creating a new edge. If false, the user is not creating a new edge.
- */
-isCreatingEdge() {
-    return this.newEdgeScr !== null
-}
+    /**
+     * Returns whether the user is creating a new node.
+     *  
+     * @returns {boolean} Whether the user was hovering a node to start creating a new edge. If true, the user is creating a new edge. If false, the user is not creating a new edge.
+     */
+    startCreatingEdge() {
+        this.newEdgeScr = closestHoverNode()
+        return this.newEdgeScr
+    }
+
+    /**
+     * Stops the process of creating a new edge. This function will not instantiate a new edge nor add it to the graph.
+     */
+    stopCreatingEdge() {
+        this.newEdgeScr = null
+    }
+
+    /**
+     * Returns whether the user is creating a new edge.
+     *  
+     * @returns {boolean} Whether the user is creating a new edge. If true, the user is creating a new edge. If false, the user is not creating a new edge.
+     */
+    isCreatingEdge() {
+        return this.newEdgeScr !== null
+    }
 }
 

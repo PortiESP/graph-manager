@@ -1,5 +1,5 @@
 import constants from "./constants"
-import { undo, redo } from "./memento"
+import { undo, redo, recordMemento } from "./memento"
 import { deselectAll, endSelectionBox, startSelectionBox, updateSelectionBox } from "./selection"
 import { activateToolByKeyCode, isTool } from "./tools/tools_callbacks"
 import { resetZoom } from "../canvas-component/utils/zoom"
@@ -87,7 +87,20 @@ export function handleShortcutKeyDown(code) {
             return true
         }
 
+        // If the user presses the delete/supr key, delete the hovered elements
+        if (checkShortcut(constants.DELETE_KEY)) {
+            recordMemento()  // Record the current state before deleting the elements
 
+            // Delete the hovered edges, if any
+            window.graph.getElements().forEach(e => {
+                if (e.selected) e.delete()
+            })
+        }
+
+        // If the user presses the N key, start creating a new node
+        if (checkShortcut(constants.NODE_CREATION_KEY)) {
+            window.graph.newNode = true
+        }
 
     }
 
@@ -120,6 +133,13 @@ export function handleShortcutKeyUp(code) {
 export function handleShortcutMouseDown(button, mouse) {
 
     const element = closestHoverElement(mouse.x, mouse.y)
+
+    // If the user is creating a new node, drop it on the canvas
+    if (button === 0 && window.graph.newNode) {
+        window.graph.addNodeToGraph(window.cvs.x, window.cvs.y)
+        window.graph.stopCreatingNode()
+        return
+    }
 
     // If the user clicked an empty space
     if (!element) {
