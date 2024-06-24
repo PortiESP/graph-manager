@@ -70,6 +70,8 @@ export function drawGrid(){
     const ctx = window.ctx
     const cvs = window.cvs
 
+    ctx.save() // Save the current context state
+
     // Grid properties
     const gridSize = constants.GRID_SIZE
     const gridColor = constants.GRID_COLOR
@@ -112,6 +114,8 @@ export function drawGrid(){
         ctx.fillStyle = gridColor
         ctx.fillText(y, coords.x+labelMargin, y+labelMargin)
     }
+
+    ctx.restore() // Restore the context state
 }
 
 
@@ -122,6 +126,8 @@ export function drawSelectionBox(){
     if (!window.graph.selectionBox) return
 
     const ctx = window.ctx
+    ctx.save()
+
     const selectionBox = window.graph.selectionBox
 
     ctx.strokeStyle = constants.SELECTION_BOX_STROKE
@@ -129,14 +135,20 @@ export function drawSelectionBox(){
     ctx.fillStyle = constants.SELECTION_BOX_FILL
     ctx.fillRect(selectionBox.x1, selectionBox.y1, selectionBox.x2 - selectionBox.x1, selectionBox.y2 - selectionBox.y1)
     ctx.strokeRect(selectionBox.x1, selectionBox.y1, selectionBox.x2 - selectionBox.x1, selectionBox.y2 - selectionBox.y1)
+
+    ctx.restore()
 }
 
 
 export function drawFunction(fx, color){
+    const ctx = window.ctx
+    ctx.save()
     ctx.beginPath()
     ctx.strokeStyle = color
     ctx.lineWidth = 2
     ctx.moveTo(0, fx(0))
     ctx.lineTo(window.cvs.$canvas.width, fx(window.cvs.$canvas.width))
     ctx.stroke()
+
+    ctx.restore()
 }

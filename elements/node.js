@@ -49,6 +49,7 @@ export class Node extends Element{
      */
     draw() {
         const ctx = window.ctx
+        ctx.save()
 
         // Draw the node as a circle
         ctx.fillStyle = 
@@ -86,6 +87,7 @@ export class Node extends Element{
             ctx.fillText(this.bubble, this.x + d, this.y + d)
         }
 
+        ctx.restore()
     }
 
     /**
