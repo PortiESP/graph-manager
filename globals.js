@@ -2,13 +2,18 @@ import CONSTANTS from "./utils/constants"
 import { activateTool } from "./utils/tools/tools_callbacks"
 
 /**
- * Sets up the global variables used by the graph. These variables are stored in the `window.graph` object.
- * 
- * This function should be called in the `setupCanvas` function in the `Canvas` component.
- * 
- * **Properties** 
- * 
- * ---
+ * Setup the global variable `graph` that will store all the information about the graph.
+ */
+export function setupGraphGlobals() {
+    window.graph = new Graph()
+
+    // Activate the default tool
+    activateTool(CONSTANTS.DEFAULT_TOOL) // Activate the default tool
+}
+
+
+/**
+ * The Graph class that stores all the information about the graph.
  * 
  * @property {Array} nodes - All nodes in the graph
  * @property {Array} selected - Selected nodes
@@ -25,40 +30,33 @@ import { activateTool } from "./utils/tools/tools_callbacks"
  * @property {Element} doubleClickTarget - The target of the double click event (set to the target of the mouse down event when a double click is detected, and reset to null on the next mouse up event)
  * @property {Array} info - Information elements
  */
-export function setupGraphGlobals() {
-    window.graph = {}
+export class Graph {
+    constructor() {
+        // Elements
+        this.nodes = [] // All nodes
+        this.edges = [] // All edges
+        this.info = [] // Information elements
 
-    // Graph data
-    window.graph.nodes = [] // All nodes
-    window.graph.selected = [] // Selected nodes
-    window.graph.selectionBox = null // Object representing the selection box: {x1, y1, x2, y2}
+        // Selection
+        this.selected = [] // Selected nodes
+        this.selectionBox = null // Object representing the selection box: {x1, y1, x2, y2}
+        // Double click
+        this.doubleClickTarget = null, // The target of the double click event (set to the target of the mouse down event when a double click is detected, and reset to null on the next mouse up event)
+        
+        // Config
+        this.prevent_deselect = false // Prevent deselecting nodes (used after dragging nodes)
+        this.showWeights = true // Show weights on edges
+        this.snapToGrid = true // Snap nodes to the grid
+        
+        // Snap
+        this.snapReference = null, // Reference point for snapping (used when dragging nodes while on snap mode)
 
-    // Config
-    window.graph.prevent_deselect = false // Prevent deselecting nodes (used after dragging nodes)
-    window.graph.showWeights = true // Show weights on edges
-    
-    // Snap to grid
-    window.graph.snapToGrid = true // Snap nodes to the grid
-    window.graph.snapReference = null, // Reference point for snapping (used when dragging nodes while on snap mode)
+        // Flags
+        this.newNode = false // New node being created
+        this.newEdgeScr = null // Source node for when the used is creating a new edge
 
-    // Nodes
-    window.graph.newNode = false // New node being created
-
-    // Edges
-    window.graph.edges = [] // All edges
-    window.graph.newEdgeScr = null // Source node for when the used is creating a new edge
-
-    // Memento
-    window.graph.memento = [] // Memento stack
-    window.graph.mementoRedo = [] // Redo stack
-
-    // Double click
-    window.graph.doubleClickTarget = null, // The target of the double click event (set to the target of the mouse down event when a double click is detected, and reset to null on the next mouse up event)
-
-    // Information and annotations
-    window.graph.info = [] // Information elements
-
-    // Activate the default tool
-    activateTool(CONSTANTS.DEFAULT_TOOL) // Activate the default tool
-
+        // History
+        this.memento = [] // Memento stack
+        this.mementoRedo = [] // Redo stack
+    }
 }
