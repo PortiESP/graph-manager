@@ -1,4 +1,4 @@
-import { checkShortcut } from "../../canvas/utils/keyboard"
+import { checkShortcut } from "../canvas-component/utils/keyboard"
 import { closestHoverElement, findElementsWithin } from "./find_elements"
 import { discardLastSnapshot } from "./memento"
 

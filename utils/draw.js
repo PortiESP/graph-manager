@@ -1,6 +1,6 @@
 import constants from "./constants"
-import { getViewBox } from "../../canvas/utils/zoom"
-import { drawDebugInfo } from "../../canvas/utils/canvas_utils"
+import { getViewBox } from "../canvas-component/utils/zoom"
+import { drawDebugInfo } from "../canvas-component/utils/canvas_utils"
 
 /**
  * Draw all the elements of the graph

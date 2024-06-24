@@ -1,4 +1,4 @@
-import { anySpecialKeyPressed } from "../../../canvas/utils/keyboard"
+import { anySpecialKeyPressed } from "../../canvas-component/utils/keyboard"
 import CONSTANTS from "../constants"
 import { handleShortcutMouseDown, handleShortcutKeyDown, handleShortcutKeyUp, handleShortcutMouseUp, handleShortcutMouseMove, handleShortcutMouseScroll, handleShortcutDoubleClick } from "../shortcuts"
 import edit_tool from "./edit_tool"

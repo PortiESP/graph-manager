@@ -1,5 +1,5 @@
-import { panTo } from "../../canvas/utils/pan"
-import { getViewBox, zoomToFit } from "../../canvas/utils/zoom"
+import { panTo } from "../canvas-component/utils/pan"
+import { getViewBox, zoomToFit } from "../canvas-component/utils/zoom"
 
 
 /**

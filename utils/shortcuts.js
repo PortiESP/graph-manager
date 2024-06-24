@@ -2,9 +2,9 @@ import constants from "./constants"
 import { undo, redo } from "./memento"
 import { deselectAll, endSelectionBox, startSelectionBox, updateSelectionBox } from "./selection"
 import { activateToolByKeyCode, isTool } from "./tools/tools_callbacks"
-import { resetZoom } from "../../canvas/utils/zoom"
-import { isPanning, panBy, resetPan, startPanning, stopPanning } from "../../canvas/utils/pan"
-import { checkShortcut } from "../../canvas/utils/keyboard"
+import { resetZoom } from "../canvas-component/utils/zoom"
+import { isPanning, panBy, resetPan, startPanning, stopPanning } from "../canvas-component/utils/pan"
+import { checkShortcut } from "../canvas-component/utils/keyboard"
 import { closestHoverElement } from "./find_elements"
 
 /**
