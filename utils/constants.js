@@ -2,7 +2,7 @@ export default {
     DEFAULT_TOOL: "select",
     TOOLS_KEYS: {
         KeyS: "select",
-        KeyE: "edit",
+        KeyE: "edges",
     },
     EDGE_HOVER_THRESHOLD_FACTOR: 2, // The factor to multiply the edge thickness to determine the hover threshold
     ARROW_SIZE: 15,

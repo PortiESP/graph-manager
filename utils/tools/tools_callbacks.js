@@ -1,13 +1,13 @@
 import { anySpecialKeyPressed } from "../../canvas-component/utils/keyboard"
 import CONSTANTS from "../constants"
 import { handleShortcutMouseDown, handleShortcutKeyDown, handleShortcutKeyUp, handleShortcutMouseUp, handleShortcutMouseMove, handleShortcutMouseScroll, handleShortcutDoubleClick } from "../shortcuts"
-import edit_tool from "./edit_tool"
+import edges_tool from "./edges_tool"
 import select_tool from "./select_tool"
 
 // Tool object with the callbacks for each tool. The keys are the tool names and the values are objects with the callbacks for each tool.
 export const toolsCallbacks = {
     "select": select_tool,
-    "edit": edit_tool,
+    "edges": edges_tool,
 }
 
 /**

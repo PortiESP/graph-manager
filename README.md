@@ -42,7 +42,6 @@ The app has some predefined keybindings that will be evaluated before the custom
 ### Add a new element
 
 - Edit the method `findElementsByCoords`, `findElementsByHover` and the rest of the function related to generic elements in the `canvas/utils/find_elements.js` file to add the new element to the list of elements that can be selected.
-- Edit the keybind "delete" at the method `keyDownCallback` in the `utils/tools/edit_tool.js` file to add the new element to the list of elements that can be deleted.
 - Consider if memento should support the new element and its features. See the [memento section](#memento) for more information.
 - Implement the abstract class `Element` and add the abstract methods defined there. The class should be located in the `canvas/elements` directory.
     - distance
