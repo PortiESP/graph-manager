@@ -40,11 +40,7 @@ export function handleShortcutKeyDown(code) {
 
         // Reset all states
         if (checkShortcut("Escape")) {
-            deselectAll()  // Deselect all nodes
-            window.graph.newEdgeScr = null  // Reset the edge creation
-            window.graph.newNode = false    // Reset the node creation
-            resetPan() // Reset the drag, go to the (0, 0) position
-            resetZoom() // Reset the zoom level to 1
+            window.graph.resetAll()
             return true
         }
 

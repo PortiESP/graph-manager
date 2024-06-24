@@ -1,5 +1,4 @@
 import constants from "../constants"
-import { addEdgeToGraph, addNodeToGraph, isCreatingEdge, startCreatingEdge, stopCreatingNode } from "../create_elements"
 import { closestHoverNode } from "../find_elements"
 import { recordMemento } from "../memento"
 import { deselectAll } from "../selection"
@@ -11,21 +10,21 @@ export default {
     mouseDownCallback: function (button, mouse) {
         // If the user is creating a new node, drop it on the canvas
         if (button === 0 && window.graph.newNode) {
-            addNodeToGraph(window.cvs.x, window.cvs.y)
-            stopCreatingNode()
+            window.graph.addNodeToGraph(window.cvs.x, window.cvs.y)
+            window.graph.stopCreatingNode()
             return
         }
 
         // Checks if the user is hovering a node so it can start creating a new edge
-        if (button === 0 && startCreatingEdge()) return
+        if (button === 0 && window.graph.startCreatingEdge()) return
 
     },
     mouseUpCallback: function (button, mouse) {
         // If the user is not creating a new edge, return
-        if (button === 0 && isCreatingEdge()) {
+        if (button === 0 && window.graph.isCreatingEdge()) {
             const src = window.graph.newEdgeScr
             const dst = closestHoverNode()  
-            addEdgeToGraph(src, dst)
+            window.graph.addEdgeToGraph(src, dst)
             return
         }
     },

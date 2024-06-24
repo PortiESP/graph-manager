@@ -1,4 +1,11 @@
+import { resetPan } from "./canvas-component/utils/pan"
+import { resetZoom } from "./canvas-component/utils/zoom"
+import { Edge } from "./elements/edge"
+import { Node } from "./elements/node"
+import constants from "./utils/constants"
 import CONSTANTS from "./utils/constants"
+import { closestHoverNode } from "./utils/find_elements"
+import { deselectAll } from "./utils/selection"
 import { activateTool } from "./utils/tools/tools_callbacks"
 
 /**
@@ -63,4 +70,96 @@ export class Graph {
     getElements(){
         return this.nodes.concat(this.edges).concat(this.info)
     }
+
+    resetAll(){
+        deselectAll()  // Deselect all nodes
+        this.newEdgeScr = null  // Reset the edge creation
+        this.newNode = false    // Reset the node creation
+        resetPan() // Reset the drag, go to the (0, 0) position
+        resetZoom() // Reset the zoom level to 1
+        this.showAll() // Show all elements
+    }
+
+
+    // Set the hidden property of all elements to false
+    showAll(){
+        this.getElements().forEach(e => e.hidden = false)
+    }
+
+    
+/**
+ * Adds a new node to the graph global variable.
+ * 
+ * @param {number} x - The x coordinate of the node.
+ * @param {number} y - The y coordinate of the node.
+ * @param {number} r - The radius of the node.
+ * @param {string} label - The label of the node.
+ */
+addNodeToGraph(x, y, r, label = null) {
+    // Default radius
+    if (r === undefined) r = constants.DEFAULT_NODE_RADIUS
+
+    // Append the node to the list of nodes
+    this.nodes.push(new Node(x, y, r, label))
 }
+
+/**
+ * Adds a new edge to the graph global variable.
+ * 
+ * @param {Node} src - The source node of the edge.
+ * @param {Node} dst - The destination node of the edge.
+ * @param {number} weight - The weight of the edge.
+ */
+addEdgeToGraph(src, dst, weight) {
+    // Default weight
+    if (!weight) weight = constants.DEFAULT_EDGE_WEIGHT
+
+    // If the source and destination nodes are valid and different, add the edge to the list of edges
+    if (src && dst && src !== dst) {
+        this.edges.push(new Edge(src, dst, weight))
+    }
+
+    stopCreatingEdge()
+}
+
+/**
+ * Starts the process of creating a new node.
+ */
+startCreatingNode() {
+    this.newNode = true
+}
+
+/**
+ * Stops the process of creating a new node. This function will not instantiate a new node nor add it to the graph.
+ */
+stopCreatingNode() {
+    this.newNode = false
+}
+
+/**
+ * Returns whether the user is creating a new node.
+ *  
+ * @returns {boolean} Whether the user was hovering a node to start creating a new edge. If true, the user is creating a new edge. If false, the user is not creating a new edge.
+ */
+startCreatingEdge() {
+    this.newEdgeScr = closestHoverNode()
+    return this.newEdgeScr
+}
+
+/**
+ * Stops the process of creating a new edge. This function will not instantiate a new edge nor add it to the graph.
+ */
+stopCreatingEdge() {
+    this.newEdgeScr = null
+}
+
+/**
+ * Returns whether the user is creating a new edge.
+ *  
+ * @returns {boolean} Whether the user is creating a new edge. If true, the user is creating a new edge. If false, the user is not creating a new edge.
+ */
+isCreatingEdge() {
+    return this.newEdgeScr !== null
+}
+}
+
