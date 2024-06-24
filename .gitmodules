@@ -1,0 +1,3 @@
+[submodule "canvas-component"]
+	path = canvas-component
+	url = https://github.com/PortiESP/canvas-component.git
