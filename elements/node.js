@@ -1,3 +1,4 @@
+import constants from "../utils/constants"
 import { Element } from "./element"
 
 /**
@@ -76,17 +77,20 @@ export class Node extends Element{
         ctx.fillText(this.label, this.x, this.y)
 
         // Draw the bubble
-        if (this.bubble) {
+        if (this.bubble !== null) {
             const d = Math.sin(Math.PI / 4) * this.r
+            const r = constants.NODE_BUBBLE_RADIUS
+            const x = this.x + d
+            const y = this.y + d
             ctx.beginPath()
             ctx.fillStyle = 'blue'
-            ctx.arc(this.x + d, this.y + d, 10, 0, Math.PI * 2)
+            ctx.arc(x, y, 10, 0, Math.PI * 2)
             ctx.fill()
             ctx.fillStyle = 'white'
             ctx.textAlign = 'center'
             ctx.textBaseline = 'middle'
-            ctx.font = 'bold 12px Arial'
-            ctx.fillText(this.bubble, this.x + d, this.y + d)
+            ctx.font = 'bold 14px Arial'
+            ctx.fillText(this.bubble, x , y+1)
         }
 
         ctx.restore()

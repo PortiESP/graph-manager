@@ -9,6 +9,7 @@ export default {
     EDGE_WEIGHT_BOX_SIZE: 10,  // Horizontal padding of the box containing the weight of the edge
     EDGE_WEIGHT_FONT_SIZE: 16, // Font size of the weight of the edge
     DEFAULT_NODE_RADIUS: 30,
+    NODE_BUBBLE_RADIUS: 10,
     DEFAULT_EDGE_WEIGHT: 1,
     NODE_DEFAULT_RADIUS: 30,
 
@@ -17,7 +18,6 @@ export default {
     NODE_CREATION_KEY: "KeyN",
     EDGE_CREATION_KEY: "KeyE",
     EDGE_WEIGHT_KEY: "KeyW",
-
     RESET: "Escape",
 
     // Grid

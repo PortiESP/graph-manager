@@ -134,6 +134,9 @@ export default function Graph(props) {
                         const edges = getEdgesByPredecessors(data.prevNode)
                         const elements = edges.concat(window.graph.nodes)
                         window.graph.hideAllBut(elements)
+                        data.result.forEach((node, i) => {
+                            node.bubble = i
+                        })
                         focusOnAllNodes()
                     }
                 },

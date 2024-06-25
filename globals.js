@@ -78,6 +78,7 @@ export class Graph {
         resetPan() // Reset the drag, go to the (0, 0) position
         resetZoom() // Reset the zoom level to 1
         this.showAll() // Show all elements
+        this.nodes.forEach(n => n.bubble = null) // Remove all bubbles
     }
 
 
