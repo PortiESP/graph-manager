@@ -44,7 +44,7 @@ export class Graph {
         this.info = [] // Information elements
 
         // Selection
-        this.selected = [] // Selected nodes
+        this._selected = [] // Selected nodes
         this.selectionBox = null // Object representing the selection box: {x1, y1, x2, y2}
 
         // Config
@@ -62,6 +62,15 @@ export class Graph {
         // History
         this.memento = [] // Memento stack
         this.mementoRedo = [] // Redo stack
+    }
+
+    get selected() {
+        return this._selected
+    }
+
+    set selected(value) {
+        this._selected = value
+        window.setSelectedElements(value)
     }
 
     getElements() {

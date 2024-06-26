@@ -45,7 +45,7 @@ export class Element {
         if (this.selected) return  // If the node is already selected, return
 
         this.selected = !this.selected
-        window.graph.selected.push(this)
+        window.graph.selected = [...window.graph.selected, this]
     }
 
     /**
