@@ -210,6 +210,9 @@ export class Edge extends Element{
         // Check if the edge is vertical, and if so, check if the mouse is close to the edge using the method for vertical lines, regular non-rotated rectangles. 
         // Checks if the mouse is inside the bounding box of the edge
         if (slope === Infinity || slope === -Infinity) return Math.abs(x - src.x) < THRESHOLD && y > Math.min(src.y, dst.y) && y < Math.max(src.y, dst.y)
+        // Horizontal edge
+        if (slope === 0) return Math.abs(y - src.y) < THRESHOLD && x > Math.min(src.x, dst.x) && x < Math.max(src.x, dst.x)
+        
 
         // If the edge is not vertical...
 
