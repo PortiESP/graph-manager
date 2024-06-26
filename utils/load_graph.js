@@ -63,7 +63,7 @@ export function loadFromJSON(json) {
  * - `src-dst` -------------> undirected edge with no weight
  * - `src` -----------------> declare single node with no edges (not added to the edge list, but the node will be created)
  * 
- * @param {string} edgeList - The edge list as a string
+ * @param {string} edgeList - The edge list as a string: `src-{weight}->dst\nsrc->dst\nsrc-dst\nsrc`
  */
 export function loadFromEdgePlainTextList(edgeList) {
     // Function to create a node if it does not exist
@@ -131,9 +131,7 @@ export function parseEdge(edgeString){
     const match = edgeString.match(edgeRegex)
 
     // If the edge string does not match the regex, throw an error
-    if (match === null) {
-        throw new Error(`Invalid edge string: ${edgeString}`)
-    }
+    if (match === null) return null
 
     // If the edge string matches the regex, extract the data
 
@@ -149,6 +147,21 @@ export function parseEdge(edgeString){
     const directed = edgeString.includes('->')
 
     return { src, weight, dst, directed }    
+}
+
+
+// Check if an edge string is valid (valid single node edge or valid edge string)
+export function isValidEdge(edgeString){
+    // Single node edge
+    if (isSingleNodeEdge(edgeString)) return true
+
+    // Parse the line to extract the edge data
+    return parseEdge(edgeString) !== null
+}
+
+
+export function isSingleNodeEdge(edgeString){
+    return edgeString.match(/^\w+$/) !== null
 }
 
 

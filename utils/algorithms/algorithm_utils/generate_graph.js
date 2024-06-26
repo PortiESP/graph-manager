@@ -31,3 +31,16 @@ export function generateGraphArray(){
     return graph
 }
     
+
+export function generateEdgeList(){
+    const edges = []
+
+    // Fill the graph with the edges
+    window.graph.edges.forEach(edge => {
+        // Add the edge to the graph
+        const w = edge.weight !== undefined ? `-{${edge.weight}}` : ""
+        edges.push(`${edge.src}${w}-${edge.directed ? ">" : ""}${edge.dst}`)
+    })
+
+    return edges
+}

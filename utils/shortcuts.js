@@ -115,10 +115,10 @@ export function handleShortcutKeyDown(code) {
  */
 export function handleShortcutKeyUp(code) {
     // Pan key
-    if (checkShortcut(constants.PAN_KEY)) {
-        document.body.style.cursor = "default"
-        return true
-    }
+    // if (checkShortcut(constants.PAN_KEY)) {
+    //     document.body.style.cursor = "default"
+    //     return true
+    // }
 
     return false
 }
