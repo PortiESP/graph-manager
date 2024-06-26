@@ -52,9 +52,6 @@ export default function Graph(props) {
             // focusOnAllNodes()
 
             focusOnAllNodes()
-            window.graph.info = [
-                new Info(500, 400, "This is a test"),
-            ]
 
             window.cvs.debug = true
             window.cvs.debugData = () => ([
