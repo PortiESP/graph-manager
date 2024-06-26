@@ -12,9 +12,6 @@ export default {
             // If the user clicked an empty space (selection box mode)
             const element = closestHoverElement(mouse.x, mouse.y)
             if (!element) {
-                // Reset the double click target
-                window.graph.doubleClickTarget = null
-
                 // Prepare create a selection box
                 startSelectionBox()
             }

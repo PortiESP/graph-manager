@@ -70,7 +70,6 @@ export default function Graph(props) {
                 "----------- Edit -----------",
                 "New node: " + window.graph.newNode,
                 "New edge: " + !!window.graph.newEdgeScr,
-                "Double click target: " + window.graph.doubleClickTarget,
                 "----------- Config -----------",
                 "Prevent deselect: " + window.graph.prevent_deselect,
                 "Snap to grid: " + window.graph.snapToGrid,

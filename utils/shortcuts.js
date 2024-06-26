@@ -166,7 +166,7 @@ export function handleShortcutMouseUp(button, coords) {
  */
 export function handleShortcutMouseMove(e, coords) {
     // If the used double clicked in an empty space of the canvas, pan the canvas
-    if (window.cvs.doubleClick && !window.graph.doubleClickTarget){
+    if (window.cvs.doubleClick){
         panBy(e.movementX, e.movementY)
 
         return true
@@ -194,16 +194,8 @@ export function handleShortcutMouseScroll(delta, mouse) {
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutDoubleClick(e, mouse) {
-    // Get the closest element to the mouse
-    const element = closestHoverElement(mouse.x, mouse.y)
     
-    // If the element is an element, store it as the double click target
-    if (element) window.graph.doubleClickTarget = element
-    // If the element is not an element, reset the double click target and prepare to pan the canvas
-    else {
-        window.graph.doubleClickTarget = null
-        startPanning()
-    }
+    startPanning()
 
     return false
 }

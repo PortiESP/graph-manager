@@ -34,7 +34,6 @@ export function setupGraphGlobals() {
  * @property {Object} newEdgeScr - Source node for when the used is creating a new edge
  * @property {Array} memento - Memento stack
  * @property {Array} mementoRedo - Redo stack
- * @property {Element} doubleClickTarget - The target of the double click event (set to the target of the mouse down event when a double click is detected, and reset to null on the next mouse up event)
  * @property {Array} info - Information elements
  */
 export class Graph {
@@ -47,8 +46,6 @@ export class Graph {
         // Selection
         this.selected = [] // Selected nodes
         this.selectionBox = null // Object representing the selection box: {x1, y1, x2, y2}
-        // Double click
-        this.doubleClickTarget = null // The target of the double click event (set to the target of the mouse down event when a double click is detected, and reset to null on the next mouse up event)
 
         // Config
         this.prevent_deselect = false // Prevent deselecting nodes (used after dragging nodes)
