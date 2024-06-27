@@ -66,6 +66,8 @@ export function loadFromJSON(json) {
  * @param {string} edgeList - The edge list as a string: `src-{weight}->dst\nsrc->dst\nsrc-dst\nsrc`
  */
 export function loadFromEdgePlainTextList(edgeList) {
+
+    
     // Function to create a node if it does not exist
     const createNode = (label) => {
         if (!nodes[label]) {
@@ -75,6 +77,9 @@ export function loadFromEdgePlainTextList(edgeList) {
     
     // Clear the current graph and reset all the graph global variables
     setupGraphGlobals()
+
+    // If the edge list is empty, return
+    if (edgeList === '') return
 
     // Split the edge list by lines
     const edgesUnparsed = edgeList.split('\n')

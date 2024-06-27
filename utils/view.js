@@ -27,6 +27,10 @@ export function focusOnElement(element) {
  * Pans the canvas to focus on all the elements by centering them on the screen.
  */
 export function focusOnAllNodes(){
+
+    // If no nodes are present, return
+    if (window.graph.nodes.length === 0) return
+
     let x1 = Infinity
     let y1 = Infinity
     let x2 = -Infinity
