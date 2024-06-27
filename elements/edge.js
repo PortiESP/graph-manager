@@ -55,8 +55,6 @@ export class Edge extends Element{
 
         // Style properties
         this.color = "#888"
-        this.hoverColor = "#aaa"
-        this.selectedColor = "aquamarine"
         this.weightColor = "#eee8"
         this.weightBackgroundColor = "#8888"
         this.hover = false
@@ -71,39 +69,40 @@ export class Edge extends Element{
 
         window.ctx.save()  // Save the current state of the canvas
 
-        // Extract the radius of the nodes (used to draw the edge from border to border of the nodes instead of the center)
-        const rDst = this.dst.r
-        // Arrow head size
-        const arrowSize = constants.ARROW_SIZE
-        // Calculate edge parameters
-        const angle = Math.atan2(this.dst.y - this.src.y, this.dst.x - this.src.x)  // Calculate the angle between the two nodes
-        const {src: offsetSrc, dst: offsetDst} = this.nodesIntersectionBorderCoords(0, this.directed ? arrowSize*0.8 : 0) // Calculate the coordinates of the edge from border to border of the nodes instead of the center
-
-        // Determine the color of the edge
-        const color =   this.selected ? this.selectedColor :
-                        this.isHover() ? this.hoverColor : 
-                        this.color
-
-        // Draw the edge
-        window.ctx.beginPath()
-        window.ctx.strokeStyle = color
-        window.ctx.lineWidth = this.thickness
-        window.ctx.moveTo(offsetSrc.x, offsetSrc.y)  // Move to the source node
-        window.ctx.lineTo(offsetDst.x, offsetDst.y)  // Draw a line to the destination node
-        window.ctx.stroke()
+        window.ctx.globalAlpha = this.opacity
 
         // If the edge is directed, draw an arrow
         if (this.directed) {
+            const rDst = this.dst.r
+            const arrowSize = this.thickness * 3
+            const {src: offsetSrc, dst: offsetDst, angle} = this.nodesIntersectionBorderCoords(0, this.directed ? arrowSize*0.8 : 0) // Calculate the coordinates of the edge from border to border of the nodes instead of the center
+    
+            // Draw the edge
+            window.ctx.beginPath()
+            window.ctx.strokeStyle = this.color
+            window.ctx.lineWidth = this.thickness
+            window.ctx.moveTo(this.src.x, this.src.y)  // Move to the source node
+            window.ctx.lineTo(offsetDst.x, offsetDst.y)  // Draw a line to the destination node
+            window.ctx.stroke()
+
             const arrowAngle = Math.PI / 6
             const offsetDstArrow = { x: rDst * Math.cos(angle + Math.PI), y: rDst * Math.sin(angle + Math.PI) } // Calculate the coordinates of the arrow from the border of the node
 
             // Draw the arrow
             window.ctx.beginPath()
-            window.ctx.fillStyle = color
+            window.ctx.fillStyle = this.color
             window.ctx.moveTo(this.dst.x + offsetDstArrow.x, this.dst.y + offsetDstArrow.y)
             window.ctx.lineTo(this.dst.x + offsetDstArrow.x - arrowSize * Math.cos(angle - arrowAngle), this.dst.y + offsetDstArrow.y - arrowSize * Math.sin(angle - arrowAngle))
             window.ctx.lineTo(this.dst.x + offsetDstArrow.x - arrowSize * Math.cos(angle + arrowAngle), this.dst.y + offsetDstArrow.y - arrowSize * Math.sin(angle + arrowAngle))
             window.ctx.fill()
+        } else {
+            // Draw the edge
+            window.ctx.beginPath()
+            window.ctx.strokeStyle = this.color
+            window.ctx.lineWidth = this.thickness
+            window.ctx.moveTo(this.src.x, this.src.y)  
+            window.ctx.lineTo(this.dst.x, this.dst.y)
+            window.ctx.stroke()
         }
 
         // Paint the weight of the edge in the middle of the edge
@@ -122,6 +121,19 @@ export class Edge extends Element{
             window.ctx.fillStyle = this.weightColor
             window.ctx.fillText(this.weight, centerX, centerY)
         }
+
+        // Draw the edge selection
+        if (this.selected || this.isHover()) {
+            const color = this.selected ? this.selectedColor : this.hoverColor
+
+            window.ctx.beginPath()
+            window.ctx.strokeStyle = color
+            window.ctx.lineWidth = 2/window.cvs.zoom
+            window.ctx.moveTo(this.src.x, this.src.y)
+            window.ctx.lineTo(this.dst.x, this.dst.y)
+            window.ctx.stroke()
+        }
+
             
         window.ctx.restore()  // Restore the previous state of the canvas
     }
@@ -148,7 +160,8 @@ export class Edge extends Element{
 
         return {
             src: { x: this.src.x + newSrc.x, y: this.src.y + newSrc.y },
-            dst: { x: this.dst.x + newDst.x, y: this.dst.y + newDst.y }
+            dst: { x: this.dst.x + newDst.x, y: this.dst.y + newDst.y },
+            angle
         }
     }
 

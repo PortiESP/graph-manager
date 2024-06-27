@@ -35,10 +35,8 @@ export class Node extends Element{
         // Style properties
         this.backgroundColor = 'black'
         this.labelColor = 'white'
-        this.borderColor = null
+        this.borderColor = "black"
         this.borderWidth = 0
-        this.hoverColor = 'gray'
-        this.selectedColor = 'aquamarine'
         this.fontSize = 20
 
         // Bubble attached to the node
@@ -54,18 +52,19 @@ export class Node extends Element{
         const ctx = window.ctx
         ctx.save()
 
+        ctx.globalAlpha = this.opacity
+
         // Draw the node as a circle
-        ctx.fillStyle = 
-            this.selected ? this.selectedColor : 
-            this.isHover() ? this.hoverColor : 
-            this.backgroundColor
+        ctx.fillStyle = this.backgroundColor
         ctx.beginPath()
         ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
         ctx.fill()
-        // Draw the border
-        if (this.borderColor) {
+        // Draw the border inside the circle
+        if (this.borderWidth > 0 && this.borderColor !== null) {
             ctx.strokeStyle = this.borderColor
             ctx.lineWidth = this.borderWidth
+            ctx.beginPath()
+            ctx.arc(this.x, this.y, this.r - this.borderWidth / 2, 0, Math.PI * 2)
             ctx.stroke()
         }
 
@@ -75,6 +74,15 @@ export class Node extends Element{
         ctx.textBaseline = 'middle'
         ctx.font = 'bold ' + this.fontSize + 'px Arial'
         ctx.fillText(this.label, this.x, this.y)
+
+        // Draw the selected border
+        if (this.selected || this.isHover()) {
+            ctx.strokeStyle = this.selected ? this.selectedColor : this.hoverColor
+            ctx.lineWidth = 2
+            ctx.beginPath()
+            ctx.arc(this.x, this.y, this.r + 2, 0, Math.PI * 2)
+            ctx.stroke()
+        }
 
         // Draw the bubble
         if (this.bubble !== null) {

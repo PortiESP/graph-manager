@@ -36,6 +36,11 @@ export class Element {
         // States
         this.selected = false
         this.hidden = false
+
+        // Style properties
+        this.hoverColor = '#0D99FF88'
+        this.selectedColor = '#0D99FF'
+        this.opacity = 1
     }
 
     /**
