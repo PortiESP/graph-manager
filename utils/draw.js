@@ -65,6 +65,8 @@ export default function drawAll(){
  * Draw the grid
  */
 export function drawGrid(){
+    if (!window.graph.gridEnabled) return
+
     // Get the context and canvas
     const ctx = window.ctx
     const cvs = window.cvs
@@ -72,13 +74,15 @@ export function drawGrid(){
     ctx.save() // Save the current context state
 
     // Grid properties
-    const gridSize = constants.GRID_SIZE
-    const gridColor = constants.GRID_COLOR
-    const gridThickness = constants.GRID_THICKNESS
+    const gridSize = window.graph.gridSize
+    const gridColor = window.graph.gridColor
+    const gridThickness = window.graph.gridThickness
 
     // Draw the grid
     ctx.strokeStyle = gridColor
-    ctx.lineWidth = gridThickness
+    ctx.lineWidth = gridThickness + 0.00000000000000001  // Hack to fix the canvas ignoring the thickness when the value is 0
+
+    ctx.globalAlpha = window.graph.gridOpacity
 
     // Get the offset
     const coords = getViewBox()

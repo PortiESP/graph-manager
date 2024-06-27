@@ -155,14 +155,7 @@ export default function Graph(props) {
                 },
             ])
 
-            // Redraw the graph (debug)
-            window.graph.update = ()=> {
-                    const coords = getViewBox()  // Get the coordinates of the view box
-                    const margin = 10000  // Margin to clear the canvas and avoid artifacts
-                    window.ctx.clearRect(coords.x - margin, coords.y - margin, coords.width + margin*2, coords.height + margin*2)
-                    drawAll()
-            }
-
+            document.getElementById("canvas").style.backgroundColor = window.graph.backgroundColor
 
         })
 

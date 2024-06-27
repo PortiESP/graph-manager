@@ -33,9 +33,9 @@ export class Node extends Element{
         this.label = label ?? this.id
 
         // Style properties
-        this.backgroundColor = 'black'
-        this.labelColor = 'white'
-        this.borderColor = "black"
+        this.backgroundColor = '#000000'
+        this.labelColor = '#ffffff'
+        this.borderColor = "#000000"
         this.borderWidth = 0
         this.fontSize = 20
 

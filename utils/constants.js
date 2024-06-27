@@ -20,10 +20,15 @@ export default {
     EDGE_WEIGHT_KEY: "KeyW",
     RESET: "Escape",
 
-    // Grid
+    // Grid (default values)
+    GRID_ENABLED: true,
     GRID_SIZE: 50,
-    GRID_COLOR: "#ddd",
+    GRID_COLOR: "#dddddd",
     GRID_THICKNESS: 1,
+    GRID_OPACITY: 1,
+
+    // Style
+    BACKGROUND_COLOR: "#eeeeee",
 
     // Selection box
     SELECTION_BOX_STROKE: "blue",

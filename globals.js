@@ -50,9 +50,14 @@ export class Graph {
         // Config
         this.prevent_deselect = false // Prevent deselecting nodes (used after dragging nodes)
         this.showWeights = true // Show weights on edges
+        
+        // Grid & Snap
+        this.gridEnabled = constants.GRID_ENABLED // Show the grid
+        this.gridSize = constants.GRID_SIZE // Size of the grid
+        this.gridOpacity = constants.GRID_OPACITY // Opacity of the grid
+        this.gridThickness = constants.GRID_THICKNESS // Thickness of the grid
+        this.gridColor = constants.GRID_COLOR // Color of the grid
         this.snapToGrid = true // Snap nodes to the grid
-
-        // Snap
         this.snapReference = null // Reference point for snapping (used when dragging nodes while on snap mode)
 
         // Flags
@@ -62,6 +67,9 @@ export class Graph {
         // History
         this.memento = [] // Memento stack
         this.mementoRedo = [] // Redo stack
+
+        // Style
+        this.backgroundColor = constants.BACKGROUND_COLOR // Background color
     }
 
     get selected() {

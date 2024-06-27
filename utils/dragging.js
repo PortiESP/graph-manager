@@ -31,7 +31,7 @@ export function handleSelectDragging(e, mouse) {
  * @returns {Object} An object with the dx and dy offset to be applied to the dragged element (should be +/- the grid size)
  */
 export function snapToGrid() {
-    const gridSize = constants.GRID_SIZE
+    const gridSize = window.graph.gridSize
     const {x, y} = window.cvs
 
     let snapRef = window.graph.snapReference
