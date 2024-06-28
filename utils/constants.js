@@ -19,6 +19,8 @@ export default {
     EDGE_CREATION_KEY: "KeyE",
     EDGE_WEIGHT_KEY: "KeyW",
     RESET: "Escape",
+    SNAP_TO_GRID: "shift",
+    SNAP_TO_GRID_KEYS: ["ShiftLeft", "ShiftRight"],
 
     // Grid (default values)
     GRID_ENABLED: true,

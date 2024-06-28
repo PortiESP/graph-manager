@@ -57,7 +57,7 @@ export class Graph {
         this.gridOpacity = constants.GRID_OPACITY // Opacity of the grid
         this.gridThickness = constants.GRID_THICKNESS // Thickness of the grid
         this.gridColor = constants.GRID_COLOR // Color of the grid
-        this.snapToGrid = true // Snap nodes to the grid
+        this.snapToGrid = false // Snap nodes to the grid (used with shift key)
         this.snapReference = null // Reference point for snapping (used when dragging nodes while on snap mode)
 
         // Flags

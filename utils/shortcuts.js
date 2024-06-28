@@ -36,6 +36,10 @@ export function handleShortcutKeyDown(code) {
             return true
         }
 
+        if (checkShortcut("shift")){
+            window.graph.snapToGrid = true
+        }
+
         // --- Single tap keys ---
 
         // Reset all states
@@ -99,7 +103,7 @@ export function handleShortcutKeyDown(code) {
 
         // If the user presses the N key, start creating a new node
         if (checkShortcut(constants.NODE_CREATION_KEY)) {
-            window.graph.newNode = true
+            window.graph.newNode = {x: window.cvs.x, y: window.cvs.y}
         }
 
     }
@@ -114,11 +118,11 @@ export function handleShortcutKeyDown(code) {
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutKeyUp(code) {
-    // Pan key
-    // if (checkShortcut(constants.PAN_KEY)) {
-    //     document.body.style.cursor = "default"
-    //     return true
-    // }
+
+    // If the user releases the shift key, disable the snap to grid
+    if (constants.SNAP_TO_GRID_KEYS.includes(code)) {
+        window.graph.snapToGrid = false
+    }
 
     return false
 }
@@ -133,7 +137,7 @@ export function handleShortcutKeyUp(code) {
 export function handleShortcutMouseDown(button, mouse) {
     // If the user is creating a new node, drop it on the canvas
     if (button === 0 && window.graph.newNode) {
-        window.graph.addNodeToGraph(window.cvs.x, window.cvs.y)
+        window.graph.addNodeToGraph(...window.graph.newNode)
         window.graph.stopCreatingNode()
         return
     }
@@ -170,6 +174,19 @@ export function handleShortcutMouseMove(e, coords) {
         panBy(e.movementX, e.movementY)
 
         return true
+    }
+
+    if (window.graph.newNode) {
+        let nodeX = coords.x
+        let nodeY = coords.y
+
+        if (checkShortcut("shift")) {
+            const gridSize = constants.GRID_SIZE
+            nodeX = Math.round(nodeX / gridSize) * gridSize
+            nodeY = Math.round(nodeY / gridSize) * gridSize
+        }
+        
+        window.graph.newNode = [nodeX, nodeY]
     }
 
     return false

@@ -1,3 +1,5 @@
+import { checkShortcut } from "../../canvas-component/utils/keyboard"
+import constants from "../constants"
 import { handleSelectDragging } from "../dragging"
 import { closestHoverElement } from "../find_elements"
 import { recordMemento } from "../memento"
@@ -38,6 +40,7 @@ export default {
                 updateSelectionBox(mouse)
             }
         }
+
     },
     mouseDoubleClickCallback: () => {
         if (window.cvs.debug) console.log('Double click from tool')
