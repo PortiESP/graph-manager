@@ -215,7 +215,15 @@ export class Node extends Element{
         return this._x + this.offsetPos.x
     }
 
+    set x(x) {
+        this._x = x
+    }
+
     get y() {
         return this._y + this.offsetPos.y
+    }
+
+    set y(y) {
+        this._y = y
     }
 }

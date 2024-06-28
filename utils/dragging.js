@@ -14,10 +14,17 @@ export function handleSelectDragging(e, mouse) {
     }
 
     // If snap mode is enabled, snap the offset to the grid
+    const elem = window.graph.selected.slice(-1)[0]
     if (window.graph.snapToGrid) {
-        offset.x = Math.round(offset.x / window.graph.gridSize) * window.graph.gridSize
-        offset.y = Math.round(offset.y / window.graph.gridSize) * window.graph.gridSize
+        const gs = window.graph.gridSize
+        const absOffsetX = Math.round(offset.x / gs) * gs
+        const absOffsetY = Math.round(offset.y / gs) * gs
+        const dx = elem._x % gs
+        const dy = elem._y % gs
+        offset.x = dx > gs / 2 ? absOffsetX + gs - dx : absOffsetX - dx
+        offset.y = dy > gs / 2 ? absOffsetY + gs - dy : absOffsetY - dy
     }
+
 
     // Move the selected nodes
     window.graph.selected.forEach(e => e.offsetPos = offset)
