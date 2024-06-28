@@ -158,6 +158,8 @@ export function handleShortcutMouseUp(button, coords) {
         stopPanning()
     }
 
+    // If the 
+
     return false
 }
 
@@ -181,7 +183,7 @@ export function handleShortcutMouseMove(e, coords) {
         let nodeY = coords.y
 
         if (checkShortcut("shift")) {
-            const gridSize = constants.GRID_SIZE
+            const gridSize = window.graph.gridSize
             nodeX = Math.round(nodeX / gridSize) * gridSize
             nodeY = Math.round(nodeY / gridSize) * gridSize
         }

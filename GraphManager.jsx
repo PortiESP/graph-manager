@@ -68,7 +68,6 @@ export default function Graph(props) {
                 "New node: " + window.graph.newNode,
                 "New edge: " + !!window.graph.newEdgeScr,
                 "----------- Config -----------",
-                "Prevent deselect: " + window.graph.prevent_deselect,
                 "Snap to grid: " + window.graph.snapToGrid,
             ])
 

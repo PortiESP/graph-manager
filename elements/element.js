@@ -92,6 +92,18 @@ export class Element {
         this.y += dy
     }
 
+
+    /**
+     * Move the node to the point (x, y)
+     * 
+     * @param {number} x - The x coordinate of the point
+     * @param {number} y - The y coordinate of the point
+     */
+    moveToPoint(x, y) {
+        this.x = x
+        this.y = y
+    }
+
     // ======================================================= Abstract methods =======================================================
     // Draw (abstract method)
     draw() {

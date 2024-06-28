@@ -25,7 +25,6 @@ export function setupGraphGlobals() {
  * @property {Array} nodes - All nodes in the graph
  * @property {Array} selected - Selected nodes
  * @property {Element} selectionBox - Object representing the selection box: {x1, y1, x2, y2}
- * @property {boolean} prevent_deselect - Prevent deselecting nodes (used after dragging nodes)
  * @property {boolean} showWeights - Show weights on edges
  * @property {boolean} snapToGrid - Snap elements to the grid
  * @property {Object} snapReference - Reference point for snapping (used when dragging nodes while on snap mode)
@@ -48,7 +47,6 @@ export class Graph {
         this.selectionBox = null // Object representing the selection box: {x1, y1, x2, y2}
 
         // Config
-        this.prevent_deselect = false // Prevent deselecting nodes (used after dragging nodes)
         this.showWeights = true // Show weights on edges
         
         // Grid & Snap
@@ -63,6 +61,7 @@ export class Graph {
         // Flags
         this.newNode = false // New node being created
         this.newEdgeScr = null // Source node for when the used is creating a new edge
+        this.isDraggingElements = false // Flag to check if the user is dragging elements
 
         // History
         this.memento = [] // Memento stack

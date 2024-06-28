@@ -27,8 +27,8 @@ export class Node extends Element{
         super(label)
 
         // Data properties
-        this.x = x
-        this.y = y
+        this._x = x
+        this._y = y
         this.r = r
         this.label = label ?? this.id
 
@@ -41,6 +41,9 @@ export class Node extends Element{
 
         // Bubble attached to the node
         this.bubble = null
+
+        // Auxiliar properties
+        this.offsetPos = {x: 0, y: 0}  // A displacement of the original position
     }
 
     /**
@@ -155,6 +158,14 @@ export class Node extends Element{
         return this.distanceToCenter(window.cvs.x, window.cvs.y) <= this.r
     }
 
+    applyOffset() {
+        this._x += this.offsetPos.x
+        this._y += this.offsetPos.y
+        this.offsetPos = {x: 0, y: 0}
+    }
+
+    // ===== Abstract methods =====
+
     /**
      * Clone the node
      * 
@@ -196,5 +207,15 @@ export class Node extends Element{
     delete() {
         window.graph.nodes = window.graph.nodes.filter(n => n !== this)
         window.graph.edges = window.graph.edges.filter(e => e.src !== this && e.dst !== this)
+    }
+
+
+    // Getters and Setters
+    get x() {
+        return this._x + this.offsetPos.x
+    }
+
+    get y() {
+        return this._y + this.offsetPos.y
     }
 }

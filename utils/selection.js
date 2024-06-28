@@ -1,4 +1,4 @@
-import { checkShortcut } from "../canvas-component/utils/keyboard"
+import { checkKey, checkShortcut } from "../canvas-component/utils/keyboard"
 import { closestHoverElement, findElementsWithin } from "./find_elements"
 import { discardLastSnapshot } from "./memento"
 
@@ -40,33 +40,20 @@ export function handleSelectionPrimaryBtnDown(button, mouse) {
     }
 }
 
-/**
- * Handles the primary mouse button up event.
- * 
- * @param {number} button - The button that was released.
- * @param {Object} mouse - The mouse event.
- */
-export function handleSelectionPrimaryBtnUp(button, mouse) {
 
+export function handleSelectionPrimaryBtnUp(button, mouse) {
     // Find the element under the mouse
     const e = closestHoverElement()
 
-    // After dragging
-    if (window.graph.prevent_deselect) {
-        // Prevent deselect all nodes if the flag is set
-        window.graph.prevent_deselect = false
-        // Reset the snap reference
-        window.graph.snapReference = null
-        return
+    if (e) {
+        if (checkShortcut("shift")) return
+
+        deselectAll()
+        e.select()
+
     }
-
-    // If shift is not pressed, deselect all nodes
-    const isShift = window.cvs.key === 'ShiftLeft' || window.cvs.key === 'ShiftRight'
-    if (!isShift) deselectAll()
-
-    // If clicked on an element, select it
-    if (e) e.select()
 }
+
 
 /**
  * Deselects all the selected elements.
