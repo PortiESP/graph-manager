@@ -74,9 +74,9 @@ export class Node extends Element{
         // Draw the label
         ctx.fillStyle = this.labelColor
         ctx.textAlign = 'center'
-        ctx.textBaseline = 'middle'
-        ctx.font = 'bold ' + this.fontSize + 'px Arial'
-        ctx.fillText(this.label, this.x, this.y)
+        ctx.font = `bold ${this.fontSize}px Arial`
+        const posY = this.y + this.fontSize / 3
+        ctx.fillText(this.label, this.x, posY)
 
         // Draw the selected border
         if (this.selected || this.isHover()) {
