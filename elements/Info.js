@@ -109,6 +109,7 @@ export class Info extends Element {
     }
 
     delete() {
+        super.delete()
         window.graph.info = window.graph.info.filter(e => e !== this)
     }
 

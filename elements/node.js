@@ -205,6 +205,7 @@ export class Node extends Element{
      * Delete the node and its edges
      */
     delete() {
+        super.delete()
         window.graph.nodes = window.graph.nodes.filter(n => n !== this)
         window.graph.edges = window.graph.edges.filter(e => e.src !== this && e.dst !== this)
     }

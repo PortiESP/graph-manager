@@ -306,6 +306,7 @@ export class Edge extends Element{
      * Delete the edge from the graph by removing it from the edges array
      */
     delete() {
+        super.delete()
         window.graph.edges = window.graph.edges.filter(e => e !== this)
     }
 }

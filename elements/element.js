@@ -132,6 +132,6 @@ export class Element {
 
     // Delete (abstract method)
     delete() {
-        throw new Error('Method not implemented.')
+        window.graph.selected = window.graph.selected.filter(e => e !== this)
     }
 }
