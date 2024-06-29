@@ -30,6 +30,15 @@ export default function Graph(props) {
             setupGraphGlobals()
             window.ctx.save()
 
+            // --- Setup the graph ---
+            // Load the graph from the URL
+            const url = new URL(window.location.href)
+            const graph = url.searchParams.get("graph")
+            if (graph) {
+                loadFromEdgePlainTextList(graph.replaceAll("_", "\n"))
+                circularArrange(window.graph.nodes)
+            }
+
             // --- Setup automatic tool callbacks ---
             // Mouse down and up callbacks
             window.cvs.mouseDownCallback = activeToolCallback('mouseDownCallback') 
@@ -45,11 +54,14 @@ export default function Graph(props) {
             window.cvs.autoResize = true
 
             // --- Debug ---
-            loadFromJSON(constants.TEMPLATE_GRAPH)
-            
-            // loadFromEdgeArray(constants.TEMPLATE_GRAPH_3)
-            // circularArrange(window.graph.nodes)
-            // focusOnAllNodes()
+
+            if (!graph){
+                loadFromJSON(constants.TEMPLATE_GRAPH)
+                
+                // loadFromEdgeArray(constants.TEMPLATE_GRAPH_3)
+                // circularArrange(window.graph.nodes)
+                // focusOnAllNodes()
+            }
 
             focusOnAllNodes()
 

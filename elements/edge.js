@@ -59,6 +59,8 @@ export class Edge extends Element{
         this.weightBackgroundColor = "#8888"
         this.hover = false
         this.thickness = 4
+        this.arrowSizeFactor = 3
+        this.weightFontSize = constants.EDGE_WEIGHT_FONT_SIZE
     }
 
     /**
@@ -74,7 +76,7 @@ export class Edge extends Element{
         // If the edge is directed, draw an arrow
         if (this.directed) {
             const rDst = this.dst.r
-            const arrowSize = this.thickness * 3
+            const arrowSize = this.thickness * this.arrowSizeFactor
             const {src: offsetSrc, dst: offsetDst, angle} = this.nodesIntersectionBorderCoords(0, this.directed ? arrowSize*0.8 : 0) // Calculate the coordinates of the edge from border to border of the nodes instead of the center
     
             // Draw the edge
@@ -111,14 +113,14 @@ export class Edge extends Element{
             const centerX = (this.src.x + this.dst.x) / 2
             const centerY = (this.src.y + this.dst.y) / 2
             
-            const fontSize = constants.EDGE_WEIGHT_FONT_SIZE
+            const fontSize = this.weightFontSize
             const boxSize = constants.EDGE_WEIGHT_BOX_SIZE + String(this.weight).length * 4
             window.ctx.font = fontSize + "px Arial"   
             window.ctx.textAlign = "center"
             window.ctx.textBaseline = "middle"
-            window.ctx.fillStyle = this.weightBackgroundColor
+            window.ctx.fillStyle = (this.weightColor && this.weightBackgroundColor) || "#0000"
             window.ctx.fillRect(centerX - boxSize, centerY - fontSize*0.75, boxSize*2, fontSize*1.25)  // The values hardcoded are calculated to center the box
-            window.ctx.fillStyle = this.weightColor
+            window.ctx.fillStyle = this.weightColor ?? "#0000"
             window.ctx.fillText(this.weight, centerX, centerY)
         }
 

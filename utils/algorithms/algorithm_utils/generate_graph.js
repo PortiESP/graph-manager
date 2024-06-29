@@ -44,3 +44,10 @@ export function generateEdgeList(){
 
     return edges
 }
+
+
+export function generateEdgeAndNodesList(){
+    const eList = generateEdgeList()
+    const nList = window.graph.nodes.map(n => n.toString()).filter(n => !eList.join("").includes(n))
+    return eList.concat(nList)
+}
