@@ -97,7 +97,8 @@ export function drawGrid(){
     const finX = gridOverflowMargin + coords.x2
     const finY = gridOverflowMargin + coords.y2
 
-    const labelMargin = 10/cvs.zoom
+    const labelMarginX = 4/cvs.zoom
+    const labelMarginY = 12/cvs.zoom
 
     // Draw the grid vertical lines
     for (let x = iniX; x < finX; x += gridSize) {
@@ -106,7 +107,7 @@ export function drawGrid(){
         ctx.lineTo(x, finY)
         ctx.stroke()
         ctx.fillStyle = gridColor
-        ctx.fillText(x, x+labelMargin, coords.y+labelMargin)
+        ctx.fillText(x, x+labelMarginX, coords.y+labelMarginY)
     }
     // Draw the grid horizontal lines
     for (let y = iniY; y < finY; y += gridSize) {
@@ -115,7 +116,7 @@ export function drawGrid(){
         ctx.lineTo(finX, y)
         ctx.stroke()
         ctx.fillStyle = gridColor
-        ctx.fillText(y, coords.x+labelMargin, y+labelMargin)
+        ctx.fillText(y, coords.x+labelMarginX, y+labelMarginY)
     }
 
     ctx.restore() // Restore the context state
