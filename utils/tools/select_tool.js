@@ -12,7 +12,7 @@ export default {
             const element = closestHoverElement(mouse.x, mouse.y)
             
             // If the user clicked an element, prepare to drag it. If not, prepare to create a selection box
-            if (element) window.graph.isDraggingElements = undefined // Prepare to drag the element (undefined means that the user may drag the element, but it is not dragging yet)
+            if (element && window.graph.selected) window.graph.isDraggingElements = undefined // Prepare to drag the element (undefined means that the user may drag the element, but it is not dragging yet)
             else startSelectionBox() // Prepare create a selection box
         }
     },

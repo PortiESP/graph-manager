@@ -103,7 +103,7 @@ export function handleShortcutKeyDown(code) {
 
         // If the user presses the N key, start creating a new node
         if (checkShortcut(constants.NODE_CREATION_KEY)) {
-            window.graph.newNode = {x: window.cvs.x, y: window.cvs.y}
+            window.graph.newNode = [window.cvs.x, window.cvs.y]
         }
 
     }
