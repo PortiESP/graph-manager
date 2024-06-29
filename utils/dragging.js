@@ -28,6 +28,9 @@ export function handleSelectDragging(e, mouse) {
 
     // Move the selected nodes
     window.graph.selected.forEach(e => e.offsetPos = offset)
+
+    // Update the setSelectedNodes
+    window.forceUpdateElementEditor()
 }
 
 
