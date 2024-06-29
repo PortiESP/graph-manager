@@ -31,7 +31,7 @@
 export class Element {
     constructor(id){
         // Random id
-        this.id = id ?? Math.random().toString(36).slice(2)
+        this._id = id ?? Math.random().toString(36).slice(2)
 
         // States
         this.selected = false
@@ -41,6 +41,15 @@ export class Element {
         this.hoverColor = '#0D99FF88'
         this.selectedColor = '#0D99FF'
         this.opacity = 1
+    }
+
+    set id(id) {
+        this._id = id
+        window.forceUpdateLiveEditor()
+    }
+
+    get id() {
+        return this._id
     }
 
     /**

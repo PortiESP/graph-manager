@@ -42,7 +42,7 @@ export default function drawAll(){
     if (window.graph.newNode) {
         window.ctx.fillStyle = 'black'
         window.ctx.beginPath()
-        window.ctx.arc(...window.graph.newNode, 30, 0, Math.PI * 2)
+        window.ctx.arc(window.graph.newNode.x, window.graph.newNode.y, 30, 0, Math.PI * 2)
         window.ctx.fill()
     }
 
