@@ -46,8 +46,8 @@ export function loadFromJSON(json) {
     })
 
     // Add the nodes and edges to the graph
-    window.graph.nodes.push(...nodes)
-    window.graph.edges.push(...edges)
+    window.graph.pushNode(...nodes)
+    window.graph.pushEdge(...edges)
 }
 
 
@@ -114,8 +114,8 @@ export function loadFromEdgePlainTextList(edgeList) {
     })
 
     // Add the nodes and edges to the graph
-    window.graph.nodes.push(...Object.values(nodes))
-    window.graph.edges.push(...edges)
+    window.graph.pushNode(...Object.values(nodes))
+    window.graph.pushEdge(...edges)
 }
 
 
@@ -208,6 +208,6 @@ export function loadFromEdgeArray(edgeArray, directed=false) {
     })
 
     // Add the nodes and edges to the graph
-    window.graph.nodes.push(...Object.values(nodes))
-    window.graph.edges.push(...edges)
+    window.graph.pushNode(...Object.values(nodes))
+    window.graph.pushEdge(...edges)
 }

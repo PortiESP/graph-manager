@@ -38,9 +38,9 @@ export function setupGraphGlobals() {
 export class Graph {
     constructor() {
         // Elements
-        this.nodes = [] // All nodes
-        this.edges = [] // All edges
-        this.info = [] // Information elements
+        this._nodes = [] // All nodes
+        this._edges = [] // All edges
+        this._info = [] // Information elements
 
         // Selection
         this._selected = [] // Selected nodes
@@ -71,6 +71,8 @@ export class Graph {
         this.backgroundColor = constants.BACKGROUND_COLOR // Background color
     }
 
+    // Getters & Setters
+
     get selected() {
         return this._selected
     }
@@ -79,6 +81,42 @@ export class Graph {
         this._selected = value
         window.setSelectedElements(value)
     }
+
+    get nodes() {
+        return this._nodes
+    }
+
+    set nodes(value) {
+        this._nodes = value
+        window.forceUpdateLiveEditor()
+    }
+
+    pushNode(...node) {
+        this.nodes = [...this.nodes, ...node]
+    }
+
+    get edges() {
+        return this._edges
+    }
+
+    set edges(value) {
+        this._edges = value
+        window.forceUpdateLiveEditor()
+    }
+
+    pushEdge(...edge) {
+        this.edges = [...this.edges, ...edge]
+    }
+
+    get info() {
+        return this._info
+    }
+
+    set info(value) {
+        this._info = value
+    }
+
+    // Methods
 
     getElements() {
         return this.nodes.concat(this.edges).concat(this.info)
@@ -114,7 +152,7 @@ export class Graph {
         if (r === undefined) r = constants.DEFAULT_NODE_RADIUS
 
         // Append the node to the list of nodes
-        this.nodes.push(new Node(x, y, r, label))
+        this.pushNode(new Node(x, y, r, label))
     }
 
     /**
@@ -130,7 +168,7 @@ export class Graph {
 
         // If the source and destination nodes are valid and different, add the edge to the list of edges
         if (src && dst && src !== dst) {
-            this.edges.push(new Edge(src, dst, weight))
+            this.pushEdge(new Edge(src, dst, weight))
         }
 
         this.stopCreatingEdge()
