@@ -166,7 +166,7 @@ export class Graph {
         if (r === undefined) r = constants.DEFAULT_NODE_RADIUS
 
         // Append the node to the list of nodes
-        this.pushNode(new Node(x, y, r, label))
+        this.pushNode(new Node(x, y, label, r))
     }
 
     /**

@@ -35,7 +35,7 @@ export function loadFromJSON(json) {
     }
 
     // Load the nodes
-    const nodes = json.nodes.map(n => new Node(n.x, n.y, n.r, n.label))
+    const nodes = json.nodes.map(n => new Node(n.x, n.y, n.label, n.r))
 
     // Load the edges
     const edges = json.edges.map(e => {
@@ -71,7 +71,7 @@ export function loadFromEdgePlainTextList(edgeList) {
     // Function to create a node if it does not exist
     const createNode = (label) => {
         if (!nodes[label]) {
-            nodes[label] = new Node(0, 0, constants.DEFAULT_NODE_RADIUS, label)
+            nodes[label] = new Node(0, 0, label, constants.DEFAULT_NODE_RADIUS)
         }
     }
     
@@ -196,9 +196,9 @@ export function loadFromEdgeArray(edgeArray, directed=false) {
     edgeArray.forEach(edgeList => {
         edgeList.forEach(([src, dst, weight]) => {
             // If the src node does not exist, create it
-            if (!nodes[src]) nodes[src] = new Node(0, 0, constants.DEFAULT_NODE_RADIUS, src)
+            if (!nodes[src]) nodes[src] = new Node(0, 0, src, constants.DEFAULT_NODE_RADIUS)
             // If the dst node does not exist, create it
-            if (!nodes[dst]) nodes[dst] = new Node(0, 0, constants.DEFAULT_NODE_RADIUS, dst)
+            if (!nodes[dst]) nodes[dst] = new Node(0, 0, dst, constants.DEFAULT_NODE_RADIUS)
 
             // Create the edge object
             const srcNode = nodes[src]
@@ -210,4 +210,11 @@ export function loadFromEdgeArray(edgeArray, directed=false) {
     // Add the nodes and edges to the graph
     window.graph.pushNode(...Object.values(nodes))
     window.graph.pushEdge(...edges)
+}
+
+
+export function loadFromURL(url){
+    const parsedURL = new URL(url)
+    const graph = parsedURL.searchParams.get("graph")
+    loadFromEdgePlainTextList(graph.replaceAll("_", "\n"))
 }

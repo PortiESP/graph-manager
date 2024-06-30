@@ -23,7 +23,7 @@ import { Element } from "./element"
  * 
  */
 export class Node extends Element{
-    constructor(x, y, r, label = null) {
+    constructor(x, y, label = null, r = constants.NODE_DEFAULT_RADIUS) {
         super(label)
 
         // Data properties
@@ -172,7 +172,7 @@ export class Node extends Element{
      * @returns Node - The cloned node
      */
     clone() {
-        const aux = new Node(this.x, this.y, this.r, this.label)
+        const aux = new Node(this.x, this.y, this.label, this.r)
         aux.backgroundColor = this.backgroundColor
         aux.labelColor = this.labelColor
         aux.borderColor = this.borderColor

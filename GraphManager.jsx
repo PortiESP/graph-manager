@@ -6,7 +6,7 @@ import { activeToolCallback } from './utils/tools/tools_callbacks'
 import drawAll from './utils/draw'
 import { focusOnAllNodes } from './utils/view'
 import { getViewBox } from './canvas-component/utils/zoom'
-import { loadFromEdgeArray, loadFromEdgePlainTextList, loadFromJSON } from './utils/load_graph'
+import { loadFromEdgeArray, loadFromEdgePlainTextList, loadFromJSON, loadFromURL } from './utils/load_graph'
 import constants from './utils/constants'
 import { circularArrange, toposortArrange, treeArrange, treeArrangeFromPrevsList } from './utils/arrangements'
 import { generateGraphArray } from './utils/algorithms/algorithm_utils/generate_graph'
@@ -34,8 +34,8 @@ export default function Graph(props) {
             // Load the graph from the URL
             const url = new URL(window.location.href)
             const graph = url.searchParams.get("graph")
-            if (graph) {
-                loadFromEdgePlainTextList(graph.replaceAll("_", "\n"))
+            if (graph) { 
+                loadFromURL(window.location.href)                
                 circularArrange(window.graph.nodes)
             }
 
