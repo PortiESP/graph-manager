@@ -17,7 +17,7 @@ export function generateGraphArray(){
     // Fill the graph with the edges
     window.graph.edges.forEach(edge => {
         // Add the edge to the graph
-        const objEdge = {src: edge.src, dst: edge.dst}
+        const objEdge = {src: edge.src.id, dst: edge.dst.id}
         if(edge.weight !== undefined) objEdge.weight = edge.weight
         if(edge.directed) objEdge.directed = edge.directed
         graph.edges.push(objEdge)
