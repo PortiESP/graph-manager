@@ -26,7 +26,7 @@ export function focusOnElement(element) {
 /**
  * Pans the canvas to focus on all the elements by centering them on the screen.
  */
-export function focusOnAllNodes(){
+export function focusOnAllNodes(zoom=true){
 
     // If no nodes are present, return
     if (window.graph.nodes.length === 0) return
@@ -50,7 +50,7 @@ export function focusOnAllNodes(){
     const height = y2 - y1
     
     // Adjust the zoom level to fit all the nodes
-    zoomToFit(width, height)
+    if (zoom) zoomToFit(width, height)
 
     // Calculate the new position of the canvas
     const {width: canvasWidth, height: canvasHeight} = getViewBox()

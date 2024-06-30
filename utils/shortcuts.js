@@ -1,11 +1,8 @@
 import constants from "./constants"
 import { undo, redo, recordMemento } from "./memento"
-import { deselectAll, endSelectionBox, startSelectionBox, updateSelectionBox } from "./selection"
 import { activateToolByKeyCode, isTool } from "./tools/tools_callbacks"
-import { resetZoom } from "../canvas-component/utils/zoom"
 import { isPanning, panBy, resetPan, startPanning, stopPanning } from "../canvas-component/utils/pan"
 import { checkShortcut } from "../canvas-component/utils/keyboard"
-import { closestHoverElement } from "./find_elements"
 
 /**
  * Handles the keyboard down shortcuts.
