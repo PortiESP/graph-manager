@@ -71,6 +71,20 @@ export class Graph {
         this.backgroundColor = constants.BACKGROUND_COLOR // Background color
     }
 
+    emptyGraph() {
+        this._nodes = []
+        this._edges = []
+        this._info = []
+
+        this._selected = []
+        this.selectionBox = null
+        this.newNode = false
+        this.newEdgeScr = null
+
+        this.memento = []
+        this.mementoRedo = []
+    }
+
     // Getters & Setters
 
     get selected() {
