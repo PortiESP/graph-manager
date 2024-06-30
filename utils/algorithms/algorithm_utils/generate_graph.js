@@ -33,7 +33,7 @@ export function generateEdgeList(){
     // Fill the graph with the edges
     window.graph.edges.forEach(edge => {
         // Add the edge to the graph
-        const w = edge.weight !== undefined ? `-${edge.weight}` : ""
+        const w = edge.weight > 1 ? `-${edge.weight}` : ""
         edges.push(`${edge.src}${w}-${edge.directed ? ">" : ""}${edge.dst}`)
     })
 
