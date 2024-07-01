@@ -1,5 +1,4 @@
 import { closestHoverNode } from "../find_elements"
-import { deselectAll } from "../selection"
 
 export default {
     setup: function () {
