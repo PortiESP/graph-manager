@@ -31,6 +31,22 @@ export function focusOnAllNodes(zoom=true){
     // If no nodes are present, return
     if (window.graph.nodes.length === 0) return
 
+    // Get the bounding box of all the nodes
+    const {x1, y1, width, height} = getBoundingBoxOfAllNodes()
+    
+    // Adjust the zoom level to fit all the nodes
+    if (zoom) zoomToFit(width, height)
+
+    // Calculate the new position of the canvas
+    const {width: canvasWidth, height: canvasHeight} = getViewBox()
+    const newX = x1 - (canvasWidth - width) / 2
+    const newY = y1 - (canvasHeight - height) / 2
+
+    // Pan to the new position
+    panTo(newX, newY)
+}
+
+export function getBoundingBoxOfAllNodes(){
     let x1 = Infinity
     let y1 = Infinity
     let x2 = -Infinity
@@ -48,15 +64,6 @@ export function focusOnAllNodes(zoom=true){
     // Dimensions of the bounding box
     const width = x2 - x1
     const height = y2 - y1
-    
-    // Adjust the zoom level to fit all the nodes
-    if (zoom) zoomToFit(width, height)
 
-    // Calculate the new position of the canvas
-    const {width: canvasWidth, height: canvasHeight} = getViewBox()
-    const newX = x1 - (canvasWidth - width) / 2
-    const newY = y1 - (canvasHeight - height) / 2
-
-    // Pan to the new position
-    panTo(newX, newY)
+    return {x1, y1, x2, y2, width, height}
 }
