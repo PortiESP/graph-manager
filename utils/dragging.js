@@ -14,8 +14,8 @@ export function handleSelectDragging(e, mouse) {
     }
 
     // If snap mode is enabled, snap the offset to the grid
-    const elem = window.graph.selected.slice(-1)[0]
-    if (window.graph.snapToGrid) {
+    const elem = window.graph.selected.find(e => e.constructor.name === "Node")
+    if (window.graph.snapToGrid && elem) {
         const gs = window.graph.gridSize
         const absOffsetX = Math.round(offset.x / gs) * gs
         const absOffsetY = Math.round(offset.y / gs) * gs

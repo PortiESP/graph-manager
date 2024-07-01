@@ -159,8 +159,7 @@ export class Node extends Element{
     }
 
     applyOffset() {
-        this._x += this.offsetPos.x
-        this._y += this.offsetPos.y
+        this.moveBy(this.offsetPos.x, this.offsetPos.y)  
         this.offsetPos = {x: 0, y: 0}
     }
 

@@ -47,7 +47,7 @@ export class Element {
         this._id = id
         window.forceUpdateLiveEditor()
     }
-
+    
     get id() {
         return this._id
     }
@@ -58,8 +58,8 @@ export class Element {
     select() {
         if (this.selected) return  // If the node is already selected, return
 
-        this.selected = !this.selected
-        window.graph.selected = [...window.graph.selected, this]
+        this.selected = true
+        window.graph.pushSelected(this)
     }
 
     /**
