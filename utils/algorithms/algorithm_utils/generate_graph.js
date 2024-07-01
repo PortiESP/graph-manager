@@ -126,20 +126,20 @@ export function generateSVG(elementId){
 
     // Create the edges
     window.graph.edges.forEach(edge => {
-        const line = document.createElementNS(svgNS, "line")
-        line.setAttribute("class", "edge")
-        line.setAttribute("x1", edge.src.x)
-        line.setAttribute("y1", edge.src.y)
-        line.setAttribute("x2", edge.dst.x)
-        line.setAttribute("y2", edge.dst.y)
-        line.setAttribute("stroke", edge.color)
-        line.setAttribute("id", edge.id)
-        edges.push(line)
-
+        let {src, dst} = edge.nodesIntersectionBorderCoords()
+        
+        const text = document.createElementNS(svgNS, "text")
+        text.setAttribute("class", "label")
+        text.setAttribute("x", (src.x + dst.x) / 2)
+        text.setAttribute("y", (src.y + dst.y) / 2)
+        text.setAttribute("id", "label-"+edge.id)
+        text.textContent = edge.weight
+        edgesLabels.push(text)
+        
         const textBox = document.createElementNS(svgNS, "rect")
         textBox.setAttribute("class", "label")
-        const centerX = (edge.src.x + edge.dst.x) / 2
-        const centerY = (edge.src.y + edge.dst.y) / 2
+        const centerX = (src.x + dst.x) / 2
+        const centerY = (src.y + dst.y) / 2
         const fontSize = edge.weightFontSize
         const boxSize = constants.EDGE_WEIGHT_BOX_SIZE + String(edge.weight).length * 4
         textBox.setAttribute("x", centerX - boxSize)
@@ -149,13 +149,80 @@ export function generateSVG(elementId){
         textBox.setAttribute("id", "box-"+edge.id)
         edgesLabels.push(textBox)
 
-        const text = document.createElementNS(svgNS, "text")
-        text.setAttribute("class", "label")
-        text.setAttribute("x", (edge.src.x + edge.dst.x) / 2)
-        text.setAttribute("y", (edge.src.y + edge.dst.y) / 2)
-        text.setAttribute("id", "label-"+edge.id)
-        text.textContent = edge.weight
-        edgesLabels.push(text)
+        // if (this.directed) {
+        //     const rDst = this.dst.r
+        //     const arrowSize = this.thickness * this.arrowSizeFactor
+        //     const {src: offsetSrc, dst: offsetDst, angle} = this.nodesIntersectionBorderCoords(0, this.directed ? arrowSize*0.8 : 0) // Calculate the coordinates of the edge from border to border of the nodes instead of the center
+    
+        //     // Draw the edge
+        //     window.ctx.beginPath()
+        //     window.ctx.strokeStyle = this.color
+        //     window.ctx.lineWidth = this.thickness
+        //     window.ctx.moveTo(this.src.x, this.src.y)  // Move to the source node
+        //     window.ctx.lineTo(offsetDst.x, offsetDst.y)  // Draw a line to the destination node
+        //     window.ctx.stroke()
+
+        //     const arrowAngle = Math.PI / 6
+        //     const offsetDstArrow = { x: rDst * Math.cos(angle + Math.PI), y: rDst * Math.sin(angle + Math.PI) } // Calculate the coordinates of the arrow from the border of the node
+
+        //     // Draw the arrow
+        //     window.ctx.beginPath()
+        //     window.ctx.fillStyle = this.color
+        //     window.ctx.moveTo(this.dst.x + offsetDstArrow.x, this.dst.y + offsetDstArrow.y)
+        //     window.ctx.lineTo(this.dst.x + offsetDstArrow.x - arrowSize * Math.cos(angle - arrowAngle), this.dst.y + offsetDstArrow.y - arrowSize * Math.sin(angle - arrowAngle))
+        //     window.ctx.lineTo(this.dst.x + offsetDstArrow.x - arrowSize * Math.cos(angle + arrowAngle), this.dst.y + offsetDstArrow.y - arrowSize * Math.sin(angle + arrowAngle))
+        //     window.ctx.fill()
+        // } else {
+        //     // Draw the edge
+        //     window.ctx.beginPath()
+        //     window.ctx.strokeStyle = this.color
+        //     window.ctx.lineWidth = this.thickness
+        //     window.ctx.moveTo(this.src.x, this.src.y)  
+        //     window.ctx.lineTo(this.dst.x, this.dst.y)
+        //     window.ctx.stroke()
+        // }
+
+        if (edge.directed){
+            const arrowSize = edge.thickness * edge.arrowSizeFactor
+            const {dst: dstDir, angle} = edge.nodesIntersectionBorderCoords(0, arrowSize*0.8)
+            const rDst = edge.dst.r
+            const offsetDstArrow = { x: rDst * Math.cos(angle + Math.PI), y: rDst * Math.sin(angle + Math.PI) } // Calculate the coordinates of the arrow from the border of the node
+            const arrowAngle = Math.PI / 6
+
+            const line = document.createElementNS(svgNS, "line")
+            line.setAttribute("class", "edge")
+            line.setAttribute("x1", src.x)
+            line.setAttribute("y1", src.y)
+            line.setAttribute("x2", dstDir.x)
+            line.setAttribute("y2", dstDir.y)
+            line.setAttribute("stroke", edge.color)
+            line.setAttribute("id", edge.id)
+            edges.push(line)
+
+            const p1 = {x: dst.x, y: dst.y}
+            const p2 = {x: dst.x - arrowSize * Math.cos(angle - arrowAngle), y: dst.y - arrowSize * Math.sin(angle - arrowAngle)}
+            const p3 = {x: dst.x - arrowSize * Math.cos(angle + arrowAngle), y: dst.y - arrowSize * Math.sin(angle + arrowAngle)}
+
+            const arrow = document.createElementNS(svgNS, "polygon")
+            arrow.setAttribute("class", "edge")
+            arrow.setAttribute("points", `${p1.x},${p1.y} ${p2.x},${p2.y} ${p3.x},${p3.y}`)
+            arrow.setAttribute("fill", edge.color)
+            arrow.setAttribute("id", "edge-arrow-"+edge.id)
+            edges.push(arrow)
+
+        } else {
+            const line = document.createElementNS(svgNS, "line")
+            line.setAttribute("class", "edge")
+            line.setAttribute("x1", src.x)
+            line.setAttribute("y1", src.y)
+            line.setAttribute("x2", dst.x)
+            line.setAttribute("y2", dst.y)
+            line.setAttribute("stroke", edge.color)
+            line.setAttribute("id", edge.id)
+            edges.push(line)
+        }
+
+
     })
 
     // Create the nodes
