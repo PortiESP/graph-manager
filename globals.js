@@ -85,6 +85,7 @@ export class Graph {
         this.mementoRedo = []
     }
 
+
     // Getters & Setters
 
     get selected() {
@@ -144,6 +145,16 @@ export class Graph {
         resetZoom() // Reset the zoom level to 1
         this.showAll() // Show all elements
         this.nodes.forEach(n => n.bubble = null) // Remove all bubbles
+    }
+
+    resetStates() {
+        this.newEdgeScr = null
+        this.newNode = false
+        this.isDraggingElements = false
+        this.selectionBox = null
+        this.snapReference = null
+        this.snapToGrid = false
+        this.selected = []
     }
 
 

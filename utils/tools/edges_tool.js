@@ -3,7 +3,7 @@ import { deselectAll } from "../selection"
 
 export default {
     setup: function () {
-        deselectAll()
+        window.graph.resetStates()
     },
     mouseDownCallback: function (button, mouse) {
         // Checks if the user is hovering a node so it can start creating a new edge
