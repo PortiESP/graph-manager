@@ -38,6 +38,17 @@ export default function Graph(props) {
                 loadFromURL(window.location.href)                
                 circularArrange(window.graph.nodes)
             }
+            // Load example graph
+            const example = url.searchParams.get("example")
+            if (example) {
+                fetch(`/examples/${example}.json`)
+                    .then(response => response.json())
+                    .then(data => {
+                        loadFromJSON(data)
+                        focusOnAllNodes()
+                    })
+            }
+
 
             // --- Setup automatic tool callbacks ---
             // Mouse down and up callbacks
