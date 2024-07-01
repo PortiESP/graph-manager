@@ -30,8 +30,8 @@
  */
 export class Element {
     constructor(id){
-        // Random id
-        this._id = id ?? Math.random().toString(36).slice(2)
+        // Random id 
+        this._id = id ?? "id-"+Math.random().toString(36).slice(2)
 
         // States
         this.selected = false

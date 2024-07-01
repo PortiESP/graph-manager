@@ -159,7 +159,9 @@ export function generateSVG(elementId){
 
 export function generateCSS(){
 
-    const styles = []
+    const styles = [
+        "svg{font-size: 16px; font-family: Arial, sans-serif;}",
+    ]
 
     window.graph.edges.forEach(edge => {
         const edge_styles = {
@@ -176,8 +178,6 @@ export function generateCSS(){
 
         const edge_box_styles = {
             fill: edge.weightBackgroundColor,
-            // Bring to the front
-            "z-index": 10,
         }
 
         styles.push(`.edge#${edge.id} {${Object.entries(edge_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
@@ -199,6 +199,7 @@ export function generateCSS(){
             "font-size": node.fontSize,
             "text-anchor": "middle",
             "dominant-baseline": "middle",
+            "font-weight": "bold",
         }
 
         styles.push(`.node#${node.id} {${Object.entries(node_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
