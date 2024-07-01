@@ -93,7 +93,9 @@ export class Graph {
     }
 
     set selected(value) {
+        this._selected.forEach(e => e.deselect())
         this._selected = value
+        this._selected.forEach(e => e.select())
         window.setSelectedElements(value)
     }
 
