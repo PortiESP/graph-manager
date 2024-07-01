@@ -37,6 +37,9 @@ export default {
     SELECTION_BOX_FILL: "rgba(0, 0, 255, 0.1)",
     SELECTION_BOX_THICKNESS: 1,
 
+    // Focus
+    FOCUS_MARGIN: 100,
+
     // Debug
     TEMPLATE_GRAPH: {
         nodes: [

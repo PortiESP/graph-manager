@@ -1,5 +1,6 @@
 import { panTo } from "../canvas-component/utils/pan"
 import { getViewBox, zoomToFit } from "../canvas-component/utils/zoom"
+import constants from "./constants"
 
 
 /**
@@ -32,7 +33,11 @@ export function focusOnAllNodes(zoom=true){
     if (window.graph.nodes.length === 0) return
 
     // Get the bounding box of all the nodes
-    const {x1, y1, width, height} = getBoundingBoxOfAllNodes()
+    let {x1, y1, width, height} = getBoundingBoxOfAllNodes()
+    x1 -= constants.FOCUS_MARGIN
+    y1 -= constants.FOCUS_MARGIN
+    width += 2 * constants.FOCUS_MARGIN
+    height += 2 * constants.FOCUS_MARGIN
     
     // Adjust the zoom level to fit all the nodes
     if (zoom) zoomToFit(width, height)
@@ -55,10 +60,10 @@ export function getBoundingBoxOfAllNodes(){
 
     // Iterate over all the nodes to get the coordinates of a bounding box that contains all the nodes
     for (const node of graph.nodes){
-        x1 = Math.min(x1, node.x-node.r*2)
-        y1 = Math.min(y1, node.y-node.r*2)
-        x2 = Math.max(x2, node.x+node.r*2)
-        y2 = Math.max(y2, node.y+node.r*2)
+        x1 = Math.min(x1, node.x-node.r)
+        y1 = Math.min(y1, node.y-node.r)
+        x2 = Math.max(x2, node.x+node.r)
+        y2 = Math.max(y2, node.y+node.r)
     }
 
     // Dimensions of the bounding box
