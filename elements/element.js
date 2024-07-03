@@ -100,8 +100,8 @@ export class Element {
      * @param {number} dy - The number of coordinates to move in the y axis
      */
     moveBy(dx, dy) {
-        this.x += dx
-        this.y += dy
+        this._x += dx
+        this._y += dy
     }
 
 
