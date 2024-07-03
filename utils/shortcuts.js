@@ -1,6 +1,6 @@
 import constants from "./constants"
 import { undo, redo, recordMemento } from "./memento"
-import { activateToolByKeyCode, isTool } from "./tools/tools_callbacks"
+import { setActivateToolByKeyCode, isTool } from "./tools/tools_callbacks"
 import { isPanning, panBy, resetPan, startPanning, stopPanning } from "../canvas-component/utils/pan"
 import { checkShortcut } from "../canvas-component/utils/keyboard"
 
@@ -14,7 +14,7 @@ export function handleShortcutKeyDown(code) {
 
     // The key pressed represents a tool
     if (isTool(code)) {
-        activateToolByKeyCode(code)
+        setActivateToolByKeyCode(code)
         return true
     }
     // The key pressed is not a tool, check for GLOBAL shortcuts (custom shortcuts are handled by the active tool keyDownCallback)

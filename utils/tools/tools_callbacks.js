@@ -53,7 +53,7 @@ export function isTool(code){
     return !!CONSTANTS.TOOLS_KEYS[code]
 }
 
-export function activateTool(tool){
+export function setActivateTool(tool){
     // Reset the tool states before changing the tool (the if avoids calling the clean method before the first tool is set)
     if (window.graph.tool) getActiveToolCallback('clean')()
 
@@ -65,10 +65,10 @@ export function activateTool(tool){
     getActiveToolCallback('setup')()
 }
 
-export function activateToolByKeyCode(code){
+export function setActivateToolByKeyCode(code){
     // Check if the tool exists
     if (!isTool(code)) throw new Error('Invalid tool key code')
     // Set the current tool
     const tool = CONSTANTS.TOOLS_KEYS[code]
-    activateTool(tool)
+    setActivateTool(tool)
 }

@@ -26,8 +26,8 @@ import constants from "./constants";
  * 
  */
 export function loadFromJSON(json) {
-    // Replace the current graph with a new one
-    new GraphGlobals()
+    // Reset the graph to its initial state
+    window.graph.reset()
 
     // Parse the JSON string if needed
     if (typeof json === 'string') {
@@ -75,8 +75,8 @@ export function loadFromEdgePlainTextList(edgeList) {
         }
     }
     
-    // Replace the current graph with a new one
-    new GraphGlobals()
+    // Reset the graph to its initial state
+    window.graph.reset()
 
     // If the edge list is empty, return
     if (edgeList === '') return
@@ -187,8 +187,8 @@ export function isSingleNodeEdge(edgeString){
  * @param {boolean} directed - A boolean indicating if the edges are directed
  */
 export function loadFromEdgeArray(edgeArray, directed=false) {
-    // Replace the current graph with a new one
-    new GraphGlobals()
+    // Reset the graph to its initial state
+    window.graph.reset()
 
     // Get nodes and edges from the edge list
     const nodes = {}

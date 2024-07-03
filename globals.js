@@ -6,7 +6,7 @@ import constants from "./utils/constants"
 import CONSTANTS from "./utils/constants"
 import { closestHoverNode } from "./utils/find_elements"
 import { deselectAll } from "./utils/selection"
-import { activateTool, getActiveToolCallback, toolsCallbacks } from "./utils/tools/tools_callbacks"
+import { setActivateTool, getActiveToolCallback, toolsCallbacks } from "./utils/tools/tools_callbacks"
 
 /**
  * The Graph class that stores all the information about the graph.
@@ -29,6 +29,33 @@ export class GraphGlobals {
         // Set the global variable
         window.graph = this // This is required since some external functions rely on the window.graph variable
 
+        // --- Properties ---
+        this.reset()
+
+        // --- Listeners ---
+        this.allListeners = []  // General listener (any kind of change)
+        this.selectedListeners = []  // Selected nodes listener
+        this.graphListeners = []  // Graph listener (nodes and edges)
+        // Listeners triggers
+        this.triggerAllListeners = () => this.allListeners.forEach(l => l(this))
+        this.triggerSelectedListeners = () => {
+            this.allListeners.forEach(l => l(this.selected))
+            this.selectedListeners.forEach(l => l(this.selected))
+        }
+        this.triggerGraphListeners = () => {
+            this.allListeners.forEach(l => l(this.nodes))
+            this.graphListeners.forEach(l => l(this.nodes))
+        }
+
+        // Activate the default tool
+        setActivateTool(CONSTANTS.DEFAULT_TOOL)
+    }
+
+
+    /**
+     * Resets the graph global variable to the default values.
+     */
+    reset() {
         // Elements
         this._nodes = [] // All nodes
         this._edges = [] // All edges
@@ -66,34 +93,7 @@ export class GraphGlobals {
         // Style
         this.backgroundColor = constants.BACKGROUND_COLOR // Background color
 
-        // Listeners
-        this.allListeners = []  // General listener (any kind of change)
-        this.selectedListeners = []  // Selected nodes listener
-        this.graphListeners = []  // Graph listener (nodes and edges)
-        // Listeners triggers
-        this.triggerAllListeners = () => this.allListeners.forEach(l => l(this))
-        this.triggerSelectedListeners = () => {
-            this.allListeners.forEach(l => l(this.selected))
-            this.selectedListeners.forEach(l => l(this.selected))
-        }
-        this.triggerGraphListeners = () => {
-            this.allListeners.forEach(l => l(this.nodes))
-            this.graphListeners.forEach(l => l(this.nodes))
-        }
-
-        // Activate the default tool
-        activateTool(CONSTANTS.DEFAULT_TOOL)
-    }
-
-    emptyGraph() {
-        this._nodes = []
-        this._edges = []
-        this._info = []
-
-        this._selected = []
-        this.selectionBox = null
-        this.newNode = false
-        this.newEdgeScr = null
+        setActivateTool(CONSTANTS.DEFAULT_TOOL)
 
         this.memento = []
         this.mementoRedo = []
