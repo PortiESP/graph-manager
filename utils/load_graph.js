@@ -1,6 +1,6 @@
 import { Edge } from "../elements/edge";
 import { Node } from "../elements/node";
-import { setupGraphGlobals } from "../globals";
+import { GraphGlobals } from "../globals";
 import constants from "./constants";
 
 /**
@@ -26,8 +26,8 @@ import constants from "./constants";
  * 
  */
 export function loadFromJSON(json) {
-    // Clear the current graph and reset all the graph global variables
-    setupGraphGlobals()
+    // Replace the current graph with a new one
+    new GraphGlobals()
 
     // Parse the JSON string if needed
     if (typeof json === 'string') {
@@ -75,8 +75,8 @@ export function loadFromEdgePlainTextList(edgeList) {
         }
     }
     
-    // Clear the current graph and reset all the graph global variables
-    setupGraphGlobals()
+    // Replace the current graph with a new one
+    new GraphGlobals()
 
     // If the edge list is empty, return
     if (edgeList === '') return
@@ -187,8 +187,8 @@ export function isSingleNodeEdge(edgeString){
  * @param {boolean} directed - A boolean indicating if the edges are directed
  */
 export function loadFromEdgeArray(edgeArray, directed=false) {
-    // Clear the current graph and reset all the graph global variables
-    setupGraphGlobals()
+    // Replace the current graph with a new one
+    new GraphGlobals()
 
     // Get nodes and edges from the edge list
     const nodes = {}
@@ -213,6 +213,13 @@ export function loadFromEdgeArray(edgeArray, directed=false) {
 }
 
 
+/**
+ * Load a graph from a URL
+ * 
+ * The URL must contain the graph data as a query parameter named `graph`. The graph data must be a plain text edge list separated by underscores.
+ * 
+ * @param {string} url - The URL containing the graph data
+ */
 export function loadFromURL(url){
     const parsedURL = new URL(url)
     const graph = parsedURL.searchParams.get("graph")

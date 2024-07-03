@@ -1,13 +1,13 @@
 import { setupCanvas, mainLoop } from './canvas-component/utils/setup'
 import { useLayoutEffect } from 'react'
 import Canvas from './canvas-component/Canvas'
-import { setupGraphGlobals } from './globals'
-import { activeToolCallback } from './utils/tools/tools_callbacks'
+import { GraphGlobals } from './globals'
+import { getActiveToolCallback } from './utils/tools/tools_callbacks'
 import drawAll from './utils/draw'
 import { focusOnAllNodes } from './utils/view'
 import { loadFromEdgePlainTextList, loadFromJSON, loadFromURL } from './utils/load_graph'
 import constants from './utils/constants'
-import { circularArrange, toposortArrange, treeArrange, treeArrangeFromPrevsList } from './utils/arrangements'
+import { circularArrange, toposortArrange, treeArrangeFromPrevsList } from './utils/arrangements'
 import { generateEdgeArray } from './utils/algorithms/algorithm_utils/generate_graph'
 import { toposortKahn } from './utils/algorithms/toposort'
 import bfs from './utils/algorithms/bfs'
@@ -27,7 +27,7 @@ export default function Graph(props) {
         window.ctx.save()  // Save the initial state of the canvas after initializing it
 
         // --- Setup the graph globals--- 
-        setupGraphGlobals()
+        new GraphGlobals()
 
         // --- Setup the graph ---
         // Check whether the URL has a graph to load or an example to load, otherwise load the default graph
@@ -66,14 +66,14 @@ export default function Graph(props) {
 
         // --- Setup automatic tool callbacks ---
         // Mouse down and up callbacks
-        window.cvs.mouseDownCallback = activeToolCallback('mouseDownCallback')
-        window.cvs.mouseUpCallback = activeToolCallback('mouseUpCallback')
-        window.cvs.mouseMoveCallback = activeToolCallback('mouseMoveCallback')
-        window.cvs.mouseDoubleClickCallback = activeToolCallback('mouseDoubleClickCallback')
-        window.cvs.keyDownCallback = activeToolCallback('keyDownCallback')
-        window.cvs.keyUpCallback = activeToolCallback('keyUpCallback')
-        window.cvs.mouseScrollCallback = activeToolCallback('mouseScrollCallback')
-        window.cvs.resizeCallback = activeToolCallback('resizeCallback')
+        window.cvs.mouseDownCallback = getActiveToolCallback('mouseDownCallback')
+        window.cvs.mouseUpCallback = getActiveToolCallback('mouseUpCallback')
+        window.cvs.mouseMoveCallback = getActiveToolCallback('mouseMoveCallback')
+        window.cvs.mouseDoubleClickCallback = getActiveToolCallback('mouseDoubleClickCallback')
+        window.cvs.keyDownCallback = getActiveToolCallback('keyDownCallback')
+        window.cvs.keyUpCallback = getActiveToolCallback('keyUpCallback')
+        window.cvs.mouseScrollCallback = getActiveToolCallback('mouseScrollCallback')
+        window.cvs.resizeCallback = getActiveToolCallback('resizeCallback')
 
         // --- Config ---
         window.cvs.autoResize = true

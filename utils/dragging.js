@@ -34,16 +34,23 @@ export function handleSelectDragging(e, mouse) {
 }
 
 
-
+/**
+ * Handles the dragging of elements in the graph
+ */
 export function startDragging(){
     window.graph.isDraggingElements = true
 }
 
+
+/**
+ * Stops the dragging of elements in the graph
+ */
 export function stopDragging(){
     // If the user is dragging elements
     if (window.graph.isDraggingElements) {
-        // Reset the offset of the selected nodes
+        // Add the offset to the real position of the selected nodes
         window.graph.selected.forEach(e => (e.constructor.name === "Node") && e.applyOffset())
+        // Reset the offset of the selected nodes
         window.graph.isDraggingElements = false
     }
 

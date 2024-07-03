@@ -54,4 +54,4 @@ The app has some predefined keybindings that will be evaluated before the custom
 
 ### Add a new DOM event
 
-To add a new DOM event in order to be able to use it in the tools files `utils/tools/{your-tool}.js` take a event from the `Canvas` component that you have not used yet. and setup as it shows `window.cvs.{your-event} = activeToolCallback('{your-event}')` in the `GraphBoard.jsx` file.
+To add a new DOM event in order to be able to use it in the tools files `utils/tools/{your-tool}.js` take a event from the `Canvas` component that you have not used yet. and setup as it shows `window.cvs.{your-event} = getActiveToolCallback('{your-event}')` in the `GraphBoard.jsx` file.

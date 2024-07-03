@@ -1,4 +1,4 @@
-import { checkKey, checkShortcut } from "../canvas-component/utils/keyboard"
+import { checkShortcut } from "../canvas-component/utils/keyboard"
 import { closestHoverElement, findElementsWithin } from "./find_elements"
 import { discardLastSnapshot } from "./memento"
 
@@ -41,6 +41,12 @@ export function handleSelectionPrimaryBtnDown(button, mouse) {
 }
 
 
+/**
+ * Handles the primary mouse button up event.
+ * 
+ * @param {number} button - The button that was pressed.
+ * @param {Object} mouse - The mouse event.
+ */
 export function handleSelectionPrimaryBtnUp(button, mouse) {
     // Find the element under the mouse
     const e = closestHoverElement()

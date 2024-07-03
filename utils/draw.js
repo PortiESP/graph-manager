@@ -144,6 +144,12 @@ export function drawSelectionBox(){
 }
 
 
+/**
+ * Draw a mathematical function in the canvas
+ * 
+ * @param {Function} fx The function to draw
+ * @param {String} color The color of the function
+ */
 export function drawFunction(fx, color){
     const ctx = window.ctx
     ctx.save()

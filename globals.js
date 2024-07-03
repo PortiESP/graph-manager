@@ -6,18 +6,7 @@ import constants from "./utils/constants"
 import CONSTANTS from "./utils/constants"
 import { closestHoverNode } from "./utils/find_elements"
 import { deselectAll } from "./utils/selection"
-import { activateTool } from "./utils/tools/tools_callbacks"
-
-/**
- * Setup the global variable `graph` that will store all the information about the graph.
- */
-export function setupGraphGlobals() {
-    window.graph = new Graph()
-
-    // Activate the default tool
-    activateTool(CONSTANTS.DEFAULT_TOOL) // Activate the default tool
-}
-
+import { activateTool, getActiveToolCallback, toolsCallbacks } from "./utils/tools/tools_callbacks"
 
 /**
  * The Graph class that stores all the information about the graph.
@@ -35,8 +24,11 @@ export function setupGraphGlobals() {
  * @property {Array} mementoRedo - Redo stack
  * @property {Array} info - Information elements
  */
-export class Graph {
+export class GraphGlobals {
     constructor() {
+        // Set the global variable
+        window.graph = this // This is required since some external functions rely on the window.graph variable
+
         // Elements
         this._nodes = [] // All nodes
         this._edges = [] // All edges
@@ -48,6 +40,10 @@ export class Graph {
 
         // Config
         this.showWeights = true // Show weights on edges
+
+        // Tools 
+        this.tool = undefined // Active tool
+        this.toolCallbacks = undefined // Active tool callbacks
         
         // Grid & Snap
         this.gridEnabled = constants.GRID_ENABLED // Show the grid
@@ -84,6 +80,9 @@ export class Graph {
             this.allListeners.forEach(l => l(this.nodes))
             this.graphListeners.forEach(l => l(this.nodes))
         }
+
+        // Activate the default tool
+        activateTool(CONSTANTS.DEFAULT_TOOL)
     }
 
     emptyGraph() {

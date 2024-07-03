@@ -16,7 +16,7 @@ export const toolsCallbacks = {
  * @param {String} cbkName Name of the callback. e.g. "mouseDownCallback"
  * @returns The callback for the active tool
  */
-export function activeToolCallback(cbkName) {
+export function getActiveToolCallback(cbkName) {
 
     // Return a callback that calls the specified tool callback
     return (...params) => {
@@ -55,14 +55,14 @@ export function isTool(code){
 
 export function activateTool(tool){
     // Reset the tool states before changing the tool (the if avoids calling the clean method before the first tool is set)
-    if (window.graph.tool) activeToolCallback('clean')()
+    if (window.graph.tool) getActiveToolCallback('clean')()
 
     // Set the current tool
     window.graph.tool = tool
     // Set the tool callbacks
     window.graph.toolCallbacks = toolsCallbacks[window.graph.tool]
     // Call the setup method of the tool
-    activeToolCallback('setup')()
+    getActiveToolCallback('setup')()
 }
 
 export function activateToolByKeyCode(code){
