@@ -20,7 +20,7 @@ export default {
         if (btn === 0) {
             document.body.style.cursor = "default"
 
-            if (window.graph.isDraggingElements) {
+            if (window.graph.isDraggingElements || window.graph.isDraggingElements === undefined) {
                 stopDragging()
                 return
             }
