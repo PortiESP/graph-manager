@@ -43,17 +43,6 @@ export class Element {
         this.opacity = 1
     }
 
-    set id(id) {
-        this._id = id
-        
-        // Listeners
-        window.graph.allListeners.forEach(l => l(this))
-        window.graph.graphListeners.forEach(l => l(this))
-    }
-    
-    get id() {
-        return this._id
-    }
 
     /**
      * Activates the selection state of the element and add it to the selected elements array in the graph
@@ -145,5 +134,20 @@ export class Element {
     // Delete (abstract method)
     delete() {
         window.graph.selected = window.graph.selected.filter(e => e !== this)
+    }
+
+    
+    // ======================================================= Getters and setters =======================================================
+
+    set id(id) {
+        this._id = id
+        
+        // Listeners
+        window.graph.allListeners.forEach(l => l(this))
+        window.graph.graphListeners.forEach(l => l(this))
+    }
+    
+    get id() {
+        return this._id
     }
 }

@@ -10,6 +10,16 @@ import { Element } from "./element"
  * @property {string} label - The label of the node
  * @property {string} background - The background color of the node
  * @property {string} color - The color of the label
+ * @property {string} borderColor - The border color of the node
+ * @property {number} borderWidth - The border width of the node
+ * @property {number} fontSize - The font size of the label
+ * @property {string} bubble - The bubble attached to the node (String)
+ * @property {string} selectedColor - The color of the node when selected (Inherited from Element class)
+ * @property {string} hoverColor - The color of the node when hover (Inherited from Element class)
+ * @property {number} opacity - The opacity of the node (Inherited from Element class)
+ * @property {boolean} selected - Whether the node is selected (Inherited from Element class)
+ * @property {boolean} hidden - Whether the node is hidden (Inherited from Element class)
+ * @property {string} id - The id of the node (Inherited from Element class)
  * 
  * @method draw - Draw the node
  * @method contains - Check if the node contains the point (x, y)
@@ -210,7 +220,7 @@ export class Node extends Element{
     }
 
 
-    // Getters and Setters
+    // ===== Getters and Setters =====
     get x() {
         return this._x + this.offsetPos.x
     }

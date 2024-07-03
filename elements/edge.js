@@ -30,6 +30,8 @@ import { Element } from "./element"
  * @property {string} edgeSelectedColor - The color of the edge when selected
  * @property {string} weightColor - The color of the weight of the edge
  * @property {string} weightBackgroundColor - The background color of the weight of the edge
+ * @property {number} arrowSizeFactor - The size factor of the arrow of the edge (only for directed edges)
+ * @property {number} weightFontSize - The font size of the weight of the edge
  * 
  * **Methods**
  * 
@@ -67,7 +69,8 @@ export class Edge extends Element{
      * Draw the edge
      */
     draw() {
-        if (this.hidden) return
+        // If the edge is hidden, do not draw it
+        if (this.hidden) return  
 
         window.ctx.save()  // Save the current state of the canvas
 
@@ -77,7 +80,7 @@ export class Edge extends Element{
         if (this.directed) {
             const rDst = this.dst.r
             const arrowSize = this.thickness * this.arrowSizeFactor
-            const {src: offsetSrc, dst: offsetDst, angle} = this.nodesIntersectionBorderCoords(0, this.directed ? arrowSize*0.8 : 0) // Calculate the coordinates of the edge from border to border of the nodes instead of the center
+            const { dst: offsetDst, angle } = this.nodesIntersectionBorderCoords(0, this.directed ? arrowSize*0.8 : 0) // Calculate the coordinates of the edge from border to border of the nodes instead of the center
     
             // Draw the edge
             window.ctx.beginPath()
