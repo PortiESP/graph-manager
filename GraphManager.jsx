@@ -34,16 +34,16 @@ export default function Graph(props) {
 
         // Load the graph from the URL, if any
         const url = new URL(window.location.href)
-        let initialGraph = url.searchParams.get("graph")
-        if (initialGraph) {
+        const sharedGraph = url.searchParams.get("graph")
+        if (sharedGraph) {
             loadFromURL(window.location.href)
             circularArrange(window.graph.nodes)
             focusOnAllNodes()
         }
         // Load example graph, if any
-        initialGraph = url.searchParams.get("example")
-        if (initialGraph) {
-            fetch(`/examples/${initialGraph}.json`)
+        const exampleGraph = url.searchParams.get("example")
+        if (exampleGraph) {
+            fetch(`/examples/${exampleGraph}.json`)
                 .then(response => response.json())
                 .then(data => {
                     loadFromJSON(data)
@@ -51,7 +51,7 @@ export default function Graph(props) {
                 })
         }
         // Load the default graph if any of the above conditions are false
-        if (!initialGraph) {
+        if (!sharedGraph && !exampleGraph) {
             loadFromJSON(constants.TEMPLATE_GRAPH)
 
             // Debug

@@ -119,7 +119,7 @@ export function generateEdgeAndNodesList(){
  */
 export function generateURL(){
     // Generate a URL object from the current URL
-    const url = new URL(window.location.href)
+    const url = new URL(window.location.origin)
     // Generate the graph data
     const graph = generateEdgeAndNodesList().join("_")
     // Edit the URL object to include the graph data in the query string
