@@ -148,6 +148,7 @@ export function findElementsWithin(x1, y1, x2, y2){
 
     // Return all elements that are inside the selection box
     return window.graph.nodes.concat(window.graph.edges).filter(e => {
+        if (e.hidden) return false
         const eType = e.constructor.name
         let x, y
         // If the element is an edge, use the center of the edge, otherwise get the coordinates of the element

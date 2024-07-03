@@ -182,6 +182,10 @@ export class Node extends Element{
      * @returns boolean - Whether the mouse is hovering the node
      */
     isHover() {
+        // Check if the node is hidden
+        if (this.hidden) return false
+
+        // Check if the mouse is hovering the node
         return this.distanceToCenter(window.cvs.x, window.cvs.y) <= this.r
     }
 

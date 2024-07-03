@@ -212,6 +212,9 @@ export class Edge extends Element{
      * @returns Boolean. Whether the edge is being hovered or not
      */
     isHover() {
+        // Check if the edge is hidden, if so, return false
+        if (this.hidden) return false
+
         // Get the mouse coordinates
         const x = window.cvs.x
         const y = window.cvs.y
