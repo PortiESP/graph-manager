@@ -45,7 +45,10 @@ export class Element {
 
     set id(id) {
         this._id = id
-        window.forceUpdateLiveEditor()
+        
+        // Listeners
+        window.graph.allListeners.forEach(l => l(this))
+        window.graph.graphListeners.forEach(l => l(this))
     }
     
     get id() {

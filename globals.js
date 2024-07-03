@@ -69,6 +69,21 @@ export class Graph {
 
         // Style
         this.backgroundColor = constants.BACKGROUND_COLOR // Background color
+
+        // Listeners
+        this.allListeners = []  // General listener (any kind of change)
+        this.selectedListeners = []  // Selected nodes listener
+        this.graphListeners = []  // Graph listener (nodes and edges)
+        // Listeners triggers
+        this.triggerAllListeners = () => this.allListeners.forEach(l => l(this))
+        this.triggerSelectedListeners = () => {
+            this.allListeners.forEach(l => l(this.selected))
+            this.selectedListeners.forEach(l => l(this.selected))
+        }
+        this.triggerGraphListeners = () => {
+            this.allListeners.forEach(l => l(this.nodes))
+            this.graphListeners.forEach(l => l(this.nodes))
+        }
     }
 
     emptyGraph() {
@@ -94,7 +109,9 @@ export class Graph {
 
     set selected(value) {
         this._selected = value
-        window.setSelectedElements(value)
+
+        // Listeners
+        this.triggerSelectedListeners()
     }
 
     pushSelected(...elements) {
@@ -107,7 +124,9 @@ export class Graph {
 
     set nodes(value) {
         this._nodes = value
-        window.forceUpdateLiveEditor()
+        
+        // Listeners
+        this.triggerGraphListeners()
     }
 
     pushNode(...node) {
@@ -120,7 +139,9 @@ export class Graph {
 
     set edges(value) {
         this._edges = value
-        window.forceUpdateLiveEditor()
+        
+        // Listeners
+        this.triggerGraphListeners()
     }
 
     pushEdge(...edge) {
@@ -133,6 +154,9 @@ export class Graph {
 
     set info(value) {
         this._info = value
+
+        // Listeners
+        this.triggerGraphListeners()
     }
 
     // Methods
