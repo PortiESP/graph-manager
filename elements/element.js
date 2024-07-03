@@ -46,19 +46,7 @@ export class Element {
 
     generateId() {
         const className = this.constructor.name
-        const category = `${className.toLowerCase()}s`  // e.g. `Node` -> `nodes`, `Edge` -> `edges`
-        let index = window.graph[category].length+1
-
-        // Max id
-        window.graph[category].forEach(n => {
-            const nodeId = n.id.match(/Node(\d)+/)
-            if (nodeId) {
-                const i = parseInt(nodeId[1])
-                if (i >= index) index = i+1
-            }
-        })
-
-        return `${className}${index}`
+        return `${className}@${Math.random().toString(36).substring(2, 15)}`
     }
 
 

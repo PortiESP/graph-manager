@@ -56,6 +56,23 @@ export class Node extends Element{
         this.offsetPos = {x: 0, y: 0}  // A displacement of the original position
     }
 
+    generateId() {
+        const className = this.constructor.name
+        const category = `${className.toLowerCase()}s`  // e.g. `Node` -> `nodes`, `Edge` -> `edges`
+        let index = window.graph[category].length+1
+
+        // Max id
+        window.graph[category].forEach(n => {
+            const nodeId = n.id.match(/Node(\d)+/)
+            if (nodeId) {
+                const i = parseInt(nodeId[1])
+                if (i >= index) index = i+1
+            }
+        })
+
+        return `${className}${index}`
+    }
+
     /**
      * Draw the node
      */
