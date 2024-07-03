@@ -31,7 +31,7 @@
 export class Element {
     constructor(id){
         // Random id 
-        this._id = id ?? `${this.constructor.name}-${name+Math.random().toString(36).slice(2)}`
+        this._id = id ?? this.generateId()
 
         // States
         this.selected = false
@@ -41,6 +41,24 @@ export class Element {
         this.hoverColor = '#0D99FF88'
         this.selectedColor = '#0D99FF'
         this.opacity = 1
+    }
+
+
+    generateId() {
+        const className = this.constructor.name
+        const category = `${className.toLowerCase()}s`  // e.g. `Node` -> `nodes`, `Edge` -> `edges`
+        let index = window.graph[category].length+1
+
+        // Max id
+        window.graph[category].forEach(n => {
+            const nodeId = n.id.match(/Node(\d)+/)
+            if (nodeId) {
+                const i = parseInt(nodeId[1])
+                if (i >= index) index = i+1
+            }
+        })
+
+        return `${className}${index}`
     }
 
 

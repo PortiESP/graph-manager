@@ -66,7 +66,7 @@ export function handleSelectionPrimaryBtnUp(button, mouse) {
  */
 export function deselectAll() {
     window.graph.selected.forEach(e => e.deselect())
-    window.graph.selected = []  // Redundant, but just to make sure
+    window.graph.selected = [] 
 }
 
 

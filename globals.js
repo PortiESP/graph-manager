@@ -6,7 +6,7 @@ import constants from "./utils/constants"
 import CONSTANTS from "./utils/constants"
 import { closestHoverNode } from "./utils/find_elements"
 import { deselectAll } from "./utils/selection"
-import { setActivateTool, getActiveToolCallback, toolsCallbacks } from "./utils/tools/tools_callbacks"
+import { setActivateTool } from "./utils/tools/tools_callbacks"
 
 /**
  * The Graph class that stores all the information about the graph.
@@ -181,7 +181,7 @@ export class GraphGlobals {
         this.selectionBox = null
         this.snapReference = null
         this.snapToGrid = false
-        this.selected = []
+        deselectAll()
     }
 
 

@@ -155,7 +155,6 @@ export function handleShortcutMouseUp(button, coords) {
         stopPanning()
     }
 
-    // If the 
 
     return false
 }
