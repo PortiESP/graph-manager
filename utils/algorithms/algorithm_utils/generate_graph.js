@@ -140,9 +140,6 @@ export function generateSVG(){
     const svgNS = "http://www.w3.org/2000/svg"
     const xlinkns = "http://www.w3.org/1999/xlink"
 
-    // Clear the SVG
-    while(svg.firstChild) svg.removeChild(svg.firstChild)
-
     // Set the SVG attributes
     svg.setAttribute("xmlns", svgNS)
     svg.setAttribute("xmlns:xlink", xlinkns)
@@ -171,16 +168,18 @@ export function generateSVG(){
     window.graph.edges.forEach(edge => {
         let {src, dst} = edge.nodesIntersectionBorderCoords()
         
+        // Create the label for the edge's weight
         const text = document.createElementNS(svgNS, "text")
-        text.setAttribute("class", "label")
+        text.setAttribute("class", "weight")
         text.setAttribute("x", (src.x + dst.x) / 2)
         text.setAttribute("y", (src.y + dst.y) / 2)
-        text.setAttribute("id", "label-"+edge.id)
+        text.setAttribute("id", "weight-"+edge.id)
         text.textContent = edge.weight
         edgesLabels.push(text)
         
+        // Create the box for the edge's weight
         const textBox = document.createElementNS(svgNS, "rect")
-        textBox.setAttribute("class", "label")
+        textBox.setAttribute("class", "weight_box")
         const centerX = (src.x + dst.x) / 2
         const centerY = (src.y + dst.y) / 2
         const fontSize = edge.weightFontSize
@@ -195,10 +194,9 @@ export function generateSVG(){
         if (edge.directed){
             const arrowSize = edge.thickness * edge.arrowSizeFactor
             const {dst: dstDir, angle} = edge.nodesIntersectionBorderCoords(0, arrowSize*0.8)
-            const rDst = edge.dst.r
-            const offsetDstArrow = { x: rDst * Math.cos(angle + Math.PI), y: rDst * Math.sin(angle + Math.PI) } // Calculate the coordinates of the arrow from the border of the node
             const arrowAngle = Math.PI / 6
 
+            // Create the line for the edge
             const line = document.createElementNS(svgNS, "line")
             line.setAttribute("class", "edge")
             line.setAttribute("x1", src.x)
@@ -213,6 +211,7 @@ export function generateSVG(){
             const p2 = {x: dst.x - arrowSize * Math.cos(angle - arrowAngle), y: dst.y - arrowSize * Math.sin(angle - arrowAngle)}
             const p3 = {x: dst.x - arrowSize * Math.cos(angle + arrowAngle), y: dst.y - arrowSize * Math.sin(angle + arrowAngle)}
 
+            // Create the arrow for the edge
             const arrow = document.createElementNS(svgNS, "polygon")
             arrow.setAttribute("class", "edge")
             arrow.setAttribute("points", `${p1.x},${p1.y} ${p2.x},${p2.y} ${p3.x},${p3.y}`)
@@ -221,6 +220,7 @@ export function generateSVG(){
             edges.push(arrow)
 
         } else {
+            // Create the line for the edge
             const line = document.createElementNS(svgNS, "line")
             line.setAttribute("class", "edge")
             line.setAttribute("x1", src.x)
@@ -236,6 +236,7 @@ export function generateSVG(){
 
     // Create the nodes
     window.graph.nodes.forEach(node => {
+        // Create the circle for the node
         const circle = document.createElementNS(svgNS, "circle")
         circle.setAttribute("class", "node")
         circle.setAttribute("cx", node.x)
@@ -244,6 +245,7 @@ export function generateSVG(){
         circle.setAttribute("id", node.id)
         nodes.push(circle)
 
+        // Create the label for the node
         const text = document.createElementNS(svgNS, "text")
         text.setAttribute("class", "node_label")
         text.setAttribute("x", node.x)
@@ -259,7 +261,6 @@ export function generateSVG(){
     nodesLabels.forEach(label => svg.appendChild(label))
     edgesLabels.forEach(label => svg.appendChild(label))
 
-    console.log("-", svg)
     return svg.outerHTML    
 }
 
@@ -300,8 +301,8 @@ export function generateCSS(){
 
         // Add the styles to the array
         styles.push(`.edge#${edge.id} {${Object.entries(edge_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
-        styles.push(`.label#label-${edge.id} {${Object.entries(edge_label_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
-        styles.push(`.label#box-${edge.id} {${Object.entries(edge_box_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
+        styles.push(`.weight#weight-${edge.id} {${Object.entries(edge_label_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
+        styles.push(`.weight_box#box-${edge.id} {${Object.entries(edge_box_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
 
     })
 

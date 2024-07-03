@@ -45,13 +45,13 @@ export class Element {
 
 
     /**
-     * Generate a random id for the element using the format: `<ClassName>@<randomString>`
+     * Generate a random id for the element using the format: `<ClassName>_<randomString>`
      * 
      * @returns {string} A random id for the element
      */
     generateId() {
         const className = this.constructor.name
-        return `${className}@${Math.random().toString(36).substring(2, 15)}`
+        return `${className}_${Math.random().toString(36).substring(2, 15)}`
     }
 
 
