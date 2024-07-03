@@ -8,7 +8,7 @@ import { focusOnAllNodes } from './utils/view'
 import { loadFromEdgePlainTextList, loadFromJSON, loadFromURL } from './utils/load_graph'
 import constants from './utils/constants'
 import { circularArrange, toposortArrange, treeArrange, treeArrangeFromPrevsList } from './utils/arrangements'
-import { generateGraphArray } from './utils/algorithms/algorithm_utils/generate_graph'
+import { generateEdgeArray } from './utils/algorithms/algorithm_utils/generate_graph'
 import { toposortKahn } from './utils/algorithms/toposort'
 import bfs from './utils/algorithms/bfs'
 import { closestHoverElement } from './utils/find_elements'
@@ -101,7 +101,7 @@ export default function Graph(props) {
             {
                 label: 'Generate graph array',
                 callback: () => {
-                    const g = generateGraphArray()
+                    const g = generateEdgeArray()
                     console.log(g)
                     console.log(toposortKahn(g))
                 }
@@ -125,7 +125,7 @@ export default function Graph(props) {
             {
                 label: "Toposort arrange",
                 callback: () => {
-                    const g = generateGraphArray()
+                    const g = generateEdgeArray()
                     toposortArrange(g)
                     focusOnAllNodes()
                 }
@@ -133,7 +133,7 @@ export default function Graph(props) {
             {
                 label: 'Tree BFS arrange',
                 callback: () => {
-                    const g = generateGraphArray()
+                    const g = generateEdgeArray()
                     const data = bfs(g, window.graph.nodes[0])
                     treeArrangeFromPrevsList(window.graph.nodes, data.prevNode, window.graph.nodes[0])
                     const edges = getEdgesByPredecessors(data.prevNode)

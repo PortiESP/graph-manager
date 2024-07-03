@@ -79,7 +79,7 @@ export class Element {
      * @returns {string} A string representation of the element
      */
     toString() {
-        return `${this.id}`
+        return this.id
     }
 
     /**

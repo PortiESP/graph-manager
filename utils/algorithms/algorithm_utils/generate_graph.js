@@ -2,11 +2,11 @@ import constants from "../../constants"
 import { getBoundingBoxOfAllNodes } from "../../view"
 
 /**
- * Generate a graph array from the graph global object
+ * Generate an array from the graph global object
  * 
  * @returns {Object} An object with the nodes as keys and an array of edges as values: {Node: [Edge, ...], ...}
  */
-export function generateGraphArray(){
+export function generateEdgeArray(){
     const graph = {}
 
     // Initialize the graph as an empty array for each node
@@ -35,6 +35,13 @@ export function generateGraphArray(){
 }
 
 
+/**
+ * Generate an object from the graph global object
+ * 
+ * @returns {Object} An object with the nodes as keys and an array of edges as values: {nodes: [{}, ...], edges: [{}, ...]}
+ * - nodes: `{x, y, label, r}`
+ * - edges: `{src, dst, weight, directed}`
+ */
 export function generateGraphObject(){
     const graph = {
         nodes: [],
@@ -59,6 +66,17 @@ export function generateGraphObject(){
 }
     
 
+/**
+ * Generate an array of edges strings from the graph
+ * 
+ * The array contains the edges in the format: 
+ * - `src-weight-dst` if the edge has a weight
+ * - `src-weight->dst` if the edge has a weight and is directed
+ * - `src->dst` if the edge is directed (default weight is 1)
+ * - `src-dst` if the edge is not directed (default weight is 1)
+ * 
+ * @returns {Array} 
+ */
 export function generateEdgeList(){
     const edges = []
 
@@ -73,27 +91,52 @@ export function generateEdgeList(){
 }
 
 
+/**
+ * Generate a string representation of the graph (including the nodes and edges)
+ * 
+ * Edges are represented as shown in the `generateEdgeList` function, and nodes are represented as their ID
+ * 
+ * @returns {string} A string representation of the graph
+ */
 export function generateEdgeAndNodesList(){
+    // Generate edges
     const eList = generateEdgeList()
+    // Generate nodes
     const nList = window.graph.nodes.map(n => n.toString()).filter(n => !eList.join("").includes(n))
+    // Concatenate the lists
     return eList.concat(nList)
 }
 
 
+/**
+ * Generate a URL representation of the graph
+ * 
+ * The URL contains the graph data in the query string "graph=...". The edges and nodes are separated by an underscore `_`
+ * 
+ * Since the URL is encoded, the characters ">" is replaced by "%3E"
+ * 
+ * @returns {string} The URL with the graph data
+ */
 export function generateURL(){
+    // Generate a URL object from the current URL
     const url = new URL(window.location.href)
+    // Generate the graph data
     const graph = generateEdgeAndNodesList().join("_")
+    // Edit the URL object to include the graph data in the query string
     url.searchParams.set("graph", graph)
 
+    // Return the URL as a string with the graph data in the query string
     return url.href
 }
 
-// Generate a SVG from the data in the graph global object, including the nodes and edges and their labels
-// Also includes the weights of the edges
-// Also use the colors of the nodes and edges
-// The SVG is generated in the #export-svg element
-export function generateSVG(elementId){
-    const svg = document.getElementById(elementId)
+
+/**
+ * Generate a SVG representation of the graph
+ * 
+ * The SVG is generated from the graph global object and the nodes and edges are styled according to the global object
+ */
+export function generateSVG(){
+    const svg = document.createElement("svg")
     const svgNS = "http://www.w3.org/2000/svg"
     const xlinkns = "http://www.w3.org/1999/xlink"
 
@@ -149,39 +192,6 @@ export function generateSVG(elementId){
         textBox.setAttribute("id", "box-"+edge.id)
         edgesLabels.push(textBox)
 
-        // if (this.directed) {
-        //     const rDst = this.dst.r
-        //     const arrowSize = this.thickness * this.arrowSizeFactor
-        //     const {src: offsetSrc, dst: offsetDst, angle} = this.nodesIntersectionBorderCoords(0, this.directed ? arrowSize*0.8 : 0) // Calculate the coordinates of the edge from border to border of the nodes instead of the center
-    
-        //     // Draw the edge
-        //     window.ctx.beginPath()
-        //     window.ctx.strokeStyle = this.color
-        //     window.ctx.lineWidth = this.thickness
-        //     window.ctx.moveTo(this.src.x, this.src.y)  // Move to the source node
-        //     window.ctx.lineTo(offsetDst.x, offsetDst.y)  // Draw a line to the destination node
-        //     window.ctx.stroke()
-
-        //     const arrowAngle = Math.PI / 6
-        //     const offsetDstArrow = { x: rDst * Math.cos(angle + Math.PI), y: rDst * Math.sin(angle + Math.PI) } // Calculate the coordinates of the arrow from the border of the node
-
-        //     // Draw the arrow
-        //     window.ctx.beginPath()
-        //     window.ctx.fillStyle = this.color
-        //     window.ctx.moveTo(this.dst.x + offsetDstArrow.x, this.dst.y + offsetDstArrow.y)
-        //     window.ctx.lineTo(this.dst.x + offsetDstArrow.x - arrowSize * Math.cos(angle - arrowAngle), this.dst.y + offsetDstArrow.y - arrowSize * Math.sin(angle - arrowAngle))
-        //     window.ctx.lineTo(this.dst.x + offsetDstArrow.x - arrowSize * Math.cos(angle + arrowAngle), this.dst.y + offsetDstArrow.y - arrowSize * Math.sin(angle + arrowAngle))
-        //     window.ctx.fill()
-        // } else {
-        //     // Draw the edge
-        //     window.ctx.beginPath()
-        //     window.ctx.strokeStyle = this.color
-        //     window.ctx.lineWidth = this.thickness
-        //     window.ctx.moveTo(this.src.x, this.src.y)  
-        //     window.ctx.lineTo(this.dst.x, this.dst.y)
-        //     window.ctx.stroke()
-        // }
-
         if (edge.directed){
             const arrowSize = edge.thickness * edge.arrowSizeFactor
             const {dst: dstDir, angle} = edge.nodesIntersectionBorderCoords(0, arrowSize*0.8)
@@ -222,7 +232,6 @@ export function generateSVG(elementId){
             edges.push(line)
         }
 
-
     })
 
     // Create the nodes
@@ -249,47 +258,64 @@ export function generateSVG(elementId){
     nodes.forEach(node => svg.appendChild(node))
     nodesLabels.forEach(label => svg.appendChild(label))
     edgesLabels.forEach(label => svg.appendChild(label))
-    
+
+    console.log("-", svg)
+    return svg.outerHTML    
 }
 
 
+/**
+ * Generate a CSS representation of the graph
+ * 
+ * The CSS is generated from the graph global object and the nodes and edges are styled according to the global object
+ * 
+ * A specific style is generated for each node and edge to ensure that the custom styles are applied to the SVG elements
+ */
 export function generateCSS(){
 
+    // Styles array
     const styles = [
-        "svg{font-size: 16px; font-family: Arial, sans-serif;}",
+        // Default styles
+        "svg{font-size: 16px; font-family: Arial, sans-serif;}",  
     ]
 
+    // Add the styles for the edges
     window.graph.edges.forEach(edge => {
+        // Style of the line
         const edge_styles = {
             stroke: edge.color,
             "stroke-width": edge.thickness,
         }
-
+        // Style of the weight label
         const edge_label_styles = {
             fill: edge.weightColor,
             "font-size": edge.weightFontSize,
             "text-anchor": "middle",
             "dominant-baseline": "middle",
         }
-
+        // Style of the weight box
         const edge_box_styles = {
             fill: edge.weightBackgroundColor,
         }
 
+        // Add the styles to the array
         styles.push(`.edge#${edge.id} {${Object.entries(edge_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
         styles.push(`.label#label-${edge.id} {${Object.entries(edge_label_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
         styles.push(`.label#box-${edge.id} {${Object.entries(edge_box_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
 
     })
 
+
+    // Add the styles for the nodes
     window.graph.nodes.forEach(node => {
+        // Style of the node
         const node_styles = {
             fill: node.backgroundColor,
             stroke: node.borderColor,
             "stroke-width": node.borderWidth,
             "stroke-color": node.borderColor,
         }
-
+        // Style of the label
         const node_label_styles = {
             fill: node.labelColor,
             "font-size": node.fontSize,
@@ -298,6 +324,7 @@ export function generateCSS(){
             "font-weight": "bold",
         }
 
+        // Add the styles to the array
         styles.push(`.node#${node.id} {${Object.entries(node_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
         styles.push(`.node_label#label-${node.id} {${Object.entries(node_label_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
     })
