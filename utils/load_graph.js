@@ -1,6 +1,5 @@
 import { Edge } from "../elements/edge";
 import { Node } from "../elements/node";
-import { GraphGlobals } from "../globals";
 import constants from "./constants";
 
 /**
@@ -57,10 +56,10 @@ export function loadFromJSON(json) {
  * Each line of represents an edge in the graph, or a single node.
  * 
  * The lines must follow one of the following formats:
- * - `src-weight->dst` ---> directed edge with weight
- * - `src-weight-dst` ----> undirected edge with weight
- * - `src->dst` ------------> directed edge with no weight
- * - `src-dst` -------------> undirected edge with no weight
+ * - `src weight>dst` ---> directed edge with weight
+ * - `src weight dst` ----> undirected edge with weight
+ * - `src>dst` ------------> directed edge with no weight
+ * - `src dst` -------------> undirected edge with no weight
  * - `src` -----------------> declare single node with no edges (not added to the edge list, but the node will be created)
  * 
  * @param {string} edgeList - The edge list as a string: `src-{weight}->dst\nsrc->dst\nsrc-dst\nsrc`
@@ -131,7 +130,7 @@ export function loadFromEdgePlainTextList(edgeList) {
  */
 export function parseEdge(edgeString){
     // Regular expression to match the edge string
-    const edgeRegex = /^(\w+)(?:-([\d.,]+))?->?(\w+)$/
+    const edgeRegex = /^(\w+)(?: ([\d.,]+))?[ >](\w+)$/
     // Evaluate the regex
     const match = edgeString.match(edgeRegex)
 
@@ -149,7 +148,7 @@ export function parseEdge(edgeString){
                     undefined
     const dst = match[3]
     // The edge is directed if the string contains the '->' substring
-    const directed = edgeString.includes('->')
+    const directed = edgeString.includes('>')
 
     return { src, weight, dst, directed }    
 }

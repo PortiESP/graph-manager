@@ -70,10 +70,10 @@ export function generateGraphObject(){
  * Generate an array of edges strings from the graph
  * 
  * The array contains the edges in the format: 
- * - `src-weight-dst` if the edge has a weight
- * - `src-weight->dst` if the edge has a weight and is directed
- * - `src->dst` if the edge is directed (default weight is 1)
- * - `src-dst` if the edge is not directed (default weight is 1)
+ * - `src weight dst` if the edge has a weight
+ * - `src weight>dst` if the edge has a weight and is directed
+ * - `src>dst` if the edge is directed (default weight is 1)
+ * - `src dst` if the edge is not directed (default weight is 1)
  * 
  * @returns {Array} 
  */
@@ -83,8 +83,8 @@ export function generateEdgeList(){
     // Fill the graph with the edges
     window.graph.edges.forEach(edge => {
         // Add the edge to the graph
-        const w = edge.weight > 1 ? `-${edge.weight}` : ""
-        edges.push(`${edge.src}${w}-${edge.directed ? ">" : ""}${edge.dst}`)
+        const w = edge.weight > 1 ? ` ${edge.weight}` : ""
+        edges.push(`${edge.src}${w}${edge.directed ? ">" : " "}${edge.dst}`)
     })
 
     return edges
