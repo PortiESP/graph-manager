@@ -31,7 +31,46 @@ export class GraphGlobals {
         window.graph = this // This is required since some external functions rely on the window.graph variable
 
         // --- Properties ---
-        this.reset()
+        this._nodes = [] // All nodes
+        this._edges = [] // All edges
+        this._info = [] // Information elements
+
+        // Selection
+        this._selected = [] // Selected nodes
+        this.selectionBox = null // Object representing the selection box: {x1, y1, x2, y2}
+
+        // Config
+        this.showWeights = true // Show weights on edges
+
+        // Tools 
+        this.tool = undefined // Active tool
+        this.toolCallbacks = undefined // Active tool callbacks
+                
+        // Grid & Snap
+        this.gridEnabled = constants.GRID_ENABLED // Show the grid
+        this.gridSize = constants.GRID_SIZE // Size of the grid
+        this.gridOpacity = constants.GRID_OPACITY // Opacity of the grid
+        this.gridThickness = constants.GRID_THICKNESS // Thickness of the grid
+        this.gridColor = constants.GRID_COLOR // Color of the grid
+        this.snapToGrid = false // Snap nodes to the grid (used with shift key)
+        this.snapReference = null // Reference point for snapping (used when dragging nodes while on snap mode)
+
+        // Flags
+        this.newNode = false // New node being created
+        this.newEdgeScr = null // Source node for when the used is creating a new edge
+        this.isDraggingElements = false // Flag to check if the user is dragging elements
+
+        // History
+        this.memento = [] // Memento stack
+        this.mementoRedo = [] // Redo stack
+
+        // Style
+        this.backgroundColor = constants.BACKGROUND_COLOR // Background color
+
+        setActivateTool(CONSTANTS.DEFAULT_TOOL)
+
+        this.memento = []
+        this.mementoRedo = []
 
         // --- Listeners ---
         this.allListeners = []  // General listener (any kind of change)
@@ -58,12 +97,12 @@ export class GraphGlobals {
      */
     reset() {
         // Elements
-        this._nodes = [] // All nodes
-        this._edges = [] // All edges
-        this._info = [] // Information elements
+        this.nodes = [] // All nodes
+        this.edges = [] // All edges
+        this.info = [] // Information elements
 
         // Selection
-        this._selected = [] // Selected nodes
+        this.selected = [] // Selected nodes
         this.selectionBox = null // Object representing the selection box: {x1, y1, x2, y2}
 
         // Config
