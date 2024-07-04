@@ -50,4 +50,8 @@ export default {
     mouseDoubleClickCallback: () => {
         if (window.cvs.debug) console.log('Double click from tool')
     },
+    blurCallback: () => {
+        if (window.graph.isDraggingElements) stopDragging()
+        if (window.graph.selectionBox) endSelectionBox()
+    },
 }

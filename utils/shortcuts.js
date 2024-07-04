@@ -169,7 +169,7 @@ export function handleShortcutMouseUp(button, coords) {
 export function handleShortcutMouseMove(e, coords) {
     // If the used double clicked in an empty space of the canvas, pan the canvas
     if (window.cvs.doubleClick){
-        panBy(e.movementX, e.movementY)
+        panBy(e.despX, e.despY)
 
         return true
     }

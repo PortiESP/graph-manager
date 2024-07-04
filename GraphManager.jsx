@@ -74,6 +74,8 @@ export default function Graph(props) {
         window.cvs.keyUpCallback = getActiveToolCallback('keyUpCallback')
         window.cvs.mouseScrollCallback = getActiveToolCallback('mouseScrollCallback')
         window.cvs.resizeCallback = getActiveToolCallback('resizeCallback')
+        window.cvs.focusCallback = getActiveToolCallback('focusCallback')
+        window.cvs.blurCallback = getActiveToolCallback('blurCallback')
 
         // --- Config ---
         window.cvs.autoResize = true
