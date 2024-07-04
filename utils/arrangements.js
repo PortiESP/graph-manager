@@ -3,6 +3,7 @@ import { generateEdgeArray } from "./algorithms/algorithm_utils/generate_graph"
 import dfs from "./algorithms/dfs"
 import { toposortKahn } from "./algorithms/toposort"
 import constants from "./constants"
+import { getBoundingBoxOfAllNodes } from "./view"
 
 
 // ------------------------------- Helper functions -------------------------------
@@ -195,16 +196,20 @@ export function treeArrange(g, root){
  * 
  * @param {Object} g Graph represented as an adjacency list: {Node: [Edge, ...], ...]}
  */
-export function organicArrange(){
+export function organicArrange(positioned=undefined){
+    /**
+     * The function will try to position the node in a circular pattern, avoiding collisions with other nodes, until a valid position is found.
+     */
     const placeAround = (x, y, node) => {
-        const degAngle = 30
-        const angle = degAngle * Math.PI / 180
-        const slices = 360 / degAngle
-        const startAngle = Math.random() * 360 * Math.PI / 180
-        let radius = constants.DEFAULT_NODE_RADIUS * 5
+        const degAngle = 30  // The angle of separation that will be tried at each iteration
+        const angle = degAngle * Math.PI / 180 // Convert the angle to radians
+        const slices = 360 / degAngle // Number of slices that will be tried before incrementing the radius
+        const startAngle = Math.random() * 360 * Math.PI / 180 // Random starting angle
+        let radius = constants.DEFAULT_NODE_RADIUS * 5 // Initial radius
 
-        const startI = 0
-        let i = startI
+        // Try to position the node in a circular pattern, avoiding collisions with other nodes, until a valid position is found
+        const startI = 0  // Initial slice
+        let i = startI    // Current slice
         while (true){
             // Calculate the position of the node that will be tried
             node.x = x + Math.cos(startAngle + i*angle) * radius
@@ -218,7 +223,9 @@ export function organicArrange(){
             if (i === startI) radius += constants.DEFAULT_NODE_RADIUS * 2
         }
 
+        // Mark the node as positioned
         positioned[node] = true
+        // Add a function to the array that will avoid other nodes overlapping with this node
         validatePosition.push(otherNode => node.distance(otherNode.x, otherNode.y) > constants.DEFAULT_NODE_RADIUS * 3)
     }
 
@@ -226,29 +233,31 @@ export function organicArrange(){
     const nodes = window.graph.nodes
     const g = generateEdgeArray()
     // Already positioned nodes
-    const positioned = {}
+    if (positioned === undefined) positioned = {}
     // Array of funcitons that are created when a node is positioned in order avoid other nodes overlapping
     // Every function in the array must return true for the node to be positioned
     // Every function in the array takes the Node as a parameter
     const validatePosition = []
 
-    const initX = 500
-    const initY = 500
+    // Position the nodes around the center of mass of the graph
+    const {x1, x2, width, height} = getBoundingBoxOfAllNodes()
+    const initX = x1 + width / 2  // Middle at the X axis
+    const initY = x2 + height / 2 // Middle at the Y axis
 
+    // Iterate over the nodes and position them in a circular pattern if possible
     for (const node of nodes){
+        // If the node is already positioned, skip it
+        if (!positioned[node]) placeAround(initX, initY, node)
+        
+        // Get the neighbors of the current node
         const neighbors = g[node].map(edge => edge.src === node ? edge.dst : edge.src)
-        if (!positioned[node]){
-            placeAround(initX, initY, node)
-            
-        }
         
-        
-        const center = { x: node.x, y: node.y}
-        
+        // Iterate over the neighbors and position the ones that are not already positioned in a circular pattern if possible
         neighbors.forEach((neighbor, i) => {
+            // If the neighbor is already positioned, skip it
             if (positioned[neighbor]) return
-
-            placeAround(center.x, center.y, neighbor)
+            // Position the neighbor around the current node
+            placeAround(node.x, node.y, neighbor)
         })
     }
 }
