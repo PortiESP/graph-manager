@@ -196,6 +196,32 @@ export function treeArrange(g, root){
  * @param {Object} g Graph represented as an adjacency list: {Node: [Edge, ...], ...]}
  */
 export function organicArrange(){
+    const placeAround = (x, y, node) => {
+        const degAngle = 30
+        const angle = degAngle * Math.PI / 180
+        const slices = 360 / degAngle
+        const startAngle = Math.random() * 360 * Math.PI / 180
+        let radius = constants.DEFAULT_NODE_RADIUS * 5
+
+        const startI = 0
+        let i = startI
+        while (true){
+            // Calculate the position of the node that will be tried
+            node.x = x + Math.cos(startAngle + i*angle) * radius
+            node.y = y + Math.sin(startAngle + i*angle) * radius
+            // Check if the position is valid, if so, stop the loop since the node is already positioned
+            if (validatePosition.every(check => check(node))) break
+
+            // Increment the angle for the next try
+            i = (i + 1) % slices
+            // If the loop has already tried all the angles, increment the radius and try next ring
+            if (i === startI) radius += constants.DEFAULT_NODE_RADIUS * 2
+        }
+
+        positioned[node] = true
+        validatePosition.push(otherNode => node.distance(otherNode.x, otherNode.y) > constants.DEFAULT_NODE_RADIUS * 3)
+    }
+
     // Obj of nodes with nodes as keys
     const nodes = window.graph.nodes
     const g = generateEdgeArray()
@@ -206,33 +232,23 @@ export function organicArrange(){
     // Every function in the array takes the Node as a parameter
     const validatePosition = []
 
+    const initX = 500
+    const initY = 500
+
     for (const node of nodes){
-        positioned[node] = true
-        validatePosition.push(otherNode => node.distance(otherNode.x, otherNode.y) > constants.DEFAULT_NODE_RADIUS * 3)
         const neighbors = g[node].map(edge => edge.src === node ? edge.dst : edge.src)
+        if (!positioned[node]){
+            placeAround(initX, initY, node)
+            
+        }
+        
+        
         const center = { x: node.x, y: node.y}
-
-        const nNeighbors = neighbors.length*2
-        const angle = 2 * Math.PI / nNeighbors
-        let radius = constants.DEFAULT_NODE_RADIUS * 5
-
+        
         neighbors.forEach((neighbor, i) => {
             if (positioned[neighbor]) return
 
-            const startI = i
-            while (true){
-                neighbor.x = center.x + Math.cos(i*angle) * radius
-                neighbor.y = center.y + Math.sin(i*angle) * radius
-
-                if (validatePosition.every(check => check(neighbor))) break
-                
-                i = (i + 1) % nNeighbors
-
-                if (i === startI) radius += constants.DEFAULT_NODE_RADIUS * 2
-            }
-
-            positioned[neighbor] = true
-            validatePosition.push((node) => node.distance(neighbor.x, neighbor.y) > constants.DEFAULT_NODE_RADIUS * 3)
+            placeAround(center.x, center.y, neighbor)
         })
     }
 }
