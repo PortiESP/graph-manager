@@ -64,13 +64,13 @@ export function loadFromJSON(json) {
  * 
  * @param {string} edgeList - The edge list as a string: `src-{weight}->dst\nsrc->dst\nsrc-dst\nsrc`
  */
-export function loadFromEdgePlainTextList(edgeList) {
-
+export function loadFromEdgePlainTextList(edgeList, reuseNodes=undefined) {
     
     // Function to create a node if it does not exist
     const createNode = (label) => {
+        if (reuseNodes && reuseNodes[label]) nodes[label] = reuseNodes[label]
         if (!nodes[label]) {
-            nodes[label] = new Node(0, 0, label, constants.DEFAULT_NODE_RADIUS)
+            nodes[label] = new Node(undefined, undefined, label, constants.DEFAULT_NODE_RADIUS)
         }
     }
     

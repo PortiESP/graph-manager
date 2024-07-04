@@ -243,6 +243,7 @@ export class Node extends Element{
 
     // ===== Getters and Setters =====
     get x() {
+        if (this._x === undefined) return undefined
         return this._x + this.offsetPos.x
     }
 
@@ -251,6 +252,7 @@ export class Node extends Element{
     }
 
     get y() {
+        if (this._y === undefined) return undefined
         return this._y + this.offsetPos.y
     }
 

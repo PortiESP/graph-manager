@@ -60,6 +60,7 @@ export function getBoundingBoxOfAllNodes(){
 
     // Iterate over all the nodes to get the coordinates of a bounding box that contains all the nodes
     for (const node of graph.nodes){
+        if (node.x === undefined || node.y === undefined) continue
         x1 = Math.min(x1, node.x-node.r)
         y1 = Math.min(y1, node.y-node.r)
         x2 = Math.max(x2, node.x+node.r)
