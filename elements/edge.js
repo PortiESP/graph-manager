@@ -47,6 +47,14 @@ import { Element } from "./element"
  */
 export class Edge extends Element{
     constructor(src, dst, weight = 1, directed = false) {
+        // If the first argument is an object, copy the properties (clone constructor)
+        if (src.constructor?.name !== "Node") {
+            super()
+            this.copyFrom(src)
+            return
+        }
+        
+
         super()
 
         // Data properties

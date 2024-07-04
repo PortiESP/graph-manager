@@ -13,6 +13,7 @@ import { toposortKahn } from './utils/algorithms/toposort'
 import bfs from './utils/algorithms/bfs'
 import { closestHoverElement } from './utils/find_elements'
 import { getEdgesByPredecessors } from './utils/algorithms/algorithm_utils/convertions'
+import { loadFromCache, saveToCache } from './utils/cache'
 
 /**
  * Graph component
@@ -29,40 +30,8 @@ export default function Graph(props) {
         // --- Setup the graph globals--- 
         new GraphGlobals()
 
-        // --- Setup the graph ---
-        // Check whether the URL has a graph to load or an example to load, otherwise load the default graph
-
-        // Load the graph from the URL, if any
-        const url = new URL(window.location.href)
-        const sharedGraph = url.searchParams.get("graph")
-        if (sharedGraph) {
-            loadFromURL(window.location.href)
-            circularArrange(window.graph.nodes)
-            focusOnAllNodes()
-        }
-        // Load example graph, if any
-        const exampleGraph = url.searchParams.get("example")
-        if (exampleGraph) {
-            fetch(`/examples/${exampleGraph}.json`)
-                .then(response => response.json())
-                .then(data => {
-                    loadFromJSON(data)
-                    focusOnAllNodes()
-                })
-        }
-        // Load the default graph if any of the above conditions are false
-        if (!sharedGraph && !exampleGraph) {
-            loadFromJSON(constants.TEMPLATE_GRAPH)
-
-            // Debug
-            // loadFromEdgeArray(constants.TEMPLATE_GRAPH_3)
-            // circularArrange(window.graph.nodes)
-            
-            // Focus after loading
-            focusOnAllNodes()
-        }
-
-
+        // --- Initial graph ---
+        loadInitialGraph()
 
         // --- Setup automatic tool callbacks ---
         // Mouse down and up callbacks
@@ -160,6 +129,9 @@ export default function Graph(props) {
         // --- Setup the canvas ---
         document.getElementById("canvas").style.backgroundColor = window.graph.backgroundColor
 
+        // Listeners
+        window.graph.allListeners.push(saveToCache)
+
         // ---------------- Main loop ----------------
         mainLoop(() => {
             // Draw all elements
@@ -170,4 +142,46 @@ export default function Graph(props) {
     }, [])
 
     return <Canvas />
+}
+
+
+
+function loadInitialGraph(){
+        // --- LOAD FROM URL ---
+        // Load the graph from the URL, if any
+        const url = new URL(window.location.href)
+        const sharedGraph = url.searchParams.get("graph")
+        if (sharedGraph) {
+            loadFromURL(window.location.href)
+            circularArrange(window.graph.nodes)
+        }
+        // Load example graph, if any
+        const exampleGraph = url.searchParams.get("example")
+        if (exampleGraph) {
+            fetch(`/examples/${exampleGraph}.json`)
+                .then(response => response.json())
+                .then(data => {
+                    loadFromJSON(data)
+                    focusOnAllNodes()
+                })
+        }
+
+        // --- LOAD FROM CACHE ---
+        const cacheLoaded = loadFromCache()
+        
+        // --- LOAD DEFAULT GRAPH ---
+        // Load the default graph if any of the above conditions are false
+        if (!sharedGraph && !exampleGraph && !cacheLoaded) {
+            loadFromJSON(constants.TEMPLATE_GRAPH)
+
+            // Debug
+            // loadFromEdgeArray(constants.TEMPLATE_GRAPH_3)
+            // circularArrange(window.graph.nodes)
+            
+            // Focus after loading
+        }
+
+
+        // --- FOCUS ---
+        focusOnAllNodes()
 }

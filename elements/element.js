@@ -116,6 +116,15 @@ export class Element {
         this.y = y
     }
 
+    /**
+     * Copy the properties of the node to another element
+     * 
+     * @param {Element} element - The element to copy the properties from
+     */
+    copyFrom(element) {
+        Object.keys(element).forEach(key => this[key] = element[key])
+    }
+
     // ======================================================= Abstract methods =======================================================
     // Draw (abstract method)
     draw() {

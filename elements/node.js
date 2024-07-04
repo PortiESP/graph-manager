@@ -34,6 +34,13 @@ import { Element } from "./element"
  */
 export class Node extends Element{
     constructor(x, y, label = null, r = constants.NODE_DEFAULT_RADIUS) {
+        // If the first argument is an object, copy the properties (clone constructor)
+        if (x instanceof Object) {
+            super()
+            this.copyFrom(x)
+            return
+        }
+
         super(label)
 
         // Data properties
