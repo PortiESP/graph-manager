@@ -67,8 +67,11 @@ export class GraphGlobals {
         // Style
         this.backgroundColor = constants.BACKGROUND_COLOR // Background color
 
-        setActivateTool(CONSTANTS.DEFAULT_TOOL)
+        // Tools
+        window.graph.tool = undefined
+        window.graph.toolCallbacks = undefined
 
+        // History
         this.memento = []
         this.mementoRedo = []
 
@@ -76,7 +79,9 @@ export class GraphGlobals {
         this.allListeners = []  // General listener (any kind of change)
         this.selectedListeners = []  // Selected nodes listener
         this.graphListeners = []  // Graph listener (nodes and edges)
-        // Listeners triggers
+        this.toolListeners = []  // Tool listener
+
+        // Listeners triggers (These functions will trigger its respective listeners and the general listener)
         this.triggerAllListeners = () => this.allListeners.forEach(l => l(this))
         this.triggerSelectedListeners = () => {
             this.allListeners.forEach(l => l(this.selected))
@@ -86,8 +91,13 @@ export class GraphGlobals {
             this.allListeners.forEach(l => l(this.nodes))
             this.graphListeners.forEach(l => l(this.nodes))
         }
+        this.triggerToolListeners = () => {
+            this.allListeners.forEach(l => l(this.tool))
+            this.toolListeners.forEach(l => l(this.tool))
+        }
 
-        // Activate the default tool
+
+        // --- Setup ---
         setActivateTool(CONSTANTS.DEFAULT_TOOL)
     }
 
