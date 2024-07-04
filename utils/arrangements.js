@@ -1,4 +1,5 @@
 import { generateSuccessorsByPredecessors } from "./algorithms/algorithm_utils/convertions"
+import { generateEdgeArray } from "./algorithms/algorithm_utils/generate_graph"
 import dfs from "./algorithms/dfs"
 import { toposortKahn } from "./algorithms/toposort"
 import constants from "./constants"
@@ -168,10 +169,70 @@ export function treeArrangeFromPrevsList(nodes, prevsList, root=undefined){
 }
 
 
+/**
+ * Tree arrangement
+ * 
+ * Arrange the nodes in a tree structure
+ * 
+ * This function is a wrapper for the `treeArrangeFromPrevsList` function. It generates the predecessors list and calls the function
+ * 
+ * @param {Object} g Graph represented as an adjacency list: {Node: [Edge, ...], ...]}
+ * @param {String} root Root node of the tree
+ */
 export function treeArrange(g, root){
     // Generate the path
     const data = dfs(g, root)
 
     // Arrange the nodes
     treeArrangeFromPrevsList(window.graph.nodes, data.prevNode, root)
+}
+
+
+/**
+ * Organic arrangement
+ * 
+ * Arrange the nodes in the most natural way possible, avoiding edge crossings, nodes collisions, making clusters of related nodes, etc.
+ * 
+ * @param {Object} g Graph represented as an adjacency list: {Node: [Edge, ...], ...]}
+ */
+export function organicArrange(){
+    // Obj of nodes with nodes as keys
+    const nodes = window.graph.nodes
+    const g = generateEdgeArray()
+    // Already positioned nodes
+    const positioned = {}
+    // Array of funcitons that are created when a node is positioned in order avoid other nodes overlapping
+    // Every function in the array must return true for the node to be positioned
+    // Every function in the array takes the Node as a parameter
+    const validatePosition = []
+
+    for (const node of nodes){
+        positioned[node] = true
+        validatePosition.push(otherNode => node.distance(otherNode.x, otherNode.y) > constants.DEFAULT_NODE_RADIUS * 3)
+        const neighbors = g[node].map(edge => edge.src === node ? edge.dst : edge.src)
+        const center = { x: node.x, y: node.y}
+
+        const nNeighbors = neighbors.length*2
+        const angle = 2 * Math.PI / nNeighbors
+        let radius = constants.DEFAULT_NODE_RADIUS * 5
+
+        neighbors.forEach((neighbor, i) => {
+            if (positioned[neighbor]) return
+
+            const startI = i
+            while (true){
+                neighbor.x = center.x + Math.cos(i*angle) * radius
+                neighbor.y = center.y + Math.sin(i*angle) * radius
+
+                if (validatePosition.every(check => check(neighbor))) break
+                
+                i = (i + 1) % nNeighbors
+
+                if (i === startI) radius += constants.DEFAULT_NODE_RADIUS * 2
+            }
+
+            positioned[neighbor] = true
+            validatePosition.push((node) => node.distance(neighbor.x, neighbor.y) > constants.DEFAULT_NODE_RADIUS * 3)
+        })
+    }
 }

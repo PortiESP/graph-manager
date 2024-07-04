@@ -7,7 +7,7 @@ import drawAll from './utils/draw'
 import { focusOnAllNodes } from './utils/view'
 import { loadFromEdgePlainTextList, loadFromJSON, loadFromURL } from './utils/load_graph'
 import constants from './utils/constants'
-import { circularArrange, toposortArrange, treeArrangeFromPrevsList } from './utils/arrangements'
+import { circularArrange, organicArrange, toposortArrange, treeArrangeFromPrevsList } from './utils/arrangements'
 import { generateEdgeArray } from './utils/algorithms/algorithm_utils/generate_graph'
 import { toposortKahn } from './utils/algorithms/toposort'
 import bfs from './utils/algorithms/bfs'
@@ -145,6 +145,14 @@ export default function Graph(props) {
                     focusOnAllNodes()
                 }
             },
+            {
+                label: 'Organic arrange',
+                callback: () => {
+                    organicArrange()
+                    focusOnAllNodes()
+                }
+
+            }
         ])
 
         // --- Setup the canvas ---

@@ -4,6 +4,7 @@ import { Edge } from "./elements/edge"
 import { Node } from "./elements/node"
 import constants from "./utils/constants"
 import CONSTANTS from "./utils/constants"
+import drawAll from "./utils/draw"
 import { closestHoverNode } from "./utils/find_elements"
 import { deselectAll } from "./utils/selection"
 import { setActivateTool } from "./utils/tools/tools_callbacks"
@@ -281,6 +282,12 @@ export class GraphGlobals {
 
     hideAllBut(elements){
         this.getElements().forEach(e => e.hidden = !elements.includes(e))
+    }
+
+    // Debug
+    rerender(){
+        window.cvs.clean()
+        drawAll()
     }
 }
 
