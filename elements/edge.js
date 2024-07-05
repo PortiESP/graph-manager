@@ -64,12 +64,12 @@ export class Edge extends Element{
         this.directed = directed
 
         // Style properties
-        this.color = "#888"
-        this.weightColor = "#eee8"
-        this.weightBackgroundColor = "#8888"
+        this.color = constants.EDGE_COLOR
+        this.weightColor = constants.EDGE_WEIGHT_COLOR
+        this.weightBackgroundColor = constants.EDGE_WEIGHT_BACKGROUND_COLOR
         this.hover = false
-        this.thickness = 4
-        this.arrowSizeFactor = 3
+        this.thickness = constants.EDGE_THICKNESS
+        this.arrowSizeFactor = constants.EDGE_ARROW_SIZE_FACTOR
         this.weightFontSize = constants.EDGE_WEIGHT_FONT_SIZE
     }
 
