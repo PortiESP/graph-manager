@@ -26,6 +26,7 @@ If the new feature is stored in an `element` object
 
 - Create a new file in the `utils/tools` directory for the callback functions of the tool. Export a default object containing the callback functions defined in the file. The callbacks supported can be seen in the `canvas/utils/globals.js` file.
 - Add the name of the tool to the `toolsCallbacks` object in the `graph-manager/utils/tools/tools_callbacks.js` file. The key should be the name of the tool and the value should be the object exported from the file created in the first step.
+- Add a new item in the `ToolBar.jsx` file in the `tools` object.
 
 ### Assign a callback event to a tool
 
@@ -35,7 +36,14 @@ Additionally, you can use the `setup` and `clean` callbacks to execute code when
 
 ### Assign a keybinding to a tool
 
-The app has some predefined keybindings that will be evaluated before the custom keybindings defined for a tool. The default keybindings are located in the file `canvas/utils/kbd_shortcuts.js`. To add a new keybinding for a tool, add it inside the callback function `keyDownCallback` in the `graph-manager/utils/tools/{your-tool}.js` file
+> **Add a keybind to activate the tool**
+>
+> Add the keybinding to the `constants.js` file in the `graph-manager/utils` directory. The keybinding should be added to the `TOOL_KEYS` object. The key should be the key code of the key and the value should be the name of the tool defined in `graph-manager/utils/tools/tools_callbacks.js`. Example: `KeyA: 'add-node'`
+
+
+> **Add a keybind while the tool is active**
+> 
+> The app has some predefined keybindings that will be evaluated before the custom keybindings defined for a tool. The default keybindings are located in the file `canvas/utils/kbd_shortcuts.js`. To add a new keybinding for a tool, add it inside the callback function `keyDownCallback` in the `graph-manager/utils/tools/{your-tool}.js` file
 
 ## Elements
 

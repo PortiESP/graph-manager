@@ -1,6 +1,7 @@
 import { anySpecialKeyPressed } from "../../canvas-component/utils/keyboard"
 import CONSTANTS from "../constants"
 import { handleShortcutMouseDown, handleShortcutKeyDown, handleShortcutKeyUp, handleShortcutMouseUp, handleShortcutMouseMove, handleShortcutMouseScroll, handleShortcutDoubleClick } from "../shortcuts"
+import add_nodes_tool from "./add_nodes_tool"
 import edges_tool from "./edges_tool"
 import select_tool from "./select_tool"
 
@@ -8,6 +9,7 @@ import select_tool from "./select_tool"
 export const toolsCallbacks = {
     "select": select_tool,
     "edges": edges_tool,
+    "add-nodes": add_nodes_tool
 }
 
 /**

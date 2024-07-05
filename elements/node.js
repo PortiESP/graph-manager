@@ -54,7 +54,7 @@ export class Node extends Element{
         this.labelColor = constants.NODE_LABEL_COLOR
         this.borderColor = constants.NODE_BORDER_COLOR
         this.borderWidth = constants.NODE_BORDER_WIDTH
-        this.fontSize = constants.NODE_LABEL_FONT_SIZE
+        this.fontSize = this.label.length < 3 ? constants.NODE_LABEL_FONT_SIZE : Math.floor(constants.NODE_LABEL_FONT_SIZE * 3 / this.label.length)
 
         // Bubble attached to the node
         this.bubble = null

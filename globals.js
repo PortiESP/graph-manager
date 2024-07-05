@@ -279,20 +279,6 @@ export class GraphGlobals {
     }
 
     /**
-     * Starts the process of creating a new node.
-     */
-    startCreatingNode() {
-        this.newNode = true
-    }
-
-    /**
-     * Stops the process of creating a new node. This function will not instantiate a new node nor add it to the graph.
-     */
-    stopCreatingNode() {
-        this.newNode = false
-    }
-
-    /**
      * Returns whether the user is creating a new node.
      *  
      * @returns {boolean} Whether the user was hovering a node to start creating a new edge. If true, the user is creating a new edge. If false, the user is not creating a new edge.

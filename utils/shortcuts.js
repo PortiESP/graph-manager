@@ -40,7 +40,7 @@ export function handleShortcutKeyDown(code) {
         // --- Single tap keys ---
 
         // Reset all states
-        if (checkShortcut("Escape")) {
+        if (checkShortcut("control+alt+z")) {
             window.graph.resetAll()
             return true
         }
@@ -97,12 +97,6 @@ export function handleShortcutKeyDown(code) {
                 if (e.selected) e.delete()
             })
         }
-
-        // If the user presses the N key, start creating a new node
-        if (checkShortcut(constants.NODE_CREATION_KEY)) {
-            window.graph.newNode = [window.cvs.x, window.cvs.y]
-        }
-
     }
 
     return false
@@ -132,12 +126,7 @@ export function handleShortcutKeyUp(code) {
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutMouseDown(button, mouse) {
-    // If the user is creating a new node, drop it on the canvas
-    if (button === 0 && window.graph.newNode) {
-        window.graph.addNodeToGraph(...window.graph.newNode)
-        window.graph.stopCreatingNode()
-        return
-    }
+
 
     return false
 }
@@ -172,19 +161,6 @@ export function handleShortcutMouseMove(e, coords) {
         panBy(e.despX, e.despY)
 
         return true
-    }
-
-    if (window.graph.newNode) {
-        let nodeX = coords.x
-        let nodeY = coords.y
-
-        if (checkShortcut("shift")) {
-            const gridSize = window.graph.gridSize
-            nodeX = Math.round(nodeX / gridSize) * gridSize
-            nodeY = Math.round(nodeY / gridSize) * gridSize
-        }
-        
-        window.graph.newNode = [nodeX, nodeY]
     }
 
     return false

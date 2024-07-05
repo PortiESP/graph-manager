@@ -20,7 +20,6 @@ export default {
     },
     keyDownCallback: function (keyCode, mouse) {},
     clean() {
-        window.graph.newEdgeScr = null
-        window.graph.newNode = false
+        window.graph.resetStates()
     }
 }
