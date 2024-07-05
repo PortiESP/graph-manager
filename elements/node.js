@@ -114,7 +114,10 @@ export class Node extends Element{
 
         // Draw the selected border
         if (this.selected || this.isHover()) {
-            ctx.strokeStyle = this.selected ? this.selectedColor : this.hoverColor
+            const color = this.selected ? this.selectedColor 
+                        : window.graph.tool === "delete" ? this.deleteColor
+                        : this.hoverColor
+            ctx.strokeStyle = color
             ctx.lineWidth = 2
             ctx.beginPath()
             ctx.arc(this.x, this.y, this.r + 2, 0, Math.PI * 2)

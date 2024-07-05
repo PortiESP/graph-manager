@@ -4,12 +4,14 @@ import { handleShortcutMouseDown, handleShortcutKeyDown, handleShortcutKeyUp, ha
 import add_nodes_tool from "./add_nodes_tool"
 import edges_tool from "./edges_tool"
 import select_tool from "./select_tool"
+import delete_tool from "./delete_tool"
 
 // Tool object with the callbacks for each tool. The keys are the tool names and the values are objects with the callbacks for each tool.
 export const toolsCallbacks = {
     "select": select_tool,
     "edges": edges_tool,
-    "add-nodes": add_nodes_tool
+    "add-nodes": add_nodes_tool,
+    "delete": delete_tool,
 }
 
 /**

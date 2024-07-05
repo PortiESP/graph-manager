@@ -5,7 +5,7 @@ export default {
         Escape: "select",
         KeyE: "edges",
         KeyN: "add-nodes",
-        KetD: "delete",
+        KeyD: "delete",
     },
     EDGE_HOVER_THRESHOLD_FACTOR: 2, // The factor to multiply the edge thickness to determine the hover threshold
     ARROW_SIZE: 15,

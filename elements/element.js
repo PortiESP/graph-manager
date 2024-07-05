@@ -40,6 +40,7 @@ export class Element {
         // Style properties
         this.hoverColor = '#0D99FF88'
         this.selectedColor = '#0D99FF'
+        this.deleteColor = '#FF0000aa'
         this.opacity = 1
     }
 

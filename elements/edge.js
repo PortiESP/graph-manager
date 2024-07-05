@@ -142,7 +142,9 @@ export class Edge extends Element{
 
         // Draw the edge selection
         if (this.selected || this.isHover()) {
-            const color = this.selected ? this.selectedColor : this.hoverColor
+            const color = this.selected ? this.selectedColor 
+                        : window.graph.tool === "delete" ? this.deleteColor
+                        : this.hoverColor
 
             window.ctx.beginPath()
             window.ctx.strokeStyle = color
