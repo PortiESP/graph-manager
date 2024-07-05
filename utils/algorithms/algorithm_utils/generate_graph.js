@@ -145,7 +145,7 @@ export function generateSVG(){
     svg.setAttribute("xmlns:xlink", xlinkns)
     svg.setAttribute("version", "1.1")
     const {x1, y1, width, height} = getBoundingBoxOfAllNodes()
-    const margin = 1
+    const margin = constants.NODE_BORDER_WIDTH
     svg.setAttribute("viewBox", `${x1-margin} ${y1-margin} ${width+margin*2} ${height+margin*2}`)
 
     // Create the defs element
@@ -168,28 +168,25 @@ export function generateSVG(){
     window.graph.edges.forEach(edge => {
         let {src, dst} = edge.nodesIntersectionBorderCoords()
         
-        // Create the label for the edge's weight
-        const text = document.createElementNS(svgNS, "text")
-        text.setAttribute("class", "weight")
-        text.setAttribute("x", (src.x + dst.x) / 2)
-        text.setAttribute("y", (src.y + dst.y) / 2)
-        text.setAttribute("id", "weight-"+edge.id)
-        text.textContent = edge.weight
-        edgesLabels.push(text)
-        
-        // Create the box for the edge's weight
-        const textBox = document.createElementNS(svgNS, "rect")
-        textBox.setAttribute("class", "weight_box")
-        const centerX = (src.x + dst.x) / 2
-        const centerY = (src.y + dst.y) / 2
-        const fontSize = edge.weightFontSize
-        const boxSize = constants.EDGE_WEIGHT_CONTAINER_SIZE_FACTOR + String(edge.weight).length * 4
-        textBox.setAttribute("x", centerX - boxSize)
-        textBox.setAttribute("y", centerY - fontSize*0.75)
-        textBox.setAttribute("width", boxSize*2)
-        textBox.setAttribute("height", fontSize*1.25)
-        textBox.setAttribute("id", "box-"+edge.id)
-        edgesLabels.push(textBox)
+        if (window.graph.showWeights){
+            // Create the circle for the edge's weight
+            const circle = document.createElementNS(svgNS, "circle")
+            circle.setAttribute("class", "weight_container")
+            circle.setAttribute("cx", (src.x + dst.x) / 2)
+            circle.setAttribute("cy", (src.y + dst.y) / 2)
+            circle.setAttribute("r", constants.EDGE_WEIGHT_CONTAINER_SIZE_FACTOR + (String(edge.weight).length*edge.weightFontSize/3))
+            circle.setAttribute("id", "container-"+edge.id)
+            edgesLabels.push(circle)
+    
+            // Create the label for the edge's weight
+            const text = document.createElementNS(svgNS, "text")
+            text.setAttribute("class", "weight")
+            text.setAttribute("x", (src.x + dst.x) / 2)
+            text.setAttribute("y", (src.y + dst.y) / 2 + 1)
+            text.setAttribute("id", "weight-"+edge.id)
+            text.textContent = edge.weight
+            edgesLabels.push(text)
+        }
 
         if (edge.directed){
             const arrowSize = edge.thickness * edge.arrowSizeFactor
@@ -290,19 +287,19 @@ export function generateCSS(){
         // Style of the weight label
         const edge_label_styles = {
             fill: edge.weightColor,
-            "font-size": edge.weightFontSize,
+            "font-size": edge.weightFontSize+"px",
             "text-anchor": "middle",
             "dominant-baseline": "middle",
         }
-        // Style of the weight box
-        const edge_box_styles = {
+        // Style of the weight container
+        const edge_container_styles = {
             fill: edge.weightBackgroundColor,
         }
 
         // Add the styles to the array
         styles.push(`.edge#${edge.id} {${Object.entries(edge_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
         styles.push(`.weight#weight-${edge.id} {${Object.entries(edge_label_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
-        styles.push(`.weight_box#box-${edge.id} {${Object.entries(edge_box_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
+        styles.push(`.weight_container#container-${edge.id} {${Object.entries(edge_container_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
 
     })
 
