@@ -20,7 +20,7 @@ import { setActivateTool } from "./utils/tools/tools_callbacks"
  * @property {Object} snapReference - Reference point for snapping (used when dragging nodes while on snap mode)
  * @property {boolean} newNode - New node being created
  * @property {Array} edges - All edges
- * @property {Object} newEdgeScr - Source node for when the used is creating a new edge
+ * @property {Object} newEdge - Auxiliar object for edge drawing
  * @property {Array} memento - Memento stack
  * @property {Array} mementoRedo - Redo stack
  * @property {Array} info - Information elements
@@ -59,7 +59,7 @@ export class GraphGlobals {
 
         // Flags
         this.newNode = false // New node being created
-        this.newEdgeScr = null // Source node for when the used is creating a new edge
+        this.newEdge = null // Auxiliar object for edge drawing {src:Node, dst:Object, edge:Edge}
         this.isDraggingElements = false // Flag to check if the user is dragging elements
 
         // History
@@ -135,7 +135,7 @@ export class GraphGlobals {
 
         // Flags
         this.newNode = false // New node being created
-        this.newEdgeScr = null // Source node for when the used is creating a new edge
+        this.newEdge = null // Source node for when the used is creating a new edge
         this.isDraggingElements = false // Flag to check if the user is dragging elements
 
         // History
@@ -218,8 +218,7 @@ export class GraphGlobals {
 
     resetAll() {
         deselectAll()  // Deselect all nodes
-        this.newEdgeScr = null  // Reset the edge creation
-        this.newNode = false    // Reset the node creation
+        this.resetStates() // Reset the states
         resetPan() // Reset the drag, go to the (0, 0) position
         resetZoom() // Reset the zoom level to 1
         this.showAll() // Show all elements
@@ -227,7 +226,7 @@ export class GraphGlobals {
     }
 
     resetStates() {
-        this.newEdgeScr = null
+        this.newEdge = null
         this.newNode = false
         this.isDraggingElements = false
         this.selectionBox = null
@@ -266,33 +265,12 @@ export class GraphGlobals {
      * @param {Node} dst - The destination node of the edge.
      * @param {number} weight - The weight of the edge.
      */
-    addEdgeToGraph(src, dst, weight) {
-        // Default weight
-        if (!weight) weight = constants.EDGE_WEIGHT
+    addEdgeToGraph(src, dst, weight=constants.EDGE_WEIGHT, directed=false) {
 
         // If the source and destination nodes are valid and different, add the edge to the list of edges
         if (src && dst && src !== dst) {
-            this.pushEdge(new Edge(src, dst, weight))
+            this.pushEdge(new Edge(src, dst, weight, directed))
         }
-
-        this.stopCreatingEdge()
-    }
-
-    /**
-     * Returns whether the user is creating a new node.
-     *  
-     * @returns {boolean} Whether the user was hovering a node to start creating a new edge. If true, the user is creating a new edge. If false, the user is not creating a new edge.
-     */
-    startCreatingEdge() {
-        this.newEdgeScr = closestHoverNode()
-        return this.newEdgeScr
-    }
-
-    /**
-     * Stops the process of creating a new edge. This function will not instantiate a new edge nor add it to the graph.
-     */
-    stopCreatingEdge() {
-        this.newEdgeScr = null
     }
 
     /**
@@ -301,7 +279,7 @@ export class GraphGlobals {
      * @returns {boolean} Whether the user is creating a new edge. If true, the user is creating a new edge. If false, the user is not creating a new edge.
      */
     isCreatingEdge() {
-        return this.newEdgeScr !== null
+        return this.newEdge !== null
     }
 
 

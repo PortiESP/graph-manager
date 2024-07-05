@@ -25,12 +25,7 @@ export default function drawAll(){
     })
 
     // Draw new edge
-    if (window.graph.newEdgeScr) {
-        window.ctx.beginPath()
-        window.ctx.moveTo(window.graph.newEdgeScr.x, window.graph.newEdgeScr.y)
-        window.ctx.lineTo(window.cvs.x, window.cvs.y)
-        window.ctx.stroke()
-    }
+    if (window.graph.newEdge) window.graph.newEdge.edge.draw()
 
     // --- Nodes ---
     // Draw nodes

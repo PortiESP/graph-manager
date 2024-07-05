@@ -64,7 +64,7 @@ export default function Graph(props) {
             "Hover: " + closestHoverElement() || "None",
             "----------- Edit -----------",
             "New node: " + window.graph.newNode,
-            "New edge: " + !!window.graph.newEdgeScr,
+            "New edge: " + !!window.graph.newEdge,
             "----------- Config -----------",
             "Snap to grid: " + window.graph.snapToGrid,
         ])
