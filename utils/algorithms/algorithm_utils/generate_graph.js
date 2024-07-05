@@ -183,7 +183,7 @@ export function generateSVG(){
         const centerX = (src.x + dst.x) / 2
         const centerY = (src.y + dst.y) / 2
         const fontSize = edge.weightFontSize
-        const boxSize = constants.EDGE_WEIGHT_BOX_SIZE + String(edge.weight).length * 4
+        const boxSize = constants.EDGE_WEIGHT_CONTAINER_SIZE_FACTOR + String(edge.weight).length * 4
         textBox.setAttribute("x", centerX - boxSize)
         textBox.setAttribute("y", centerY - fontSize*0.75)
         textBox.setAttribute("width", boxSize*2)

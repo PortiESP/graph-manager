@@ -30,6 +30,10 @@ export default function Graph(props) {
         // --- Setup the graph globals--- 
         new GraphGlobals()
 
+        // --- Config ---
+        window.cvs.autoResize = true
+        window.graph.enableCache = false
+
         // --- Initial graph ---
         loadInitialGraph()
 
@@ -45,9 +49,6 @@ export default function Graph(props) {
         window.cvs.resizeCallback = getActiveToolCallback('resizeCallback')
         window.cvs.focusCallback = getActiveToolCallback('focusCallback')
         window.cvs.blurCallback = getActiveToolCallback('blurCallback')
-
-        // --- Config ---
-        window.cvs.autoResize = true
 
         // --- Debug ---
         window.cvs.debug = true

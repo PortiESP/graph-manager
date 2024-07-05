@@ -22,7 +22,7 @@ export function getNodeById(id){
 export function circularArrange(nodes){
     // Arrange the nodes in a sequence
     const numNodes = nodes.length
-    const radius = numNodes * constants.DEFAULT_NODE_RADIUS  // The radius of the circle drawn by the nodes
+    const radius = numNodes * constants.NODE_RADIUS  // The radius of the circle drawn by the nodes
     const angle = 2 * Math.PI / numNodes                     // The angle of separation between the nodes
     const offset = (Math.PI / 2) + Math.PI                   // Offset of the starting point (top of the circle)
 
@@ -45,7 +45,7 @@ export function circularArrange(nodes){
  */
 export function sequenceArrange(nodes){
     // Arrange the nodes in a sequence
-    const margin = constants.DEFAULT_NODE_RADIUS * 5
+    const margin = constants.NODE_RADIUS * 5
 
     // Position the nodes
     nodes.forEach((node, i) => {
@@ -85,10 +85,10 @@ export function toposortArrange(g){
     const nodes = Object.fromEntries(window.graph.nodes.map(node => [node.id, node]))
 
     // Define some parameters
-    const topMargin = constants.DEFAULT_NODE_RADIUS * 5  // Define the top margin (initial space between the nodes and the top of the canvas: y=0)
-    const leftMargin = constants.DEFAULT_NODE_RADIUS * 5 // Define the left margin (initial space between the nodes and the left of the canvas: x=0)
-    const hGap = constants.DEFAULT_NODE_RADIUS * 5  // Define the horizontal space between the nodes (the distance between the columns)
-    const vGap = constants.DEFAULT_NODE_RADIUS * 4  // Define the vertical space between the nodes (the distance between the rows)
+    const topMargin = constants.NODE_RADIUS * 5  // Define the top margin (initial space between the nodes and the top of the canvas: y=0)
+    const leftMargin = constants.NODE_RADIUS * 5 // Define the left margin (initial space between the nodes and the left of the canvas: x=0)
+    const hGap = constants.NODE_RADIUS * 5  // Define the horizontal space between the nodes (the distance between the columns)
+    const vGap = constants.NODE_RADIUS * 4  // Define the vertical space between the nodes (the distance between the rows)
 
     // Arrange the nodes
     Object.keys(cols).sort().forEach((col, i) => {
@@ -156,10 +156,10 @@ export function treeArrangeFromPrevsList(nodes, prevsList, root=undefined){
     else recBranch(root, 0, 0)
 
     // Define some parameters
-    const topMargin = constants.DEFAULT_NODE_RADIUS * 5  // Define the top margin (initial space between the nodes and the top of the canvas: y=0)
-    const leftMargin = constants.DEFAULT_NODE_RADIUS * 5 // Define the left margin (initial space between the nodes and the left of the canvas: x=0)
-    const hGap = constants.DEFAULT_NODE_RADIUS * 5  // Define the horizontal space between the nodes (the distance between the columns)
-    const vGap = constants.DEFAULT_NODE_RADIUS * 4  // Define the vertical space between the nodes (the distance between the rows)
+    const topMargin = constants.NODE_RADIUS * 5  // Define the top margin (initial space between the nodes and the top of the canvas: y=0)
+    const leftMargin = constants.NODE_RADIUS * 5 // Define the left margin (initial space between the nodes and the left of the canvas: x=0)
+    const hGap = constants.NODE_RADIUS * 5  // Define the horizontal space between the nodes (the distance between the columns)
+    const vGap = constants.NODE_RADIUS * 4  // Define the vertical space between the nodes (the distance between the rows)
 
     // Arrange the nodes
     for (const node of nodes) {
@@ -205,7 +205,7 @@ export function organicArrange(positioned=undefined){
         const angle = degAngle * Math.PI / 180 // Convert the angle to radians
         const slices = 360 / degAngle // Number of slices that will be tried before incrementing the radius
         const startAngle = Math.random() * 360 * Math.PI / 180 // Random starting angle
-        let radius = constants.DEFAULT_NODE_RADIUS * 5 // Initial radius
+        let radius = constants.NODE_RADIUS * 5 // Initial radius
 
         // Try to position the node in a circular pattern, avoiding collisions with other nodes, until a valid position is found
         const startI = 0  // Initial slice
@@ -220,13 +220,13 @@ export function organicArrange(positioned=undefined){
             // Increment the angle for the next try
             i = (i + 1) % slices
             // If the loop has already tried all the angles, increment the radius and try next ring
-            if (i === startI) radius += constants.DEFAULT_NODE_RADIUS * 2
+            if (i === startI) radius += constants.NODE_RADIUS * 2
         }
 
         // Mark the node as positioned
         positioned[node] = true
         // Add a function to the array that will avoid other nodes overlapping with this node
-        validatePosition.push(otherNode => node.distance(otherNode.x, otherNode.y) > constants.DEFAULT_NODE_RADIUS * 3)
+        validatePosition.push(otherNode => node.distance(otherNode.x, otherNode.y) > constants.NODE_RADIUS * 3)
     }
 
     // Obj of nodes with nodes as keys
@@ -238,7 +238,7 @@ export function organicArrange(positioned=undefined){
     // Every function in the array must return true for the node to be positioned
     // Every function in the array takes the Node as a parameter
     const validatePosition = []
-    Object.values(positioned).forEach(node => validatePosition.push(otherNode => node.distance(otherNode.x, otherNode.y) > constants.DEFAULT_NODE_RADIUS * 3))
+    Object.values(positioned).forEach(node => validatePosition.push(otherNode => node.distance(otherNode.x, otherNode.y) > constants.NODE_RADIUS * 3))
     
 
     // Position the nodes around the center of mass of the graph

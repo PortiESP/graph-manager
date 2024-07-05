@@ -2,6 +2,8 @@ import { Edge } from "../elements/edge"
 import { Node } from "../elements/node"
 
 export function saveToCache() {
+    if (window.graph.enableCache === false) return
+
     const cache = {
         nodes: window.graph.nodes,
         edges: window.graph.edges.map(edge => {
@@ -21,6 +23,8 @@ export function saveToCache() {
 }
 
 export function loadFromCache() {
+    if (window.graph.enableCache === false) return false
+
     const cache = JSON.parse(localStorage.getItem("graphCache"))
 
     // Debug

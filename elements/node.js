@@ -33,7 +33,7 @@ import { Element } from "./element"
  * 
  */
 export class Node extends Element{
-    constructor(x, y, label = null, r = constants.NODE_DEFAULT_RADIUS) {
+    constructor(x, y, label = null, r = constants.NODE_RADIUS) {
         // If the first argument is an object, copy the properties (clone constructor)
         if (x instanceof Object) {
             super()
@@ -50,11 +50,11 @@ export class Node extends Element{
         this.label = label ?? this.id
 
         // Style properties
-        this.backgroundColor = '#000000'
-        this.labelColor = '#ffffff'
-        this.borderColor = "#000000"
-        this.borderWidth = 0
-        this.fontSize = 20
+        this.backgroundColor = constants.NODE_BACKGROUND_COLOR
+        this.labelColor = constants.NODE_LABEL_COLOR
+        this.borderColor = constants.NODE_BORDER_COLOR
+        this.borderWidth = constants.NODE_BORDER_WIDTH
+        this.fontSize = constants.NODE_LABEL_FONT_SIZE
 
         // Bubble attached to the node
         this.bubble = null
@@ -124,17 +124,16 @@ export class Node extends Element{
         // Draw the bubble
         if (this.bubble !== null) {
             const d = Math.sin(Math.PI / 4) * this.r
-            const r = constants.NODE_BUBBLE_RADIUS
             const x = this.x + d
             const y = this.y + d
             ctx.beginPath()
-            ctx.fillStyle = 'blue'
+            ctx.fillStyle = constants.NODE_BUBBLE_COLOR
             ctx.arc(x, y, 10, 0, Math.PI * 2)
             ctx.fill()
-            ctx.fillStyle = 'white'
+            ctx.fillStyle = constants.NODE_BUBBLE_TEXT_COLOR
             ctx.textAlign = 'center'
             ctx.textBaseline = 'middle'
-            ctx.font = 'bold 14px Arial'
+            ctx.font = 'bold 12px Arial'
             ctx.fillText(this.bubble, x , y+1)
         }
 

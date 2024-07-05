@@ -2,6 +2,8 @@
  * Generates a snapshot of the current graph state and stores it in the memento array.
  */
 export function recordMemento() {
+    if (window.graph.enableMemento === false) return
+
     // Check if the the snapshot is prevented from being recorded (used when we want to avoid recording the snapshot in some specific cases when in regular cases it should be recorded)
     if (window.graph.preventMemento) {
         window.graph.preventMemento = false
@@ -44,6 +46,7 @@ export function generateSnapshot() {
  * Restores the last snapshot from the memento array. Usually triggered by the keyboard shortcut Ctrl+Z.
  */
 export function undo() {
+    if (window.graph.enableMemento === false) return
     if (window.graph.memento.length === 0) return
 
     // Append the current state to the redo stack in case the user wants to revert the undo
@@ -57,6 +60,7 @@ export function undo() {
  * Restores the last snapshot from the redo array. Usually triggered by the keyboard shortcut Ctrl+Y or Ctrl+Shift+Z.
  */
 export function redo() {
+    if (window.graph.enableMemento === false) return
     if (window.graph.mementoRedo.length === 0) return
 
     // Append the current state to the undo stack in case the user wants to revert the redo
@@ -123,5 +127,7 @@ export function snapshotEquals(snapshot1, snapshot2) {
  * Discards the last snapshot from the memento array. Usually triggered when the user clicks on an empty space to deselect all nodes.
  */
 export function discardLastSnapshot() {
+    if (window.graph.enableMemento === false) return
+    
     window.graph.memento.pop()
 }

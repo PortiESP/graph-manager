@@ -125,14 +125,19 @@ export class Edge extends Element{
             const centerY = (this.src.y + this.dst.y) / 2
             
             const fontSize = this.weightFontSize
-            const boxSize = constants.EDGE_WEIGHT_BOX_SIZE + String(this.weight).length * 4
+            const contSize = constants.EDGE_WEIGHT_CONTAINER_SIZE_FACTOR + (String(this.weight).length*fontSize/3)  // The size of the container of the weight (used to draw the background of the weight
             window.ctx.font = fontSize + "px Arial"   
             window.ctx.textAlign = "center"
             window.ctx.textBaseline = "middle"
             window.ctx.fillStyle = (this.weightColor && this.weightBackgroundColor) || "#0000"
-            window.ctx.fillRect(centerX - boxSize, centerY - fontSize*0.75, boxSize*2, fontSize*1.25)  // The values hardcoded are calculated to center the box
+            // Draw circle background
+            window.ctx.beginPath()
+            window.ctx.arc(centerX, centerY, contSize, 0, 2 * Math.PI)
+            window.ctx.fillStyle = this.weightBackgroundColor ?? "#0000"
+            window.ctx.fill()
+            // Draw the weight
             window.ctx.fillStyle = this.weightColor ?? "#0000"
-            window.ctx.fillText(this.weight, centerX, centerY)
+            window.ctx.fillText(this.weight, centerX, centerY+1)  // Add 1 to the y coordinate to center the text
         }
 
         // Draw the edge selection

@@ -6,22 +6,24 @@ export default {
     },
     EDGE_HOVER_THRESHOLD_FACTOR: 2, // The factor to multiply the edge thickness to determine the hover threshold
     ARROW_SIZE: 15,
-    EDGE_WEIGHT_BOX_SIZE: 10,  // Horizontal padding of the box containing the weight of the edge
-    EDGE_WEIGHT_FONT_SIZE: 16, // Font size of the weight of the edge
+    EDGE_WEIGHT: 1,
+    EDGE_WEIGHT_CONTAINER_SIZE_FACTOR: 5,  // Horizontal padding of the box containing the weight of the edge
+    EDGE_WEIGHT_FONT_SIZE: 12, // Font size of the weight of the edge
     EDGE_THICKNESS: 4,
-    EDGE_COLOR: "#888",
-    EDGE_WEIGHT_COLOR: "#eee8",
-    EDGE_WEIGHT_BACKGROUND_COLOR: "#8888",
+    EDGE_COLOR: "#000",
+    EDGE_WEIGHT_COLOR: "#fff",
+    EDGE_WEIGHT_BACKGROUND_COLOR: "#000",
     EDGE_ARROW_SIZE_FACTOR: 3,
 
-
-    DEFAULT_NODE_RADIUS: 30,
-    NODE_BUBBLE_RADIUS: 10,
-    DEFAULT_EDGE_WEIGHT: 1,
-    NODE_DEFAULT_RADIUS: 30,
-    NODE_BACKGROUND_COLOR: "#000",
-    NODE_LABEL_COLOR: "#fff",
+    NODE_RADIUS: 30,
+    NODE_BACKGROUND_COLOR: "#fff",
+    NODE_LABEL_COLOR: "#000",
     NODE_LABEL_FONT_SIZE: 20,
+    NODE_BORDER_COLOR: "#000",
+    NODE_BORDER_WIDTH: 4,
+    NODE_BUBBLE_RADIUS: 10,
+    NODE_BUBBLE_COLOR: "purple",
+    NODE_BUBBLE_TEXT_COLOR: "white",
 
     // Keybinds
     DELETE_KEY: "Delete",

@@ -70,7 +70,7 @@ export function loadFromEdgePlainTextList(edgeList, reuseNodes=undefined) {
     const createNode = (label) => {
         if (reuseNodes && reuseNodes[label]) nodes[label] = reuseNodes[label]
         if (!nodes[label]) {
-            nodes[label] = new Node(undefined, undefined, label, constants.DEFAULT_NODE_RADIUS)
+            nodes[label] = new Node(undefined, undefined, label, constants.NODE_RADIUS)
         }
     }
     
@@ -195,9 +195,9 @@ export function loadFromEdgeArray(edgeArray, directed=false) {
     edgeArray.forEach(edgeList => {
         edgeList.forEach(([src, dst, weight]) => {
             // If the src node does not exist, create it
-            if (!nodes[src]) nodes[src] = new Node(0, 0, src, constants.DEFAULT_NODE_RADIUS)
+            if (!nodes[src]) nodes[src] = new Node(0, 0, src, constants.NODE_RADIUS)
             // If the dst node does not exist, create it
-            if (!nodes[dst]) nodes[dst] = new Node(0, 0, dst, constants.DEFAULT_NODE_RADIUS)
+            if (!nodes[dst]) nodes[dst] = new Node(0, 0, dst, constants.NODE_RADIUS)
 
             // Create the edge object
             const srcNode = nodes[src]

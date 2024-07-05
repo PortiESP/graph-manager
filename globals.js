@@ -41,6 +41,8 @@ export class GraphGlobals {
 
         // Config
         this.showWeights = true // Show weights on edges
+        this.enableMemento = true // Enable memento
+        this.enableCache = true // Enable cache
 
         // Tools 
         this.tool = undefined // Active tool
@@ -251,7 +253,7 @@ export class GraphGlobals {
      */
     addNodeToGraph(x, y, r, label = null) {
         // Default radius
-        if (r === undefined) r = constants.DEFAULT_NODE_RADIUS
+        if (r === undefined) r = constants.NODE_RADIUS
 
         // Append the node to the list of nodes
         this.pushNode(new Node(x, y, label, r))
@@ -266,7 +268,7 @@ export class GraphGlobals {
      */
     addEdgeToGraph(src, dst, weight) {
         // Default weight
-        if (!weight) weight = constants.DEFAULT_EDGE_WEIGHT
+        if (!weight) weight = constants.EDGE_WEIGHT
 
         // If the source and destination nodes are valid and different, add the edge to the list of edges
         if (src && dst && src !== dst) {
