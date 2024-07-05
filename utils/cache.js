@@ -13,12 +13,19 @@ export function saveToCache() {
         }),
         selected: window.graph.selected.map(node => node.id),
     }
-
+    // Save to local storage
     localStorage.setItem("graphCache", JSON.stringify(cache))
+
+    // Debug
+    if (window.cvs.debug) console.log("Saving to cache: ", cache)
 }
 
 export function loadFromCache() {
     const cache = JSON.parse(localStorage.getItem("graphCache"))
+
+    // Debug
+    if (window.cvs.debug) console.log("Loading from cache: ", cache)
+    // If there is no cache, return false
     if (!cache) return false
 
     window.graph.nodes = cache.nodes.map(node => new Node(node))

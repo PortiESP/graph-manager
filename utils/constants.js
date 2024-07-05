@@ -108,11 +108,11 @@ export default {
         // [["E", "D", 1]]
     ],
     TEMPLATE_GRAPH_TOPO: `
-        A->B
-        A->C
-        B->D
-        C->D
-        D->E
+        A>B
+        A>C
+        B>D
+        C>D
+        D>E
         E
     `
 }
