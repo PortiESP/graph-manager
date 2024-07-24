@@ -10,7 +10,7 @@ export default {
     EDGE_HOVER_THRESHOLD_FACTOR: 2, // The factor to multiply the edge thickness to determine the hover threshold
     ARROW_SIZE: 15,
     EDGE_WEIGHT: 1,
-    EDGE_WEIGHT_CONTAINER_SIZE_FACTOR: 5,  // Horizontal padding of the box containing the weight of the edge
+    EDGE_WEIGHT_CONTAINER_SIZE_FACTOR: 7,  // Horizontal padding of the box containing the weight of the edge
     EDGE_WEIGHT_FONT_SIZE: 12, // Font size of the weight of the edge
     EDGE_THICKNESS: 4,
     EDGE_COLOR: "#000",
@@ -72,22 +72,22 @@ export default {
             {x: 300, y: 0, r: 30, id: "L"},
         ],
         edges: [
-            {src: "A", dst: "B"},
-            {src: "A", dst: "C"},
-            {src: "A", dst: "D"},
-            {src: "B", dst: "E"},
-            {src: "B", dst: "F"},
-            {src: "B", dst: "G"},
-            {src: "C", dst: "G"},
-            {src: "D", dst: "H"},
-            {src: "D", dst: "I"},
-            {src: "D", dst: "G"},
-            {src: "E", dst: "J"},
-            {src: "F", dst: "J"},
-            {src: "G", dst: "J"},
-            {src: "G", dst: "L"},
-            {src: "H", dst: "L"},
-            {src: "J", dst: "K"},
+            {src: "A", dst: "B", weight: 3},
+            {src: "A", dst: "C", weight: 7},
+            {src: "A", dst: "D", weight: 8},
+            {src: "B", dst: "E", weight: 7},
+            {src: "B", dst: "F", weight: 2},
+            {src: "B", dst: "G", weight: 1},
+            {src: "C", dst: "G", weight: 2},
+            {src: "D", dst: "H", weight: 3},
+            {src: "D", dst: "I", weight: 12},
+            {src: "D", dst: "G", weight: 5},
+            {src: "E", dst: "J", weight: 3},
+            {src: "F", dst: "J", weight: 6},
+            {src: "G", dst: "J", weight: 7},
+            {src: "G", dst: "L", weight: 4},
+            {src: "H", dst: "L", weight: 5},
+            {src: "J", dst: "K", weight: 2},
         ]
     },
     TEMPLATE_GRAPH_2: `

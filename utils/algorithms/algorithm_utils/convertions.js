@@ -69,3 +69,15 @@ export function generateEdgesByPredecessors(predecessors) {
 
     return edges
 }
+
+export function generateEdgesPathByPredecessors(predecessors, start, end) {
+    const path = []
+    let current = end
+    while (current !== start) {
+        const pre = predecessors[current]
+        path.push(window.graph.findEdgeByNodes(pre, current))
+        current = pre
+    }
+
+    return path
+}

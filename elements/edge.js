@@ -125,7 +125,7 @@ export class Edge extends Element{
             const centerY = (this.src.y + this.dst.y) / 2
             
             const fontSize = this.weightFontSize
-            const contSize = constants.EDGE_WEIGHT_CONTAINER_SIZE_FACTOR + (String(this.weight).length*fontSize/3)  // The size of the container of the weight (used to draw the background of the weight
+            const contSize = constants.EDGE_WEIGHT_CONTAINER_SIZE_FACTOR + (String(this.weight).length*fontSize/7)  // The size of the container of the weight (used to draw the background of the weight
             window.ctx.font = fontSize + "px Arial"   
             window.ctx.textAlign = "center"
             window.ctx.textBaseline = "middle"
