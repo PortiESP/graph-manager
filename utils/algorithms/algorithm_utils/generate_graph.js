@@ -39,7 +39,7 @@ export function generateEdgeArray(){
  * Generate an object from the graph global object
  * 
  * @returns {Object} An object with the nodes as keys and an array of edges as values: {nodes: [{}, ...], edges: [{}, ...]}
- * - nodes: `{x, y, label, r}`
+ * - nodes: `{x, y, id, r}`
  * - edges: `{src, dst, weight, directed}`
  */
 export function generateGraphObject(){
@@ -50,7 +50,7 @@ export function generateGraphObject(){
 
     // Initialize the graph as an empty array for each node
     window.graph.nodes.forEach(node => {
-        graph.nodes.push({x: node.x, y: node.y, label: node.label, r: node.r})
+        graph.nodes.push({x: node.x, y: node.y, id: node.id, r: node.r})
     })
 
     // Fill the graph with the edges

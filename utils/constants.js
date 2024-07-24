@@ -58,9 +58,9 @@ export default {
     // Debug
     TEMPLATE_GRAPH: {
         nodes: [
-            {x: 300, y: 300, r: 30, label: "A"},
-            {x: 400, y: 400, r: 30, label: "B"},
-            {x: 500, y: 500, r: 30, label: "C"},
+            {x: 300, y: 300, r: 30, id: "A"},
+            {x: 400, y: 400, r: 30, id: "B"},
+            {x: 500, y: 500, r: 30, id: "C"},
         ],
         edges: [
             {src: "A", dst: "B", weight: 1},

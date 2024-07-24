@@ -9,8 +9,8 @@ import constants from "./constants";
  * ```json
  * {
  *    "nodes": [
- *       {"x": 0, "y": 0, "r": 30, "label": "A"},
- *       {"x": 100, "y": 0, "r": 30, "label": "B"},
+ *       {"x": 0, "y": 0, "r": 30, "id": "A"},
+ *       {"x": 100, "y": 0, "r": 30, "id": "B"},
  *       ...
  *    ],
  *    "edges": [
@@ -34,12 +34,12 @@ export function loadFromJSON(json) {
     }
 
     // Load the nodes
-    const nodes = json.nodes.map(n => new Node(n.x, n.y, n.label, n.r))
+    const nodes = json.nodes.map(n => new Node(n.x, n.y, n.id, n.r))
 
     // Load the edges
     const edges = json.edges.map(e => {
-        const src = nodes.find(n => n.label === e.src)
-        const dst = nodes.find(n => n.label === e.dst)
+        const src = nodes.find(n => n.id === e.src)
+        const dst = nodes.find(n => n.id === e.dst)
         const directed = e.directed || false
         return new Edge(src, dst, e.weight, directed)
     })
