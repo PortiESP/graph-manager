@@ -2,11 +2,13 @@ import constants from "../../constants"
 import { getBoundingBoxOfAllNodes } from "../../view"
 
 /**
- * Generate an array from the graph global object
+ * Generate an Adjacency List representation of the graph
+ * 
+ * The graph is represented as an object where each key is a node and the value is an array of edges with that node as the source, or the destination if the edge is not directed
  * 
  * @returns {Object} An object with the nodes as keys and an array of edges as values: {Node: [Edge, ...], ...}
  */
-export function generateEdgeArray(){
+export function generateAdjacencyList(){
     const graph = {}
 
     // Initialize the graph as an empty array for each node

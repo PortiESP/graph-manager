@@ -58,7 +58,7 @@ export function generateSuccessorsByPredecessors(predecessors) {
     return successors
 }
 
-export function getEdgesByPredecessors(predecessors) {
+export function generateEdgesByPredecessors(predecessors) {
     const edges = []
     for (const node in predecessors) {
         const pre = predecessors[node]

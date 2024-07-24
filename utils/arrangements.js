@@ -1,5 +1,5 @@
 import { generateSuccessorsByPredecessors } from "./algorithms/algorithm_utils/convertions"
-import { generateEdgeArray } from "./algorithms/algorithm_utils/generate_graph"
+import { generateAdjacencyList } from "./algorithms/algorithm_utils/generate_graph"
 import dfs from "./algorithms/dfs"
 import { toposortKahn } from "./algorithms/toposort"
 import constants from "./constants"
@@ -231,7 +231,7 @@ export function organicArrange(positioned=undefined){
 
     // Obj of nodes with nodes as keys
     const nodes = window.graph.nodes
-    const g = generateEdgeArray()
+    const g = generateAdjacencyList()
     // Already positioned nodes
     if (positioned === undefined) positioned = {}
     // Array of funcitons that are created when a node is positioned in order avoid other nodes overlapping

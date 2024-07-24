@@ -8,11 +8,11 @@ import { focusOnAllNodes } from './utils/view'
 import { loadFromEdgePlainTextList, loadFromJSON, loadFromURL } from './utils/load_graph'
 import constants from './utils/constants'
 import { circularArrange, organicArrange, toposortArrange, treeArrangeFromPrevsList } from './utils/arrangements'
-import { generateEdgeArray } from './utils/algorithms/algorithm_utils/generate_graph'
+import { generateAdjacencyList } from './utils/algorithms/algorithm_utils/generate_graph'
 import { toposortKahn } from './utils/algorithms/toposort'
 import bfs from './utils/algorithms/bfs'
 import { closestHoverElement } from './utils/find_elements'
-import { getEdgesByPredecessors } from './utils/algorithms/algorithm_utils/convertions'
+import { generateEdgesByPredecessors } from './utils/algorithms/algorithm_utils/convertions'
 import { loadFromCache, saveToCache } from './utils/cache'
 
 /**
@@ -73,7 +73,7 @@ export default function Graph(props) {
             {
                 label: 'Generate graph array',
                 callback: () => {
-                    const g = generateEdgeArray()
+                    const g = generateAdjacencyList()
                     console.log(g)
                     console.log(toposortKahn(g))
                 }
@@ -97,7 +97,7 @@ export default function Graph(props) {
             {
                 label: "Toposort arrange",
                 callback: () => {
-                    const g = generateEdgeArray()
+                    const g = generateAdjacencyList()
                     toposortArrange(g)
                     focusOnAllNodes()
                 }
@@ -105,10 +105,10 @@ export default function Graph(props) {
             {
                 label: 'Tree BFS arrange',
                 callback: () => {
-                    const g = generateEdgeArray()
+                    const g = generateAdjacencyList()
                     const data = bfs(g, window.graph.nodes[0])
                     treeArrangeFromPrevsList(window.graph.nodes, data.prevNode, window.graph.nodes[0])
-                    const edges = getEdgesByPredecessors(data.prevNode)
+                    const edges = generateEdgesByPredecessors(data.prevNode)
                     const elements = edges.concat(window.graph.nodes)
                     window.graph.hideAllBut(elements)
                     data.result.forEach((node, i) => {

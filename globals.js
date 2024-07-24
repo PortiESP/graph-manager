@@ -5,7 +5,6 @@ import { Node } from "./elements/node"
 import constants from "./utils/constants"
 import CONSTANTS from "./utils/constants"
 import drawAll from "./utils/draw"
-import { closestHoverNode } from "./utils/find_elements"
 import { deselectAll } from "./utils/selection"
 import { setActivateTool } from "./utils/tools/tools_callbacks"
 
@@ -61,6 +60,7 @@ export class GraphGlobals {
         this.newNode = false // New node being created
         this.newEdge = null // Auxiliar object for edge drawing {src:Node, dst:Object, edge:Edge}
         this.isDraggingElements = false // Flag to check if the user is dragging elements
+        this.hasView = false // Flag to check if the graph has is showing a view (some elements may be hidden and others may be shown along with some additional information)
 
         // History
         this.memento = [] // Memento stack
@@ -223,6 +223,7 @@ export class GraphGlobals {
         resetZoom() // Reset the zoom level to 1
         this.showAll() // Show all elements
         this.nodes.forEach(n => n.bubble = null) // Remove all bubbles
+        this.edges.forEach(e => e.hidden = false) // Show all edges
     }
 
     resetStates() {
@@ -235,12 +236,10 @@ export class GraphGlobals {
         deselectAll()
     }
 
-
     // Set the hidden property of all elements to false
     showAll() {
         this.getElements().forEach(e => e.hidden = false)
     }
-
 
     /**
      * Adds a new node to the graph global variable.
