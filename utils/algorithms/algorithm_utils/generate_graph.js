@@ -168,6 +168,8 @@ export function generateSVG(){
 
     // Create the edges
     window.graph.edges.forEach(edge => {
+        if (edge.hidden) return  // Skip hidden edges
+
         let {src, dst} = edge.nodesIntersectionBorderCoords()
         
         if (window.graph.showWeights){
@@ -252,6 +254,28 @@ export function generateSVG(){
         text.setAttribute("id", "label-"+node.id)
         text.textContent = node.label
         nodesLabels.push(text)
+
+        // Create the bubble for the node
+        if (node.bubble !== null){
+            const bubble = document.createElementNS(svgNS, "circle")
+            const d = Math.sin(Math.PI / 4) * node.r
+            const x = node.x + d
+            const y = node.y + d
+            bubble.setAttribute("class", "bubble")
+            bubble.setAttribute("cx", x)
+            bubble.setAttribute("cy", y)
+            bubble.setAttribute("r", constants.NODE_BUBBLE_RADIUS)
+            bubble.setAttribute("id", "bubble-"+node.id)
+            nodes.push(bubble)
+            // Create the label for the bubble
+            const bubbleText = document.createElementNS(svgNS, "text")
+            bubbleText.setAttribute("class", "bubble_text")
+            bubbleText.setAttribute("x", x)
+            bubbleText.setAttribute("y", y+2)
+            bubbleText.setAttribute("id", "bubble-text-"+node.id)
+            bubbleText.textContent = node.bubble
+            nodesLabels.push(bubbleText)
+        }
     })
 
     // Append the nodes and edges to the SVG (in this order to make sure the edges are behind the nodes)
@@ -323,10 +347,24 @@ export function generateCSS(){
             "dominant-baseline": "middle",
             "font-weight": "bold",
         }
+        // Style of the bubble
+        const bubble_styles = {
+            fill: constants.NODE_BUBBLE_COLOR,
+        }
+        // Style of the bubble text
+        const bubble_text_styles = {
+            fill: constants.NODE_BUBBLE_TEXT_COLOR,
+            "font-size": "12px",
+            "text-anchor": "middle",
+            "dominant-baseline": "middle",
+            "font-weight": "bold",
+        }
 
         // Add the styles to the array
         styles.push(`.node#${node.id} {${Object.entries(node_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
         styles.push(`.node_label#label-${node.id} {${Object.entries(node_label_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
+        styles.push(`.bubble#bubble-${node.id} {${Object.entries(bubble_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
+        styles.push(`.bubble_text#bubble-text-${node.id} {${Object.entries(bubble_text_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
     })
 
     return styles.join("\n")
