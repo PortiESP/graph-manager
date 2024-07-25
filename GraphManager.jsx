@@ -14,6 +14,7 @@ import bfs from './utils/algorithms/bfs'
 import { closestHoverElement } from './utils/find_elements'
 import { generateEdgesByPredecessors } from './utils/algorithms/algorithm_utils/convertions'
 import { loadFromCache, saveToCache } from './utils/cache'
+import kruskal from './utils/algorithms/kruskal'
 
 /**
  * Graph component
@@ -124,6 +125,14 @@ export default function Graph(props) {
                     focusOnAllNodes()
                 }
 
+            },
+            {
+                label: "Krsukal",
+                callback: () => {
+                    const g = generateAdjacencyList()
+                    const data = kruskal(g)
+                    console.log(data)
+                }
             }
         ])
 
