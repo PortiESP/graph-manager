@@ -279,8 +279,8 @@ export function organicArrange(positioned=undefined){
 export function randomArrange(nodes){
     // Arrange the nodes in random positions
     nodes.forEach((node, i) => {
-        node.x = Math.random() * window.cvs.$canvas.width/2 + i*constants.NODE_RADIUS*2
-        node.y = Math.random() * window.cvs.$canvas.height/2 + i*constants.NODE_RADIUS*2
+        node.x = Math.random() * window.cvs.$canvas.height
+        node.y = Math.random() * window.cvs.$canvas.height
     })
 }
 
