@@ -263,3 +263,37 @@ export function organicArrange(positioned=undefined){
         })
     }
 }
+
+
+/**
+ * Random arrangement
+ * 
+ * Arrange the nodes in random positions
+ * 
+ * @param {Array} nodes Array of nodes
+ */
+export function randomArrange(nodes){
+    // Arrange the nodes in random positions
+    nodes.forEach((node, i) => {
+        node.x = Math.random() * window.cvs.$canvas.width/2 + i*constants.NODE_RADIUS*2
+        node.y = Math.random() * window.cvs.$canvas.height/2 + i*constants.NODE_RADIUS*2
+    })
+}
+
+
+/**
+ * Grid arrangement
+ * 
+ * Arrange the nodes in a grid pattern
+ * 
+ * @param {Array} nodes Array of nodes
+ */
+export function gridArrange(nodes){
+    // Arrange the nodes in a grid pattern
+    const margin = constants.NODE_RADIUS * 5
+    const cols = Math.ceil(Math.sqrt(nodes.length))
+    nodes.forEach((node, i) => {
+        node.x = margin + (i % cols) * margin
+        node.y = margin + Math.floor(i / cols) * margin
+    })
+}
