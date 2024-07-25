@@ -48,7 +48,10 @@ export function toposortKahn(graph) {
         result.push(node) // Add the node to the result
 
         // Add to the queue the neighbors of the node with no incoming edges (inDegree: 0) (this means that the node has no dependencies)
-        for (const {src, dst} of graph[node]) {
+        for (let {src, dst} of graph[node]) {
+            src = src.id
+            dst = dst.id
+
             // Process the neighbor node
             inDegree[dst]--  // Decrease the inDegree of the neighbor node (since the current node is being processed)
             levels[dst] = Math.max(levels[dst], levels[src] + 1) // Update the level of the neighbor node (based on the level of the current node and current level of the neighbor node)

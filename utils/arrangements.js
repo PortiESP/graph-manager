@@ -65,7 +65,9 @@ export function sequenceArrange(nodes){
  */
 export function toposortArrange(g){
     // Run the toposort algorithm
-    const { levels } = toposortKahn(g)
+    const { levels, hasCycle, prevNode } = toposortKahn(g)
+
+    if (hasCycle) return {hasCycle}
 
     // Used to position the nodes in columns based on the level
     const cols = {}  
@@ -98,6 +100,8 @@ export function toposortArrange(g){
             nodes[node].y = leftMargin + j * vGap
         })
     })
+
+    return {prevNode, levels}
 }
 
 
