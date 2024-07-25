@@ -1,5 +1,6 @@
 import { generateSuccessorsByPredecessors } from "./algorithms/algorithm_utils/convertions"
 import { generateAdjacencyList } from "./algorithms/algorithm_utils/generate_graph"
+import bfs from "./algorithms/bfs"
 import dfs from "./algorithms/dfs"
 import { toposortKahn } from "./algorithms/toposort"
 import constants from "./constants"
@@ -177,15 +178,18 @@ export function treeArrangeFromPrevsList(nodes, prevsList, root=undefined){
  * 
  * This function is a wrapper for the `treeArrangeFromPrevsList` function. It generates the predecessors list and calls the function
  * 
- * @param {Object} g Graph represented as an adjacency list: {Node: [Edge, ...], ...]}
  * @param {String} root Root node of the tree
  */
-export function treeArrange(g, root){
+export function treeArrange(root, algorithm){
     // Generate the path
-    const data = dfs(g, root)
+    let data;
+    if (algorithm === "dfs") data = dfs(generateAdjacencyList(), root)
+    else if (algorithm === "bfs") data = bfs(generateAdjacencyList(), root)
 
     // Arrange the nodes
     treeArrangeFromPrevsList(window.graph.nodes, data.prevNode, root)
+
+    return data
 }
 
 
