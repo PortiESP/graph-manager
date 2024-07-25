@@ -78,22 +78,33 @@ export class GraphGlobals {
         this.mementoRedo = []
 
         // --- Listeners ---
+        this.disableListeners = false // Flag to disable listeners
         this.allListeners = []  // General listener (any kind of change)
         this.selectedListeners = []  // Selected nodes listener
         this.graphListeners = []  // Graph listener (nodes and edges)
         this.toolListeners = []  // Tool listener
 
         // Listeners triggers (These functions will trigger its respective listeners and the general listener)
-        this.triggerAllListeners = () => this.allListeners.forEach(l => l(this))
+        this.triggerAllListeners = () => {
+            if (this.disableListeners) return
+            
+            this.allListeners.forEach(l => l(this))
+        }
         this.triggerSelectedListeners = () => {
+            if (this.disableListeners) return
+            
             this.allListeners.forEach(l => l(this.selected))
             this.selectedListeners.forEach(l => l(this.selected))
         }
         this.triggerGraphListeners = () => {
+            if (this.disableListeners) return
+            
             this.allListeners.forEach(l => l(this.nodes))
             this.graphListeners.forEach(l => l(this.nodes))
         }
         this.triggerToolListeners = () => {
+            if (this.disableListeners) return
+
             this.allListeners.forEach(l => l(this.tool))
             this.toolListeners.forEach(l => l(this.tool))
         }

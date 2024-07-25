@@ -211,6 +211,8 @@ export class Node extends Element{
      * @returns Node - The cloned node
      */
     clone() {
+        window.graph.disableListeners = true
+
         const aux = new Node(this.x, this.y, this.label, this.r)
         aux.backgroundColor = this.backgroundColor
         aux.labelColor = this.labelColor
@@ -221,7 +223,8 @@ export class Node extends Element{
         aux.fontSize = this.fontSize
         aux.id = this.id
         aux.selected = this.selected
-        
+
+        window.graph.disableListeners = false        
         return aux
     }
 
@@ -244,9 +247,9 @@ export class Node extends Element{
      * Delete the node and its edges
      */
     delete() {
-        super.delete()
-        window.graph.nodes = window.graph.nodes.filter(n => n !== this)
         window.graph.edges = window.graph.edges.filter(e => e.src !== this && e.dst !== this)
+        window.graph.nodes = window.graph.nodes.filter(n => n !== this)
+        super.delete()
     }
 
 

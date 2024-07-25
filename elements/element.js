@@ -164,8 +164,7 @@ export class Element {
         this._id = id
         
         // Listeners
-        window.graph.allListeners.forEach(l => l(this))
-        window.graph.graphListeners.forEach(l => l(this))
+        window.graph.triggerGraphListeners()
     }
     
     get id() {

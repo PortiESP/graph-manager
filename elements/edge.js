@@ -294,6 +294,8 @@ export class Edge extends Element{
      * @returns Edge. A clone of the edge
      */
     clone() {
+        window.graph.disableListeners = true
+
         // Create a new edge with the same properties
         const aux = new Edge(this.src, this.dst, this.weight, this.directed)
         // Copy the rest of the properties
@@ -308,6 +310,7 @@ export class Edge extends Element{
         aux.thickness = this.thickness
         aux.id = this.id
 
+        window.graph.disableListeners = false
         return aux
     }
 
