@@ -15,6 +15,7 @@ import { closestHoverElement } from './utils/find_elements'
 import { generateEdgesByPredecessors } from './utils/algorithms/algorithm_utils/convertions'
 import { loadFromCache, saveToCache } from './utils/cache'
 import kruskal from './utils/algorithms/kruskal'
+import hamiltonianPath from './utils/algorithms/hamiltonian-path'
 
 /**
  * Graph component
@@ -131,6 +132,14 @@ export default function Graph(props) {
                 callback: () => {
                     const g = generateAdjacencyList()
                     const data = kruskal(g)
+                    console.log(data)
+                }
+            },
+            {
+                label: "Hamiltonian path",
+                callback: () => {
+                    const g = generateAdjacencyList()
+                    const data = hamiltonianPath(g, window.graph.nodes[0])
                     console.log(data)
                 }
             }

@@ -81,3 +81,13 @@ export function generateEdgesPathByPredecessors(predecessors, start, end) {
 
     return path
 }
+
+
+export function generateEdgesByNodesPath(nodesPath) {
+    const edges = []
+    for (let i = 0; i < nodesPath.length - 1; i++) {
+        edges.push(window.graph.findEdgeByNodes(nodesPath[i], nodesPath[i + 1]))
+    }
+
+    return edges
+}
