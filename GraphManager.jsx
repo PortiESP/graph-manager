@@ -17,6 +17,7 @@ import { loadFromCache, saveToCache } from './utils/cache'
 import kruskal from './utils/algorithms/kruskal'
 import hamiltonianPath from './utils/algorithms/hamiltonian-path'
 import hamiltonianCycle from './utils/algorithms/hamiltonian-cycle'
+import colorBorders from './utils/algorithms/color-borders'
 
 /**
  * Graph component
@@ -142,6 +143,14 @@ export default function Graph(props) {
                     const g = generateAdjacencyList()
                     const data = hamiltonianCycle(g, window.graph.nodes[0], true)
                     console.log(data)
+                }
+            },
+            {
+                label: "Color borders",
+                callback: () => {
+                    const g = generateAdjacencyList()
+                    console.log(colorBorders(g))
+                    focusOnAllNodes()
                 }
             }
         ])
