@@ -22,6 +22,9 @@ export function recordMemento() {
     // Store the snapshot in the memento array
     window.graph.memento.push(snapshot)
     window.graph.mementoRedo = []
+
+    // Debug
+    if (window.cvs.debug) console.log("Recording memento: ", snapshot)
 }
 
 /**
