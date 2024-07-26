@@ -27,6 +27,7 @@ export default {
     NODE_BUBBLE_RADIUS: 10,
     NODE_BUBBLE_COLOR: "purple",
     NODE_BUBBLE_TEXT_COLOR: "white",
+    NODE_BUBBLE_TEXT_SIZE: 12,
 
     // Keybinds
     DELETE_KEY: "Delete",

@@ -55,6 +55,10 @@ export class Node extends Element{
         this.borderColor = constants.NODE_BORDER_COLOR
         this.borderWidth = constants.NODE_BORDER_WIDTH
         this.fontSize = this.label.length < 3 ? constants.NODE_LABEL_FONT_SIZE : Math.floor(constants.NODE_LABEL_FONT_SIZE * 3 / this.label.length)
+        this.bubbleColor = constants.NODE_BUBBLE_COLOR
+        this.bubbleTextColor = constants.NODE_BUBBLE_TEXT_COLOR
+        this.bubbleTextSize = constants.NODE_BUBBLE_TEXT_SIZE
+        this.bubbleRadius = constants.NODE_BUBBLE_RADIUS
 
         // Bubble attached to the node
         this.bubble = null
@@ -130,13 +134,13 @@ export class Node extends Element{
             const x = this.x + d
             const y = this.y + d
             ctx.beginPath()
-            ctx.fillStyle = constants.NODE_BUBBLE_COLOR
-            ctx.arc(x, y, 10, 0, Math.PI * 2)
+            ctx.fillStyle = this.bubbleColor
+            ctx.arc(x, y, this.bubbleRadius, 0, Math.PI * 2)
             ctx.fill()
-            ctx.fillStyle = constants.NODE_BUBBLE_TEXT_COLOR
+            ctx.fillStyle = this.bubbleTextColor
             ctx.textAlign = 'center'
             ctx.textBaseline = 'middle'
-            ctx.font = 'bold 12px Arial'
+            ctx.font = `bold ${this.bubbleTextSize}px Arial`
             ctx.fillText(this.bubble, x , y+1)
         }
 
