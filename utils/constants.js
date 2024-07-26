@@ -3,7 +3,7 @@ export default {
     // Default values
     DEFAULT_TOOL: "select",
     DEFAULT_SHOW_WEIGHTS: true,
-    DEFAULT_ENABLE_MEMENTO: false,
+    DEFAULT_ENABLE_MEMENTO: true,
     DEFAULT_ENABLE_CACHE: false,
 
     TOOLS_KEYS: {
