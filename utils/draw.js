@@ -36,12 +36,6 @@ export default function drawAll(){
     // Draw new node
     if (window.graph.newNode) window.graph.newNode.draw()
 
-    // --- Information ---
-    // Draw information elements
-    window.graph.info.forEach(e => {
-        e.draw()
-    })
-
     // --- Selection box ---
     drawSelectionBox()
 

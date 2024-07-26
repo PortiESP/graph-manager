@@ -32,7 +32,6 @@ export class GraphGlobals {
         // --- Properties ---
         this._nodes = [] // All nodes
         this._edges = [] // All edges
-        this._info = [] // Information elements
 
         // Selection
         this._selected = [] // Selected nodes
@@ -122,7 +121,6 @@ export class GraphGlobals {
         // Elements
         this.nodes = [] // All nodes
         this.edges = [] // All edges
-        this.info = [] // Information elements
 
         // Selection
         this.selected = [] // Selected nodes
@@ -210,21 +208,10 @@ export class GraphGlobals {
         this.edges = [...this.edges, ...edge]
     }
 
-    get info() {
-        return this._info
-    }
-
-    set info(value) {
-        this._info = value
-
-        // Listeners
-        this.triggerGraphListeners()
-    }
-
     // Methods
 
     getElements() {
-        return this.nodes.concat(this.edges).concat(this.info)
+        return this.nodes.concat(this.edges)
     }
 
     resetAll() {
