@@ -39,9 +39,9 @@ export class GraphGlobals {
         this.selectionBox = null // Object representing the selection box: {x1, y1, x2, y2}
 
         // Config
-        this.showWeights = true // Show weights on edges
-        this.enableMemento = true // Enable memento
-        this.enableCache = true // Enable cache
+        this.showWeights = constants.DEFAULT_SHOW_WEIGHTS // Show weights on edges
+        this.enableMemento = constants.DEFAULT_ENABLE_MEMENTO // Enable memento
+        this.enableCache = constants.DEFAULT_ENABLE_CACHE // Enable cache
 
         // Tools 
         this.tool = undefined // Active tool
