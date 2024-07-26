@@ -16,6 +16,7 @@ import { generateEdgesByPredecessors } from './utils/algorithms/algorithm_utils/
 import { loadFromCache, saveToCache } from './utils/cache'
 import kruskal from './utils/algorithms/kruskal'
 import hamiltonianPath from './utils/algorithms/hamiltonian-path'
+import hamiltonianCycle from './utils/algorithms/hamiltonian-cycle'
 
 /**
  * Graph component
@@ -136,10 +137,10 @@ export default function Graph(props) {
                 }
             },
             {
-                label: "Hamiltonian path",
+                label: "Hamiltonian cycle",
                 callback: () => {
                     const g = generateAdjacencyList()
-                    const data = hamiltonianPath(g, window.graph.nodes[0])
+                    const data = hamiltonianCycle(g, window.graph.nodes[0], true)
                     console.log(data)
                 }
             }
