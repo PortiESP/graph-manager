@@ -3,6 +3,7 @@ import { undo, redo, recordMemento } from "./memento"
 import { setActivateToolByKeyCode, isTool } from "./tools/tools_callbacks"
 import { isPanning, panBy, resetPan, startPanning, stopPanning } from "../canvas-component/utils/pan"
 import { checkShortcut } from "../canvas-component/utils/keyboard"
+import { saveToCache } from "./cache"
 
 /**
  * Handles the keyboard down shortcuts.
@@ -90,12 +91,16 @@ export function handleShortcutKeyDown(code) {
 
         // If the user presses the delete/supr key, delete the hovered elements
         if (checkShortcut(constants.DELETE_KEY)) {
-            recordMemento()  // Record the current state before deleting the elements
-
+            // Memento
+            recordMemento()  
+            
             // Delete the hovered edges, if any
             window.graph.getElements().forEach(e => {
                 if (e.selected) e.delete()
             })
+
+            // Cache
+            saveToCache()
         }
     }
 

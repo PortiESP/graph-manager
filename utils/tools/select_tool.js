@@ -1,3 +1,4 @@
+import { saveToCache } from "../cache"
 import { handleSelectDragging, startDragging, stopDragging } from "../dragging"
 import { closestHoverElement } from "../find_elements"
 import { recordMemento } from "../memento"
@@ -6,19 +7,27 @@ import { endSelectionBox, handleSelectionPrimaryBtnDown, handleSelectionPrimaryB
 export default {
     mouseDownCallback: (btn, mouse) => {
         if (btn === 0) {
+            // Memento
             recordMemento()
+            
             handleSelectionPrimaryBtnDown(btn, mouse)
-
+            
             const element = closestHoverElement(mouse.x, mouse.y)
             
             // If the user clicked an element, prepare to drag it. If not, prepare to create a selection box
             if (element && window.graph.selected) window.graph.isDraggingElements = undefined // Prepare to drag the element (undefined means that the user may drag the element, but it is not dragging yet)
             else startSelectionBox() // Prepare create a selection box
+
+            // Cache
+            saveToCache()
         }
     },
     mouseUpCallback: (btn, mouse) => {
         if (btn === 0) {
             document.body.style.cursor = "default"
+
+            // Cache
+            saveToCache()
 
             if (window.graph.isDraggingElements || window.graph.isDraggingElements === undefined) {
                 stopDragging()

@@ -1,6 +1,8 @@
 import { Edge } from "../elements/edge"
 import { Node } from "../elements/node"
 
+const CACHE_KEY = "graph-cached"
+
 export function saveToCache() {
     if (window.graph.enableCache === false) return
 
@@ -16,7 +18,7 @@ export function saveToCache() {
         selected: window.graph.selected.map(node => node.id),
     }
     // Save to local storage
-    localStorage.setItem("graphCache", JSON.stringify(cache))
+    localStorage.setItem(CACHE_KEY, JSON.stringify(cache))
 
     // Debug
     if (window.cvs.debug) console.log("Saving to cache: ", cache)
@@ -25,7 +27,7 @@ export function saveToCache() {
 export function loadFromCache() {
     if (window.graph.enableCache === false) return false
 
-    const cache = JSON.parse(localStorage.getItem("graphCache"))
+    const cache = JSON.parse(localStorage.getItem(CACHE_KEY))
 
     // Debug
     if (window.cvs.debug) console.log("Loading from cache: ", cache)

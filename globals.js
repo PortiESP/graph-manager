@@ -2,9 +2,11 @@ import { resetPan } from "./canvas-component/utils/pan"
 import { resetZoom } from "./canvas-component/utils/zoom"
 import { Edge } from "./elements/edge"
 import { Node } from "./elements/node"
+import { saveToCache } from "./utils/cache"
 import constants from "./utils/constants"
 import CONSTANTS from "./utils/constants"
 import drawAll from "./utils/draw"
+import { recordMemento } from "./utils/memento"
 import { deselectAll } from "./utils/selection"
 import { setActivateTool } from "./utils/tools/tools_callbacks"
 
@@ -199,7 +201,7 @@ export class GraphGlobals {
 
     set edges(value) {
         this._edges = value
-        
+
         // Listeners
         this.triggerGraphListeners()
     }
@@ -248,11 +250,17 @@ export class GraphGlobals {
      * @param {string} label - The label of the node.
      */
     addNodeToGraph(x, y, r, label = null) {
+        // Memento
+        recordMemento()
+        
         // Default radius
         if (r === undefined) r = constants.NODE_RADIUS
-
+        
         // Append the node to the list of nodes
         this.pushNode(new Node(x, y, label, r))
+
+        // Cache
+        saveToCache()
     }
 
     /**
@@ -266,7 +274,13 @@ export class GraphGlobals {
 
         // If the source and destination nodes are valid and different, add the edge to the list of edges
         if (src && dst && src !== dst) {
+            // Memento
+            recordMemento() 
+            
             this.pushEdge(new Edge(src, dst, weight, directed))
+
+            // Cache
+            saveToCache()
         }
     }
 

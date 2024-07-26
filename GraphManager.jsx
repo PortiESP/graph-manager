@@ -36,7 +36,6 @@ export default function Graph(props) {
 
         // --- Config ---
         window.cvs.autoResize = true
-        window.graph.enableCache = false
 
         // --- Initial graph ---
         loadInitialGraph()
@@ -157,9 +156,6 @@ export default function Graph(props) {
 
         // --- Setup the canvas ---
         document.getElementById("canvas").style.backgroundColor = window.graph.backgroundColor
-
-        // Listeners
-        window.graph.allListeners.push(saveToCache)
 
         // ---------------- Main loop ----------------
         mainLoop(() => {

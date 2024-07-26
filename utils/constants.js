@@ -4,7 +4,7 @@ export default {
     DEFAULT_TOOL: "select",
     DEFAULT_SHOW_WEIGHTS: true,
     DEFAULT_ENABLE_MEMENTO: true,
-    DEFAULT_ENABLE_CACHE: false,
+    DEFAULT_ENABLE_CACHE: true,
 
     TOOLS_KEYS: {
         KeyS: "select",
