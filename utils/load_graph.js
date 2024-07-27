@@ -155,7 +155,7 @@ export function parseEdge(edgeString){
 
 
 // Check if an edge string is valid (valid single node edge or valid edge string)
-export function isValidEdge(edgeString){
+export function isValidElement(edgeString){
     // Single node edge
     if (isSingleNodeEdge(edgeString)) return true
 
