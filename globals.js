@@ -160,6 +160,8 @@ export class GraphGlobals {
 
         this.memento = []
         this.mementoRedo = []
+
+        this.triggerGraphListeners()
     }
 
 
