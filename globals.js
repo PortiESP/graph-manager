@@ -35,7 +35,7 @@ import { setActivateTool } from "./utils/tools/tools_callbacks"
  * @property {Object} snapReference - Reference point for snapping (used when dragging nodes while on snap mode).
  * @property {boolean} newNode - New node being created.
  * @property {Object} newEdge - Auxiliar object for edge drawing {src:Node, dst:Object, edge:Edge}.
- * @property {boolean} isDraggingElements - Flag to check if the user is dragging elements.
+ * @property {boolean} isDraggingElements - Flag to check if the user is dragging elements. (null: not dragging, undefined: clicked but not moved, true: dragging).
  * @property {boolean} hasView - Flag to check if the graph has is showing a view (some elements may be hidden and others may be shown along with some additional information).
  * @property {string} backgroundColor - Background color.
  * @property {function} triggerAllListeners - Function to trigger all listeners.
@@ -102,7 +102,7 @@ export class GraphGlobals {
         // Flags
         this.newNode = false // New node being created
         this.newEdge = null // Auxiliar object for edge drawing {src:Node, dst:Object, edge:Edge}
-        this.isDraggingElements = false // Flag to check if the user is dragging elements
+        this.isDraggingElements = false // Flag to check if the user is dragging elements (null: not dragging, undefined: clicked but not moved, true: dragging)
         this.hasView = false // Flag to check if the graph has is showing a view (some elements may be hidden and others may be shown along with some additional information)
 
         // History

@@ -45,6 +45,16 @@ Additionally, you can use the `setup` and `clean` callbacks to execute code when
 > 
 > The app has some predefined keybindings that will be evaluated before the custom keybindings defined for a tool. The default keybindings are located in the file `canvas/utils/kbd_shortcuts.js`. To add a new keybinding for a tool, add it inside the callback function `keyDownCallback` in the `graph-manager/utils/tools/{your-tool}.js` file
 
+### Use a callback event defined in a tool
+
+To use a callback event defined in a tool, call the `getActiveToolCallback` function with the name of the callback event as a parameter. The function will return the callback function of the active tool.
+
+```js
+const callback = getActiveToolCallback('mouseDownCallback');
+callback();
+```
+
+
 ## Elements
 
 ### Add a new element

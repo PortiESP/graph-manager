@@ -27,7 +27,7 @@ export function getActiveToolCallback(cbkName) {
         // Get the callback for the active tool
         let callback = toolsCallbacks[window.graph.tool][cbkName]
 
-        // Default actions
+        // --- Default actions ---
         // First, run the handleShortcut function to run the default shortcuts, if a default action was executed inside this default functions, return (prevent the tool callback from being called)
         if (cbkName === "keyDownCallback") if (handleShortcutKeyDown(...params)) return
         if (cbkName === "keyUpCallback") if (handleShortcutKeyUp(...params)) return
@@ -36,6 +36,9 @@ export function getActiveToolCallback(cbkName) {
         if (cbkName === "mouseUpCallback") if (handleShortcutMouseUp(...params)) return
         if (cbkName === "mouseMoveCallback") if (handleShortcutMouseMove(...params)) return
         if (cbkName === "mouseScrollCallback") if (handleShortcutMouseScroll(...params)) return
+        // Other callbacks do not have default actions, such as "clean", "setup", "blurCallback"
+
+        // --- Custom actions ---
         
         // If the callback exists, call it
         if (callback) {
@@ -51,12 +54,23 @@ export function getActiveToolCallback(cbkName) {
 }
 
 
-// Tool methods
+/**
+ * This function checks if the key code is a tool key code.
+ * 
+ * @param {String} code Key code to check. E.G.: "KeyS"
+ * @returns True if the key code is a tool key code, false otherwise.
+ */
 export function isTool(code){
     if (anySpecialKeyPressed()) return false
     return !!CONSTANTS.TOOLS_KEYS[code]
 }
 
+
+/**
+ * This function sets the active tool.
+ * 
+ * @param {String} tool Tool to set as active. E.G.: "select"
+ */
 export function setActivateTool(tool){
     // Reset the tool states before changing the tool (the if avoids calling the clean method before the first tool is set)
     if (window.graph.tool) getActiveToolCallback('clean')()
@@ -70,9 +84,18 @@ export function setActivateTool(tool){
     window.graph.triggerToolListeners()
 }
 
+
+/**
+ * This function sets the active tool by the key code.
+ * 
+ * @param {String} code Key code of the tool to set as active. E.G.: "KeyS"
+ */
 export function setActivateToolByKeyCode(code){
     // Check if the tool exists
-    if (!isTool(code)) throw new Error('Invalid tool key code')
+    if (!isTool(code)) {
+        if (window.graph.debug) console.error("The tool does not exist")
+        return
+    }
     // Set the current tool
     const tool = CONSTANTS.TOOLS_KEYS[code]
     setActivateTool(tool)
