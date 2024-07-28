@@ -178,7 +178,7 @@ export function generateSVG(){
             circle.setAttribute("class", "weight_container")
             circle.setAttribute("cx", (src.x + dst.x) / 2)
             circle.setAttribute("cy", (src.y + dst.y) / 2)
-            circle.setAttribute("r", constants.EDGE_WEIGHT_CONTAINER_SIZE_FACTOR + (String(edge.weight).length*edge.weightFontSize/3))
+            circle.setAttribute("r", constants.EDGE_WEIGHT_CONTAINER_SIZE + (String(edge.weight).length*edge.weightFontSize/3))
             circle.setAttribute("id", "container-"+edge.id)
             edgesLabels.push(circle)
     

@@ -4,6 +4,21 @@ import { Element } from "./element"
 /**
  * Node class
  * 
+ * This class represents a node in the graph
+ * 
+ * **Constructor**
+ * 
+ * ---
+ * 
+ * @param {number} x - The x coordinate of the node
+ * @param {number} y - The y coordinate of the node
+ * @param {string} label - The label of the node
+ * @param {number} r - The radius of the node
+ * 
+ * **Properties**
+ * 
+ * ---
+ * 
  * @property {number} x - The x coordinate of the node
  * @property {number} y - The y coordinate of the node
  * @property {number} r - The radius of the node
@@ -14,12 +29,21 @@ import { Element } from "./element"
  * @property {number} borderWidth - The border width of the node
  * @property {number} fontSize - The font size of the label
  * @property {string} bubble - The bubble attached to the node (String)
+ * @property {string} bubbleColor - The color of the bubble
+ * @property {string} bubbleTextColor - The color of the bubble text
+ * @property {number} bubbleTextSize - The font size of the bubble text
+ * @property {number} bubbleRadius - The radius of the bubble
  * @property {string} selectedColor - The color of the node when selected (Inherited from Element class)
  * @property {string} hoverColor - The color of the node when hover (Inherited from Element class)
  * @property {number} opacity - The opacity of the node (Inherited from Element class)
  * @property {boolean} selected - Whether the node is selected (Inherited from Element class)
  * @property {boolean} hidden - Whether the node is hidden (Inherited from Element class)
  * @property {string} id - The id of the node (Inherited from Element class)
+ * 
+ * 
+ * **Methods**
+ * 
+ * ---
  * 
  * @method draw - Draw the node
  * @method contains - Check if the node contains the point (x, y)

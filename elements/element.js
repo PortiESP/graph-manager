@@ -5,12 +5,21 @@
  * 
  * This class defines the common properties and methods for elements in the graph
  * 
+ * **Params**
+ * 
+ * @param {string} id - The id of the element. If not provided, a random id will be generated
+ * 
  * **Properties**
  * 
  * ---
  * 
  * @property {string} id - The id of the element. This is a random string generated when the element is created. This id is used to identify the element in the graph, quite useful when elements referencing other elements to keep track of them even if they are cloned.
  * @property {boolean} selected - Whether the element is selected or not
+ * @property {boolean} hidden - Whether the element is hidden or not
+ * @property {string} hoverColor - The color of the element when it is hovered
+ * @property {string} selectedColor - The color of the element when it is selected
+ * @property {string} deleteColor - The color of the element when it is marked for deletion
+ * @property {number} opacity - The opacity of the element
  * 
  * **Methods**
  * 

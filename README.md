@@ -63,3 +63,41 @@ Additionally, you can use the `setup` and `clean` callbacks to execute code when
 ### Add a new DOM event
 
 To add a new DOM event in order to be able to use it in the tools files `utils/tools/{your-tool}.js` take a event from the `Canvas` component that you have not used yet. and setup as it shows `window.cvs.{your-event} = getActiveToolCallback('{your-event}')` in the `GraphBoard.jsx` file.
+
+## Listeners 
+
+The GraphManager component provides a way to subscribe to events that happen in the graph. The listeners are just callback functions that are stored in one of the following arrays, and that will be called when the corresponding event is triggered.
+
+The available listeners are:
+- `selectedListener` - Calls the funcitons when the selection changes (element selected or deselected)
+- `graphListeners` - Calls the functions when the graph changes (element added, removed, moved, colored, etc)
+- `toolListeners` - Calls the functions when the tool changes
+- `allListeners` - Calls the functions when any of the above events happen
+
+### Subscribe to a listener
+
+To subscribe to a listener, add the callback function to the corresponding array.
+
+```js
+// Example of subscribing to the selectedListener
+const myCallback = (element) => console.log(element);
+selectedListener.push(myCallback);
+```
+
+### Unsubscribe from a listener
+
+To unsubscribe from a listener, remove the callback function from the corresponding array.
+
+```js
+// Example of unsubscribing from the selectedListener
+selectedListener = selectedListener.filter((callback) => callback !== myCallback);
+```
+
+### Trigger a listener
+
+To trigger a listener, call the `trigger<event>Listeners` method with the corresponding event.
+
+```js
+// Example of triggering the selectedListener
+triggerSelectedListeners(element);
+```

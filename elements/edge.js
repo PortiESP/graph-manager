@@ -32,6 +32,7 @@ import { Element } from "./element"
  * @property {string} weightBackgroundColor - The background color of the weight of the edge
  * @property {number} arrowSizeFactor - The size factor of the arrow of the edge (only for directed edges)
  * @property {number} weightFontSize - The font size of the weight of the edge
+ * @property {number} weightContainerSize - The size of the background of the weight of the edge (radius)
  * 
  * **Methods**
  * 
@@ -54,7 +55,6 @@ export class Edge extends Element{
             return
         }
         
-
         super()
 
         // Data properties
@@ -71,6 +71,7 @@ export class Edge extends Element{
         this.thickness = constants.EDGE_THICKNESS
         this.arrowSizeFactor = constants.EDGE_ARROW_SIZE_FACTOR
         this.weightFontSize = constants.EDGE_WEIGHT_FONT_SIZE
+        this.weightContainerSize = constants.EDGE_WEIGHT_CONTAINER_SIZE
     }
 
     /**
@@ -82,6 +83,7 @@ export class Edge extends Element{
 
         window.ctx.save()  // Save the current state of the canvas
 
+        // Set the opacity of the edge
         window.ctx.globalAlpha = this.opacity
 
         // If the edge is directed, draw an arrow
@@ -125,7 +127,7 @@ export class Edge extends Element{
             const centerY = (this.src.y + this.dst.y) / 2
             
             const fontSize = this.weightFontSize
-            const contSize = constants.EDGE_WEIGHT_CONTAINER_SIZE_FACTOR + (String(this.weight).length*fontSize/7)  // The size of the container of the weight (used to draw the background of the weight
+            const contSize = this.weightContainerSize // The size of the container of the weight (used to draw the background of the weight
             window.ctx.font = fontSize + "px Arial"   
             window.ctx.textAlign = "center"
             window.ctx.textBaseline = "middle"

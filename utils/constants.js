@@ -16,7 +16,7 @@ export default {
     EDGE_HOVER_THRESHOLD_FACTOR: 2, // The factor to multiply the edge thickness to determine the hover threshold
     ARROW_SIZE: 15,
     EDGE_WEIGHT: 1,
-    EDGE_WEIGHT_CONTAINER_SIZE_FACTOR: 7,  // Horizontal padding of the box containing the weight of the edge
+    EDGE_WEIGHT_CONTAINER_SIZE: 10,  // Horizontal padding of the box containing the weight of the edge
     EDGE_WEIGHT_FONT_SIZE: 12, // Font size of the weight of the edge
     EDGE_THICKNESS: 4,
     EDGE_COLOR: "#000",

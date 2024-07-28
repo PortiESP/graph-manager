@@ -13,18 +13,60 @@ import { setActivateTool } from "./utils/tools/tools_callbacks"
 /**
  * The Graph class that stores all the information about the graph.
  * 
- * @property {Array} nodes - All nodes in the graph
- * @property {Array} selected - Selected nodes
- * @property {Element} selectionBox - Object representing the selection box: {x1, y1, x2, y2}
- * @property {boolean} showWeights - Show weights on edges
- * @property {boolean} snapToGrid - Snap elements to the grid
- * @property {Object} snapReference - Reference point for snapping (used when dragging nodes while on snap mode)
- * @property {boolean} newNode - New node being created
- * @property {Array} edges - All edges
- * @property {Object} newEdge - Auxiliar object for edge drawing
- * @property {Array} memento - Memento stack
- * @property {Array} mementoRedo - Redo stack
- * @property {Array} info - Information elements
+ * **Properties**:
+ * 
+ * ---
+ * 
+ * @property {Node[]} nodes - All nodes in the graph.
+ * @property {Edge[]} edges - All edges in the graph.
+ * @property {Node[]} selected - All selected nodes in the graph.
+ * @property {Object} selectionBox - Object representing the selection box: {x1, y1, x2, y2}.
+ * @property {boolean} showWeights - Show weights on edges.
+ * @property {boolean} enableMemento - Enable memento.
+ * @property {boolean} enableCache - Enable cache.
+ * @property {string} tool - Active tool.
+ * @property {Object} toolCallbacks - Active tool callbacks.
+ * @property {boolean} gridEnabled - Show the grid.
+ * @property {number} gridSize - Size of the grid.
+ * @property {number} gridOpacity - Opacity of the grid.
+ * @property {number} gridThickness - Thickness of the grid.
+ * @property {string} gridColor - Color of the grid.
+ * @property {boolean} snapToGrid - Snap nodes to the grid (used with shift key).
+ * @property {Object} snapReference - Reference point for snapping (used when dragging nodes while on snap mode).
+ * @property {boolean} newNode - New node being created.
+ * @property {Object} newEdge - Auxiliar object for edge drawing {src:Node, dst:Object, edge:Edge}.
+ * @property {boolean} isDraggingElements - Flag to check if the user is dragging elements.
+ * @property {boolean} hasView - Flag to check if the graph has is showing a view (some elements may be hidden and others may be shown along with some additional information).
+ * @property {string} backgroundColor - Background color.
+ * @property {function} triggerAllListeners - Function to trigger all listeners.
+ * @property {function} triggerSelectedListeners - Function to trigger selected listeners.
+ * @property {function} triggerGraphListeners - Function to trigger graph listeners.
+ * @property {function} triggerToolListeners - Function to trigger tool listeners.
+ * @property {boolean} disableListeners - Flag to disable listeners.
+ * @property {function[]} allListeners - General listener (any kind of change).
+ * @property {function[]} selectedListeners - Selected nodes listener.
+ * @property {function[]} graphListeners - Graph listener (nodes and edges).
+ * @property {function[]} toolListeners - Tool listener.
+ * 
+ * **Methods**:
+ * 
+ * ---
+ * 
+ * @method reset - Resets the graph global variable to the default values.
+ * @method pushSelected - Pushes elements to the selected nodes.
+ * @method pushNode - Pushes nodes to the graph.
+ * @method pushEdge - Pushes edges to the graph.
+ * @method getElements - Gets all elements in the graph.
+ * @method resetAll - Resets all elements in the graph.
+ * @method resetStates - Resets the states of the graph.
+ * @method showAll - Shows all elements in the graph.
+ * @method addNodeToGraph - Adds a new node to the graph.
+ * @method addEdgeToGraph - Adds a new edge to the graph.
+ * @method isCreatingEdge - Returns whether the user is creating a new edge.
+ * @method findEdgeByNodes - Finds an edge by its source and destination nodes.
+ * @method hideAllBut - Hides all elements but the given elements.
+ * @method rerender - Rerenders the graph.
+ * 
  */
 export class GraphGlobals {
     constructor() {
@@ -167,55 +209,7 @@ export class GraphGlobals {
         clearCache()
     }
 
-
-    // Getters & Setters
-
-    get selected() {
-        return this._selected
-    }
-
-    set selected(value) {
-        this._selected = value
-
-        // Listeners
-        this.triggerSelectedListeners()
-    }
-
-    pushSelected(...elements) {
-        this.selected = [...this.selected, ...elements]
-    }
-
-    get nodes() {
-        return this._nodes
-    }
-
-    set nodes(value) {
-        this._nodes = value
-        
-        // Listeners
-        this.triggerGraphListeners()
-    }
-
-    pushNode(...node) {
-        this.nodes = [...this.nodes, ...node]
-    }
-
-    get edges() {
-        return this._edges
-    }
-
-    set edges(value) {
-        this._edges = value
-
-        // Listeners
-        this.triggerGraphListeners()
-    }
-
-    pushEdge(...edge) {
-        this.edges = [...this.edges, ...edge]
-    }
-
-    // Methods
+    // --- Methods ---
 
     getElements() {
         return this.nodes.concat(this.edges)
@@ -320,5 +314,54 @@ export class GraphGlobals {
         window.cvs.clean()
         drawAll()
     }
+
+    // --- Getters & Setters ---
+
+    
+    get selected() {
+        return this._selected
+    }
+
+    set selected(value) {
+        this._selected = value
+
+        // Listeners
+        this.triggerSelectedListeners()
+    }
+
+    pushSelected(...elements) {
+        this.selected = [...this.selected, ...elements]
+    }
+
+    get nodes() {
+        return this._nodes
+    }
+
+    set nodes(value) {
+        this._nodes = value
+        
+        // Listeners
+        this.triggerGraphListeners()
+    }
+
+    pushNode(...node) {
+        this.nodes = [...this.nodes, ...node]
+    }
+
+    get edges() {
+        return this._edges
+    }
+
+    set edges(value) {
+        this._edges = value
+
+        // Listeners
+        this.triggerGraphListeners()
+    }
+
+    pushEdge(...edge) {
+        this.edges = [...this.edges, ...edge]
+    }
+
 }
 
