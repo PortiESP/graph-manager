@@ -1,8 +1,14 @@
-/*
- Hamiltonian cycle algorithm
-
- @param {Object} graph - the graph to find the Hamiltonian cycle in {Node: [Edge, ...], ...}
-*/
+/**
+ * Hamiltonian cycle algorithm
+ * 
+ * @param {Object} graph - The graph to search for a Hamiltonian cycle. E.G.: {node1: [Edge, ...], ...}
+ * @param {String} start - The node to start the search from.
+ * @param {Boolean} all - Whether to return all Hamiltonian cycles or just the first one found.
+ * @returns {Object} - An object with the path of the Hamiltonian cycle and all Hamiltonian cycles if all is true.
+ * - path: {Array[Nodes]} - The path of the Hamiltonian cycle. If all is true, this is the first Hamiltonian cycle found.
+ * - all: {Array[Arrays]} - All Hamiltonian cycles if all is true.
+ * @returns {undefined} - If no Hamiltonian cycle is found.
+ */
 export default function hamiltonianCycle(graph, start, all=false) {
     const path = [start]
     const visited = new Set([start])

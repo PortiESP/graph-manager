@@ -1,8 +1,14 @@
-/*
- Hamiltonian Path is a path in a directed or undirected graph that visits each vertex exactly once.
-
- @param {Object} graph - the graph to find the Hamiltonian Path in {Node: [Edge, ...], ...}
-*/
+/**
+ * Hamiltonian path algorithm.
+ * 
+ * @param {Object} graph - The graph to search for a Hamiltonian path. E.G.: {node1: [Edge, ...], ...}
+ * @param {String} start - The node to start the search from.
+ * @param {Boolean} all - Whether to return all Hamiltonian paths or just the first one found.
+ * @returns {Object} - An object with the path of the Hamiltonian path and all Hamiltonian paths if all is true.
+ * - path: {Array[Nodes]} - The path of the Hamiltonian path. If all is true, this is the first Hamiltonian path found.
+ * - all: {Array[Arrays]} - All Hamiltonian paths if all is true.
+ * @returns {undefined} - If no Hamiltonian path is found.
+ */
 export default function hamiltonianPath(graph, start, all=false) {
     const path = [start]
     const visited = new Set([start])

@@ -1,8 +1,12 @@
-/*
-    Assign each node to a group not already assigned to a neighbor, using the least amount of groups possible.
-
-    - graph: {Node: [Edge, ...], ...}
-*/
+/**
+ * Assigns each node to a group not already assigned to a neighbor, using the least amount of groups possible.
+ * 
+ * Groups are represented by integers starting from 0.
+ * 
+ * @param {Object} graph - The graph to color. E.G.: {node1: [Edge, ...], ...}]}
+ * @param {String} start - The node to start coloring from.
+ * @returns {Object} - An object with the nodes as keys and the groups as values.
+ */
 export default function colorBorders(graph, start=false) {
     // Assign each node to a group not already assigned to a neighbor, using the least amount of groups possible.
     const groups = Object.fromEntries(Object.keys(graph).map(key => [key, null]))

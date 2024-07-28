@@ -1,6 +1,11 @@
-/*
-    Kruskal's algorithm for finding the minimum spanning tree of a graph
-*/
+/**
+ * Kruskal's algorithm
+ * 
+ * @param {Object} graph - The graph to search for the minimum spanning tree. E.G.: {node1: [Edge, ...], ...}
+ * @returns {Object} - An object with the result and the total weight of the minimum spanning tree.
+ * - result: {Array[Edges]} - The edges of the minimum spanning tree.
+ * - totalWeight: {Number} - The total weight of the minimum spanning tree.
+ */
 export default function kruskal(graph) {
     if (graph === undefined) throw new Error('Invalid graph')
 
