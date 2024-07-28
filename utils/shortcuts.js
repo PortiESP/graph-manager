@@ -1,7 +1,7 @@
 import constants from "./constants"
 import { undo, redo, recordMemento } from "./memento"
 import { setActivateToolByKeyCode, isTool } from "./tools/tools_callbacks"
-import { isPanning, panBy, resetPan, startPanning, stopPanning } from "../canvas-component/utils/pan"
+import { isPanning, panBy, startPanning, stopPanning } from "../canvas-component/utils/pan"
 import { checkShortcut } from "../canvas-component/utils/keyboard"
 import { saveToCache } from "./cache"
 

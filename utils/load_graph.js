@@ -154,7 +154,14 @@ export function parseEdge(edgeString){
 }
 
 
-// Check if an edge string is valid (valid single node edge or valid edge string)
+/**
+ * Check if an edge string is valid
+ * 
+ * An edge string is valid if it is a single node edge or a valid edge string.
+ * 
+ * @param {string} edgeString - The edge string
+ * @returns {boolean} True if the edge string is valid, false otherwise
+ */
 export function isValidElement(edgeString){
     // Single node edge
     if (isSingleNodeEdge(edgeString)) return true
@@ -164,6 +171,14 @@ export function isValidElement(edgeString){
 }
 
 
+/**
+ * Check if an edge string is a single node edge
+ * 
+ * A single node edge is a string containing only one word.
+ * 
+ * @param {string} edgeString - The edge string
+ * @returns {boolean} True if the edge string is a single node edge, false otherwise
+ */
 export function isSingleNodeEdge(edgeString){
     return edgeString.match(/^\w+$/) !== null
 }

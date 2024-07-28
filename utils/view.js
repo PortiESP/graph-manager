@@ -51,6 +51,12 @@ export function focusOnAllNodes(zoom=true){
     panTo(newX, newY)
 }
 
+
+/**
+ * Calculates the bounding box containing all the nodes in the graph.
+ * 
+ * @returns {Object} An object with the following properties: x1, y1, x2, y2, width, height
+ */
 export function getBoundingBoxOfAllNodes(){
     let x1 = Infinity
     let y1 = Infinity
