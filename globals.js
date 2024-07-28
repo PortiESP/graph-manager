@@ -255,6 +255,15 @@ export class GraphGlobals {
         this.getElements().forEach(e => e.hidden = false)
     }
 
+
+    /**
+     * Resets the view, showing all nodes and edges. And removes the additional information.
+     */
+    resetView() {
+        this.showAll()
+        this.nodes.forEach(node => node.bubble = null)
+    }
+
     /**
      * Adds a new node to the graph global variable.
      * 
