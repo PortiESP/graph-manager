@@ -7,12 +7,20 @@ export function saveToCache() {
     if (window.graph.enableCache === false) return
 
     const cache = {
-        nodes: window.graph.nodes,
+        nodes: window.graph.nodes.map(node => {
+            return {
+                ...node,
+                // View related properties are discarded
+                bubble: null
+            }
+        }),
         edges: window.graph.edges.map(edge => {
             return {
                 ...edge,
                 src: edge.src.id,
-                dst: edge.dst.id
+                dst: edge.dst.id,
+                // View related properties are discarded
+                hidden: false,
             }
         }),
         selected: window.graph.selected.map(node => node.id),
