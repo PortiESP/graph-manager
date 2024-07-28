@@ -211,10 +211,21 @@ export class GraphGlobals {
 
     // --- Methods ---
 
+    /**
+     * Gets all elements in the graph (nodes and edges).
+     * 
+     * @returns {Array} All elements in the graph.
+     */
     getElements() {
         return this.nodes.concat(this.edges)
     }
 
+
+    /**
+     * Resets all: States, views, config in the graph.
+     * 
+     * This function resets the graph to the default state. It deselects all nodes, resets the states, resets the pan and zoom, shows all elements, removes all bubbles, and shows all edges.
+     */
     resetAll() {
         deselectAll()  // Deselect all nodes
         this.resetStates() // Reset the states
@@ -222,9 +233,13 @@ export class GraphGlobals {
         resetZoom() // Reset the zoom level to 1
         this.showAll() // Show all elements
         this.nodes.forEach(n => n.bubble = null) // Remove all bubbles
-        this.edges.forEach(e => e.hidden = false) // Show all edges
     }
 
+    /**
+     * Resets the states of the graph.
+     * 
+     * This function resets the states of the graph to the default values. It sets the newEdge to null, newNode to false, isDraggingElements to false, selectionBox to null, and snapReference to null.
+     */
     resetStates() {
         this.newEdge = null
         this.newNode = false
@@ -305,11 +320,25 @@ export class GraphGlobals {
         })
     }
 
+
+    /**
+     * Hides all elements but the given elements.
+     * 
+     * @param {Array} elements - The elements to keep visible (array of nodes and edges).
+     */
     hideAllBut(elements){
         this.getElements().forEach(e => e.hidden = !elements.includes(e))
     }
 
-    // Debug
+    /**
+     * Rerenders the graph. (DEBUG)
+     * 
+     * This function rerenders the graph by cleaning the canvas and drawing all elements
+     * 
+     * This function is used for debugging purposes, to force the canvas to print the current state of the graph at the moment of the call. 
+     * 
+     * ⚠️ This function is not recommended for normal use due to the canvas being rerendered in the middle of some calculations.
+     */
     rerender(){
         window.cvs.clean()
         drawAll()
