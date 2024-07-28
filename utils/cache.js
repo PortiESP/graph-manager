@@ -53,3 +53,8 @@ export function loadFromCache() {
     })
     return true
 }
+
+
+export function clearCache() {
+    localStorage.removeItem(CACHE_KEY)
+}

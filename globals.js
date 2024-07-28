@@ -2,7 +2,7 @@ import { resetPan } from "./canvas-component/utils/pan"
 import { resetZoom } from "./canvas-component/utils/zoom"
 import { Edge } from "./elements/edge"
 import { Node } from "./elements/node"
-import { saveToCache } from "./utils/cache"
+import { clearCache, saveToCache } from "./utils/cache"
 import constants from "./utils/constants"
 import CONSTANTS from "./utils/constants"
 import drawAll from "./utils/draw"
@@ -162,6 +162,9 @@ export class GraphGlobals {
         this.mementoRedo = []
 
         this.triggerGraphListeners()
+
+        // Cache
+        clearCache()
     }
 
 
