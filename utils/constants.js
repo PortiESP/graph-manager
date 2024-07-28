@@ -6,15 +6,6 @@ export default {
     DEFAULT_ENABLE_MEMENTO: true,
     DEFAULT_ENABLE_CACHE: true,
 
-    // Tools
-    TOOLS_KEYS: {
-        KeyS: "select",
-        Escape: "select",
-        KeyE: "edges",
-        KeyN: "add-nodes",
-        KeyD: "delete",
-    },
-
     // Graph
     // Edges
     EDGE_HOVER_THRESHOLD_FACTOR: 2, // The factor to multiply the edge thickness to determine the hover threshold

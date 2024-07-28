@@ -17,6 +17,7 @@ import { loadFromCache } from './utils/cache'
 import kruskal from './utils/algorithms/kruskal'
 import hamiltonianCycle from './utils/algorithms/hamiltonian-cycle'
 import colorBorders from './utils/algorithms/color-borders'
+import { getPressedShortcut } from './canvas-component/utils/keyboard'
 
 /**
  * Graph component
@@ -64,6 +65,7 @@ export default function Graph(props) {
             "Active tool: " + window.graph.tool || "None",
             "Snapping: " + `${window.graph.snapReference?.x}, ${window.graph.snapReference?.y}`,
             "Hover: " + closestHoverElement() || "None",
+            "Shortcut: " + getPressedShortcut(),  
             "----------- Edit -----------",
             "New node: " + window.graph.newNode,
             "New edge: " + !!window.graph.newEdge,

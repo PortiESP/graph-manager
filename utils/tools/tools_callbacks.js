@@ -53,19 +53,6 @@ export function getActiveToolCallback(cbkName) {
     }
 }
 
-
-/**
- * This function checks if the key code is a tool key code.
- * 
- * @param {String} code Key code to check. E.G.: "KeyS"
- * @returns True if the key code is a tool key code, false otherwise.
- */
-export function isTool(code){
-    if (anySpecialKeyPressed()) return false
-    return !!CONSTANTS.TOOLS_KEYS[code]
-}
-
-
 /**
  * This function sets the active tool.
  * 
@@ -82,21 +69,4 @@ export function setActivateTool(tool){
     // Call the setup method of the tool
     getActiveToolCallback('setup')()
     window.graph.triggerToolListeners()
-}
-
-
-/**
- * This function sets the active tool by the key code.
- * 
- * @param {String} code Key code of the tool to set as active. E.G.: "KeyS"
- */
-export function setActivateToolByKeyCode(code){
-    // Check if the tool exists
-    if (!isTool(code)) {
-        if (window.graph.debug) console.error("The tool does not exist")
-        return
-    }
-    // Set the current tool
-    const tool = CONSTANTS.TOOLS_KEYS[code]
-    setActivateTool(tool)
 }

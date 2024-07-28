@@ -1,126 +1,82 @@
-import constants from "./constants"
 import { undo, redo, recordMemento } from "./memento"
-import { setActivateToolByKeyCode, isTool } from "./tools/tools_callbacks"
+import { setActivateTool } from "./tools/tools_callbacks"
 import { isPanning, panBy, startPanning, stopPanning } from "../canvas-component/utils/pan"
-import { checkShortcut } from "../canvas-component/utils/keyboard"
+import { getKeyFromCode, getPressedShortcut } from "../canvas-component/utils/keyboard"
 import { saveToCache } from "./cache"
+
+
+const SHORTCUTS_KEY_DOWN = {
+    // Undo and redo
+    "control+z": undo,
+    "control+shift+z": redo,
+    "control+y": redo,
+    // Select all elements
+    "control+a": () => window.graph.getElements().forEach(e => e.select()),
+    // Reload the page
+    "control+r": () => location.reload(),
+    // Move the selected elements
+    "arrowleft": () => window.graph.selected.forEach(e => e.moveBy(-1, 0)),
+    "arrowright": () => window.graph.selected.forEach(e => e.moveBy(1, 0)),
+    "arrowup": () => window.graph.selected.forEach(e => e.moveBy(0, -1)),
+    "arrowdown": () => window.graph.selected.forEach(e => e.moveBy(0, 1)),
+    // Activate snap to grid
+    "shift": () => window.graph.snapToGrid = true,
+    // Reset all states
+    "control+alt+z": () => window.graph.resetAll(),
+    // Pan the canvas
+    "control+arrowleft": () => panBy(50, 0),
+    "control+arrowright": () => panBy(-50, 0),
+    "control+arrowup": () => panBy(0, 50),
+    "control+arrowdown": () => panBy(0, -50),
+    // Delete the hovered elements
+    "delete": () => {
+        recordMemento()  // Memento
+        window.graph.getElements().forEach(e => e.selected && e.delete()) // Delete the hovered edges, if any
+        saveToCache()  // Cache
+    },
+    // Tools
+    "s": () => setActivateTool("select"),
+    "escape": () => setActivateTool("select"),
+    "e": () => setActivateTool("edges"),
+    "n": () => setActivateTool("add-nodes"),
+    "d": () => setActivateTool("delete"),
+}
+
+const SHORTCUTS_KEY_UP = {
+    "shift": () => window.graph.snapToGrid = false,
+}
+
 
 /**
  * Handles the keyboard down shortcuts.
  * 
- * @param {String} code KeyCode of the key pressed. e.g. "KeyA", "KeyZ", "Escape"
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
-export function handleShortcutKeyDown(code) {
+export function handleShortcutKeyDown(){
+    const shortcut = getPressedShortcut()
+    const shortcutCallback = SHORTCUTS_KEY_DOWN[shortcut]
 
-    // The key pressed represents a tool
-    if (isTool(code)) {
-        setActivateToolByKeyCode(code)
-        return true
+    if (shortcutCallback) {
+        if (window.cvs.debug) console.log("Shortcut: ", shortcut)
+        shortcutCallback(shortcut)
     }
-    // The key pressed is not a tool, check for GLOBAL shortcuts (custom shortcuts are handled by the active tool keyDownCallback)
-    else {
-        // --- First we check the keys that are used by pressing them ---
-
-        // Move the selected elements
-        if (checkShortcut("arrow")) {
-            // Move the selected elements
-            window.graph.selected.forEach(e => {
-                if (code === "ArrowUp") e.moveBy(0, -1)
-                else if (code === "ArrowDown") e.moveBy(0, 1)
-                else if (code === "ArrowLeft") e.moveBy(-1, 0)
-                else if (code === "ArrowRight") e.moveBy(1, 0)
-            })
-            return true
-        }
-
-        if (checkShortcut("shift")){
-            window.graph.snapToGrid = true
-        }
-
-        // --- Single tap keys ---
-
-        // Reset all states
-        if (checkShortcut("control+alt+z")) {
-            window.graph.resetAll()
-            return true
-        }
-
-        // Reload the page
-        if (checkShortcut("control+r")) {
-            location.reload()
-            return true
-        }
-
-        // Select all elements
-        if (checkShortcut("control+a")) {
-            window.graph.nodes.forEach(n => n.select())
-            window.graph.edges.forEach(e => e.select())
-            return true
-        }
-
-        // Undo
-        if (checkShortcut("control+z")) {
-            undo()
-            return true
-        }
-
-        // Redo
-        if (checkShortcut("control+shift+z") || checkShortcut("control+y")) {
-            redo()
-            return true
-        }
-
-        // Arrow keys
-        if (checkShortcut("control+arrow")) {
-            // Move the selected elements
-            if (code === "ArrowUp") {
-                panBy(0, 50)
-            }
-            else if (code === "ArrowDown") {
-                panBy(0, -50)
-            }
-            else if (code === "ArrowLeft") {
-                panBy(50, 0)
-            }
-            else if (code === "ArrowRight") {
-                panBy(-50, 0)
-            }
-            return true
-        }
-
-        // If the user presses the delete/supr key, delete the hovered elements
-        if (checkShortcut(constants.DELETE_KEY)) {
-            // Memento
-            recordMemento()  
-            
-            // Delete the hovered edges, if any
-            window.graph.getElements().forEach(e => {
-                if (e.selected) e.delete()
-            })
-
-            // Cache
-            saveToCache()
-        }
-    }
-
-    return false
 }
+
 
 /**
  * Handles the keyboard up shortcuts.
  * 
- * @param {String} code KeyCode of the key pressed. e.g. "KeyA", "KeyZ", "Escape"
+ * @param {String} code - The code of the key that was released. E.G.: "KeyA"
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutKeyUp(code) {
+    const key = getKeyFromCode(code)
+    const shortcutCallback = SHORTCUTS_KEY_UP[key]
 
-    // If the user releases the shift key, disable the snap to grid
-    if (constants.SNAP_TO_GRID_KEYS.includes(code)) {
-        window.graph.snapToGrid = false
+    if (shortcutCallback) {
+        if (window.cvs.debug) console.log("Shortcut up: ", key)
+        shortcutCallback(key)
     }
-
-    return false
 }
 
 /**
@@ -131,8 +87,7 @@ export function handleShortcutKeyUp(code) {
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutMouseDown(button, mouse) {
-
-
+    // Empty
     return false
 }
 
