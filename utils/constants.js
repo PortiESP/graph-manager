@@ -6,6 +6,7 @@ export default {
     DEFAULT_ENABLE_MEMENTO: true,
     DEFAULT_ENABLE_CACHE: true,
 
+    // Tools
     TOOLS_KEYS: {
         KeyS: "select",
         Escape: "select",
@@ -13,6 +14,9 @@ export default {
         KeyN: "add-nodes",
         KeyD: "delete",
     },
+
+    // Graph
+    // Edges
     EDGE_HOVER_THRESHOLD_FACTOR: 2, // The factor to multiply the edge thickness to determine the hover threshold
     ARROW_SIZE: 15,
     EDGE_WEIGHT: 1,
@@ -23,7 +27,7 @@ export default {
     EDGE_WEIGHT_COLOR: "#fff",
     EDGE_WEIGHT_BACKGROUND_COLOR: "#000",
     EDGE_ARROW_SIZE_FACTOR: 3,
-
+    // Nodes
     NODE_RADIUS: 30,
     NODE_BACKGROUND_COLOR: "#fff",
     NODE_LABEL_COLOR: "#000",
@@ -146,11 +150,6 @@ export default {
         [[2, 1, 4], [2, 3, 8], [2, 4, 2]],
         [[3, 4, 7]],
         [[4, 3, 9]]
-        // [["A", "B", 1], ["A", "C", 1]],
-        // [["B", "C", 1], ["B", "D", 1]],
-        // [["C", "B", 1], ["C", "D", 1], ["C", "E", 1]],
-        // [["D", "E", 1]],
-        // [["E", "D", 1]]
     ],
     TEMPLATE_GRAPH_TOPO: `
         A>B
