@@ -3,6 +3,7 @@ import { setActivateTool } from "./tools/tools_callbacks"
 import { isPanning, panBy, startPanning, stopPanning } from "../canvas-component/utils/pan"
 import { getKeyFromCode, getPressedShortcut } from "../canvas-component/utils/keyboard"
 import { saveToCache } from "./cache"
+import constants from "./constants"
 
 
 const SHORTCUTS_KEY_DOWN = {
@@ -30,10 +31,10 @@ const SHORTCUTS_KEY_DOWN = {
     "control+alt+z": () => window.graph.resetAll(),
 
     // Pan the canvas
-    "control+arrowleft": () => panBy(50, 0),
-    "control+arrowright": () => panBy(-50, 0),
-    "control+arrowup": () => panBy(0, 50),
-    "control+arrowdown": () => panBy(0, -50),
+    "control+arrowleft": () => panBy(constants.SHORTCUT_ARROWS_PAN_SPEED, 0),
+    "control+arrowright": () => panBy(-constants.SHORTCUT_ARROWS_PAN_SPEED, 0),
+    "control+arrowup": () => panBy(0, constants.SHORTCUT_ARROWS_PAN_SPEED),
+    "control+arrowdown": () => panBy(0, -constants.SHORTCUT_ARROWS_PAN_SPEED),
 
     // Delete the hovered elements
     "delete": () => {
@@ -51,13 +52,13 @@ const SHORTCUTS_KEY_DOWN = {
 
     // Save options
     "control+s": () => saveToCache(),
-    "control+shift+s": () => window.ui.setModal("save_graph"),
+    "control+shift+s": () => window.ui.call("setModal", "save_graph"),
 
     // Load options
-    "control+o": () => window.ui.setModal("load_graph"),
+    "control+o": () => window.ui.call("setModal", "load_graph"),
 
     // Export options
-    "control+shift+e": () => window.ui.setModal("export_graph"),
+    "control+shift+e": () => window.ui.call("setModal", "export_graph"),
 
     // Empty graph
     "control+alt+n": () => window.graph.reset(),

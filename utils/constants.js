@@ -6,6 +6,9 @@ export default {
     DEFAULT_ENABLE_MEMENTO: true,
     DEFAULT_ENABLE_CACHE: true,
 
+    // Controls
+    SHORTCUT_ARROWS_PAN_SPEED: 25,
+
     // Graph
     // Edges
     EDGE_HOVER_THRESHOLD_FACTOR: 2, // The factor to multiply the edge thickness to determine the hover threshold
@@ -29,15 +32,6 @@ export default {
     NODE_BUBBLE_COLOR: "purple",
     NODE_BUBBLE_TEXT_COLOR: "white",
     NODE_BUBBLE_TEXT_SIZE: 12,
-
-    // Keybinds
-    DELETE_KEY: "Delete",
-    NODE_CREATION_KEY: "KeyN",
-    EDGE_CREATION_KEY: "KeyE",
-    EDGE_WEIGHT_KEY: "KeyW",
-    RESET: "Escape",
-    SNAP_TO_GRID: "shift",
-    SNAP_TO_GRID_KEYS: ["ShiftLeft", "ShiftRight"],
 
     // Grid (default values)
     GRID_ENABLED: true,
