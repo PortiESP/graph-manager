@@ -162,6 +162,9 @@ export class GraphGlobals {
      * Resets the graph global variable to the default values.
      */
     reset() {
+        // Memento
+        recordMemento()
+
         // Elements
         this.nodes = [] // All nodes
         this.edges = [] // All edges
@@ -191,17 +194,14 @@ export class GraphGlobals {
         this.newEdge = null // Source node for when the used is creating a new edge
         this.isDraggingElements = false // Flag to check if the user is dragging elements
 
-        // History
-        this.memento = [] // Memento stack
-        this.mementoRedo = [] // Redo stack
+        // History (not reseted)
+        // this.memento = [] // Memento stack
+        // this.mementoRedo = [] // Redo stack
 
         // Style
         this.backgroundColor = constants.BACKGROUND_COLOR // Background color
 
         setActivateTool(CONSTANTS.DEFAULT_TOOL)
-
-        this.memento = []
-        this.mementoRedo = []
 
         this.triggerGraphListeners()
 

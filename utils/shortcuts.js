@@ -10,36 +10,58 @@ const SHORTCUTS_KEY_DOWN = {
     "control+z": undo,
     "control+shift+z": redo,
     "control+y": redo,
+
     // Select all elements
     "control+a": () => window.graph.getElements().forEach(e => e.select()),
+
     // Reload the page
     "control+r": () => location.reload(),
+
     // Move the selected elements
     "arrowleft": () => window.graph.selected.forEach(e => e.moveBy(-1, 0)),
     "arrowright": () => window.graph.selected.forEach(e => e.moveBy(1, 0)),
     "arrowup": () => window.graph.selected.forEach(e => e.moveBy(0, -1)),
     "arrowdown": () => window.graph.selected.forEach(e => e.moveBy(0, 1)),
+
     // Activate snap to grid
     "shift": () => window.graph.snapToGrid = true,
+
     // Reset all states
     "control+alt+z": () => window.graph.resetAll(),
+
     // Pan the canvas
     "control+arrowleft": () => panBy(50, 0),
     "control+arrowright": () => panBy(-50, 0),
     "control+arrowup": () => panBy(0, 50),
     "control+arrowdown": () => panBy(0, -50),
+
     // Delete the hovered elements
     "delete": () => {
         recordMemento()  // Memento
         window.graph.getElements().forEach(e => e.selected && e.delete()) // Delete the hovered edges, if any
         saveToCache()  // Cache
     },
+
     // Tools
     "s": () => setActivateTool("select"),
     "escape": () => setActivateTool("select"),
     "e": () => setActivateTool("edges"),
     "n": () => setActivateTool("add-nodes"),
     "d": () => setActivateTool("delete"),
+
+    // Save options
+    "control+s": () => saveToCache(),
+    "control+shift+s": () => window.ui.setModal("save_graph"),
+
+    // Load options
+    "control+o": () => window.ui.setModal("load_graph"),
+
+    // Export options
+    "control+shift+e": () => window.ui.setModal("export_graph"),
+
+    // Empty graph
+    "control+alt+n": () => window.graph.reset(),
+
 }
 
 const SHORTCUTS_KEY_UP = {

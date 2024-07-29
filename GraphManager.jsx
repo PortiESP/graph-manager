@@ -33,6 +33,7 @@ export default function Graph(props) {
 
         // --- Setup the graph globals--- 
         new GraphGlobals()
+        window.ui = {}  // UI states (make the `useStates` available globally) (the components will populate this object)
 
         // --- Config ---
         window.cvs.autoResize = true
