@@ -51,6 +51,27 @@ export default {
     // Focus
     FOCUS_MARGIN: 100,
 
+    COLORS_PALETTE: [
+        "#ff0000",
+        "#00ff00",
+        "#0000ff",
+        "#ffff00",
+        "#ff00ff",
+        "#00ffff",
+        "#ff8000",
+        "#ff0080",
+        "#80ff00",
+        "#00ff80",
+        "#0080ff",
+        "#8000ff",
+        "#ff8080",
+        "#80ff80",
+        "#8080ff",
+        "#ff80ff",
+        "#80ffff",
+        "#80ff80",
+    ],
+
     // Debug
     TEMPLATE_GRAPH: {
         nodes: [

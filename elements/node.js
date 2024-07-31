@@ -23,7 +23,7 @@ import { Element } from "./element"
  * @property {number} y - The y coordinate of the node
  * @property {number} r - The radius of the node
  * @property {string} label - The label of the node
- * @property {string} background - The background color of the node
+ * @property {string} backgroundColor - The background color of the node
  * @property {string} color - The color of the label
  * @property {string} borderColor - The border color of the node
  * @property {number} borderWidth - The border width of the node
