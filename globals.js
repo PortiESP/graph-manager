@@ -204,9 +204,6 @@ export class GraphGlobals {
         setActivateTool(CONSTANTS.DEFAULT_TOOL)
 
         this.triggerGraphListeners()
-
-        // Cache
-        clearCache()
     }
 
     // --- Methods ---

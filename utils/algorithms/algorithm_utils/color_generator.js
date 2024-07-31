@@ -1,6 +1,6 @@
 import constants from "../../constants"
 
-export default function colorGenerator(nColors){
+export function colorGenerator(nColors){
     const colors = [...constants.COLORS_PALETTE]
     
     if (nColors <= colors.length) return colors
@@ -17,4 +17,21 @@ export default function colorGenerator(nColors){
 
     return colors
 
+}
+
+
+export function heatmapColorGenerator(nColors){
+    // HSL color generator
+    const max = 120  // Green
+    const min = 0    // Red
+    const range = max - min
+
+    const colors = []
+    const step = range/(nColors-1)
+    for (let i = 0; i < nColors; i++) {
+        colors.push(`hsl(${i * step}, 100%, 50%)`)
+    }
+
+    // Reverse the colors since the first color is red (we want it to be green)
+    return colors.reverse()
 }

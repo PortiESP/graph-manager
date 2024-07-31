@@ -156,6 +156,14 @@ export class Edge extends Element{
             window.ctx.stroke()
         }
 
+        if (window.cvs.debug){
+            // Draw the distance to the edge
+            window.ctx.fillStyle = "red"
+            window.ctx.font = "10px Arial"
+            window.ctx.fillText(this.distance(window.cvs.x, window.cvs.y).toFixed(2), (this.src.x + this.dst.x) / 2, (this.src.y + this.dst.y) / 2 + 20)
+
+        }
+
             
         window.ctx.restore()  // Restore the previous state of the canvas
     }
@@ -195,28 +203,58 @@ export class Edge extends Element{
      * @returns The distance between the edge and the point
      */
     distance(x, y) {
+        // Src and dst coordinates of the edge (from border to border of the nodes instead of the center)
+        const {src, dst} = this.nodesIntersectionBorderCoords()
 
-        // Check if point is inside the bounding box of the edge
-        const x1 = Math.min(this.src.x, this.dst.x)
-        const x2 = Math.max(this.src.x, this.dst.x)
-        const y1 = Math.min(this.src.y, this.dst.y)
-        const y2 = Math.max(this.src.y, this.dst.y)
+        // Calculate the slope of the edge
+        const slope = (dst.y - src.y) / (dst.x - src.x)
 
-        // If the point is outside the bounding box, return the distance to the closest end of the edge
-        if (x < x1 || x > x2 || y < y1 || y > y2) {
-            // Return the distance to the closest node
-            return Math.min(
-                Math.sqrt((this.src.x - x) ** 2 + (this.src.y - y) ** 2), // Distance to the source node
-                Math.sqrt((this.dst.x - x) ** 2 + (this.dst.y - y) ** 2)  // Distance to the destination node
-            )
+        // Check if the edge is vertical, and if so, calculate the distance using the formula for vertical lines
+        if (slope === Infinity || slope === -Infinity) {
+            const minY = Math.min(src.y, dst.y)
+            const maxY = Math.max(src.y, dst.y)
+            if (minY < y && y < maxY) return Math.abs(x - src.x)
+            
+            return Math.min(this.src.distanceToCenter(x, y), this.dst.distanceToCenter(x, y))
+        }
+        // Check if the edge is horizontal, and if so, calculate the distance using the formula for horizontal lines
+        if (slope === 0) {
+            const minX = Math.min(src.x, dst.x)
+            const maxX = Math.max(src.x, dst.x)
+            if (minX < x && x < maxX) return Math.abs(y - src.y)
+
+            return Math.min(this.src.distanceToCenter(x, y), this.dst.distanceToCenter(x, y))
         }
 
-        // If the point if inside the bounding box, calculate the distance to the line
-        // Distance from a point to a line formula: |Ax + By + C| / sqrt(A^2 + B^2)
-        const A = this.src.y - this.dst.y // y1 - y2
-        const B = this.dst.x - this.src.x // x2 - x1
-        const C = this.src.x * this.dst.y - this.dst.x * this.src.y // x1*y2 - x2*y1
-        return Math.abs(A * x + B * y + C) / Math.sqrt(A * A + B * B)
+        // Calculate the angle of the edge
+        const angle = Math.atan(slope)
+        const anglePerpendicular = angle + Math.PI / 2
+        const slopePerpendicular = Math.tan(anglePerpendicular)
+        const boundsX = [Math.min(src.x, dst.x), Math.max(src.x, dst.x)]
+
+        // Mathematical functions defining the edge and the perpendicular lines intersecting the nodes defining the edge
+        const f = (x) => slope * x + src.y - slope * src.x
+        const fp1 = (x) => slopePerpendicular * x + (f(boundsX[0]) - slopePerpendicular * boundsX[0])
+        const fp2 = (x) => slopePerpendicular * x + (f(boundsX[1]) - slopePerpendicular * boundsX[1])
+
+        // Functions to check the side of the edge a point is
+        const inFp1 = (x, y) => y > fp1(x)
+        const inFp2 = (x, y) => y < fp2(x)
+
+        // Distance from the point to the edge (well-known formula for distance from a point to a line)
+        const A = src.y - dst.y
+        const B = dst.x - src.x
+        const C = src.x * dst.y - dst.x * src.y
+        const dist = Math.abs(A * x + B * y + C) / Math.sqrt(A * A + B * B)
+
+        // Check if the point is inside the bounding box of the edge
+        if (inFp1(x, y) && inFp2(x, y)) return dist
+
+        // If the point is not inside
+        const d1 = Math.sqrt((src.x - x) ** 2 + (src.y - y) ** 2)
+        const d2 = Math.sqrt((dst.x - x) ** 2 + (dst.y - y) ** 2)
+        return Math.min(d1, d2)
+
     }
 
     /**

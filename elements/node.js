@@ -168,6 +168,15 @@ export class Node extends Element{
             ctx.fillText(this.bubble, x , y+1)
         }
 
+        if (window.cvs.debug) {
+            // Type
+            ctx.fillStyle = "blue"
+            ctx.font = "10px Arial"
+            ctx.textAlign = "center"
+            ctx.fillText(this.distance(window.cvs.x, window.cvs.y).toFixed(2), this.x, this.y + this.r + 10)
+
+        }
+
         ctx.restore()
     }
 
@@ -210,7 +219,7 @@ export class Node extends Element{
     distance(x, y) {
         const dx = x - this.x
         const dy = y - this.y
-        return Math.abs(Math.sqrt(dx * dx + dy * dy) - this.r)
+        return Math.sqrt(dx * dx + dy * dy) - this.r
     }
 
     /**
