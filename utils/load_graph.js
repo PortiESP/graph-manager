@@ -37,6 +37,10 @@ export function loadFromJSON(json, append=false) {
     const nodes = json.nodes.map(n => {
         const auxNode = new Node(n._x, n._y, n._id, n.r)
         Object.assign(auxNode, n)
+
+        // If the node being loaded is selected, reset the selected property and trigger the select method
+        if (n.selected) window.graph.pushSelected(auxNode)
+
         return auxNode
     })
 
@@ -54,6 +58,9 @@ export function loadFromJSON(json, append=false) {
         // Reassign the source and destination nodes
         auxEdge.src = src
         auxEdge.dst = dst
+
+        // If the edge being loaded is selected, reset the selected property and trigger the select method
+        if (e.selected) window.graph.pushSelected(auxEdge)
 
         return auxEdge
     })

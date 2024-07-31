@@ -1,11 +1,20 @@
 import { loadFromJSON } from "./load_graph"
 
 export function copyToClipboard(){
+
+    const selectedNodes = window.graph.selected.filter(e => e.constructor.name === "Node")
+    const n = selectedNodes.length
+    if (n === 0) return
+
+    // Calculate the center position of all the selected nodes to paste them in the same relative position
+    const meanX = selectedNodes.reduce((acc, e) => acc + e.x, 0) / n
+    const meanY = selectedNodes.reduce((acc, e) => acc + e.y, 0) / n
+
     const data = {
         nodes: [],
         edges: [],
-        mouseX: window.cvs.x,
-        mouseY: window.cvs.y
+        mouseX: meanX,
+        mouseY: meanY
     }
     window.graph.selected.forEach(e => {
         if (e.constructor.name === "Node") data.nodes.push(e)
@@ -39,8 +48,8 @@ export function pasteFromClipboard(){
 
     // Move the element the same distance that the mouse moved since the copy action
     const fixPosition = (element, mouse) => {
-        element._x += mouse.x - window.cvs.x
-        element._y += mouse.y - window.cvs.y
+        element._x += window.cvs.x - mouse.x
+        element._y += window.cvs.y - mouse.y
     }
 
     // Ensure that the edge nodes are the same as the copied nodes
