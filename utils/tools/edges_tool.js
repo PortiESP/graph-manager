@@ -67,7 +67,6 @@ export default {
     },
     // Listens to the shift key to change the directed property of the edge
     keyUpCallback: function (key) {
-        console.log(key)
         // If the user released the shift key, disable the directed property of the edge
         if (key === "ShiftLeft" || key === "ShiftRight"){
             if (window.graph.isCreatingEdge()) window.graph.newEdge.edge.directed = false

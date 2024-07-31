@@ -6,7 +6,7 @@
  * - result: {Array[Edges]} - The edges of the minimum spanning tree.
  * - totalWeight: {Number} - The total weight of the minimum spanning tree.
  */
-export default function kruskal(graph) {
+export default function kruskal(graph, reverse=false) {
     if (graph === undefined) throw new Error('Invalid graph')
 
     const getCandidates = (graph) => {
@@ -18,6 +18,7 @@ export default function kruskal(graph) {
             }
         }
 
+        if (reverse) return candidates.sort((a, b) => b.weight - a.weight)
         return candidates.sort((a, b) => a.weight - b.weight)
     }
 
