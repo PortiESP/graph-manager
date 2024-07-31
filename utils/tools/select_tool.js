@@ -3,7 +3,18 @@ import { handleSelectDragging, startDragging, stopDragging } from "../dragging"
 import { closestHoverElement } from "../find_elements"
 import { recordMemento, discardLastSnapshot } from "../memento"
 import { deselectAll, endSelectionBox, startSelectionBox, updateSelectionBox } from "../selection"
-import { checkShortcut } from "../../canvas-component/utils/keyboard"
+import { checkShortcut, handleShortcut } from "../../canvas-component/utils/keyboard"
+import { copyToClipboard, pasteFromClipboard } from "../clipboard_buffer"
+
+
+const SHORTCUTS_KEY_DOWN = {
+    // Select all elements
+    "control+a": () => window.graph.getElements().forEach(e => e.select()),
+
+    // Copy & Paste
+    "control+c": () => copyToClipboard(),
+    "control+v": () => pasteFromClipboard(),
+}
 
 
 export default {
@@ -98,5 +109,9 @@ export default {
     blurCallback: () => {
         if (window.graph.isDraggingElements) stopDragging()
         if (window.graph.selectionBox) endSelectionBox()
+    },
+    // Handles the keys down of the keyboard
+    keyDownCallback: (code) => {
+        handleShortcut(SHORTCUTS_KEY_DOWN)
     },
 }

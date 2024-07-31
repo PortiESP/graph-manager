@@ -1,7 +1,7 @@
 import { undo, redo, recordMemento } from "./memento"
 import { setActivateTool } from "./tools/tools_callbacks"
 import { isPanning, panBy, startPanning, stopPanning } from "../canvas-component/utils/pan"
-import { getKeyFromCode, getPressedShortcut } from "../canvas-component/utils/keyboard"
+import { getKeyFromCode, getPressedShortcut, handleShortcut } from "../canvas-component/utils/keyboard"
 import { saveToCache } from "./cache"
 import constants from "./constants"
 
@@ -11,9 +11,6 @@ const SHORTCUTS_KEY_DOWN = {
     "control+z": undo,
     "control+shift+z": redo,
     "control+y": redo,
-
-    // Select all elements
-    "control+a": () => window.graph.getElements().forEach(e => e.select()),
 
     // Reload the page
     "control+r": () => location.reload(),
@@ -36,10 +33,10 @@ const SHORTCUTS_KEY_DOWN = {
     "control+arrowup": () => panBy(0, constants.SHORTCUT_ARROWS_PAN_SPEED),
     "control+arrowdown": () => panBy(0, -constants.SHORTCUT_ARROWS_PAN_SPEED),
 
-    // Delete the hovered elements
+    // Delete the selected elements
     "delete": () => {
         recordMemento()  // Memento
-        window.graph.getElements().forEach(e => e.selected && e.delete()) // Delete the hovered edges, if any
+        window.graph.selected.forEach(e => e.delete()) // Delete the selected elements
         saveToCache()  // Cache
     },
 
@@ -76,13 +73,7 @@ const SHORTCUTS_KEY_UP = {
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutKeyDown(){
-    const shortcut = getPressedShortcut()
-    const shortcutCallback = SHORTCUTS_KEY_DOWN[shortcut]
-
-    if (shortcutCallback) {
-        if (window.cvs.debug) console.log("Shortcut: ", shortcut)
-        shortcutCallback(shortcut)
-    }
+    handleShortcut(SHORTCUTS_KEY_DOWN)
 }
 
 
@@ -93,13 +84,7 @@ export function handleShortcutKeyDown(){
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutKeyUp(code) {
-    const key = getKeyFromCode(code)
-    const shortcutCallback = SHORTCUTS_KEY_UP[key]
-
-    if (shortcutCallback) {
-        if (window.cvs.debug) console.log("Shortcut up: ", key)
-        shortcutCallback(key)
-    }
+    handleShortcut(SHORTCUTS_KEY_UP)
 }
 
 /**

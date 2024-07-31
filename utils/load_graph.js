@@ -9,8 +9,8 @@ import constants from "./constants";
  * ```json
  * {
  *    "nodes": [
- *       {"x": 0, "y": 0, "r": 30, "id": "A"},
- *       {"x": 100, "y": 0, "r": 30, "id": "B"},
+ *       {"_x": 0, "_y": 0, "r": 30, "_id": "A"},
+ *       {"_x": 100, "_y": 0, "r": 30, "_id": "B"},
  *       ...
  *    ],
  *    "edges": [
@@ -24,9 +24,9 @@ import constants from "./constants";
  * @param {Object} json - The JSON object
  * 
  */
-export function loadFromJSON(json) {
+export function loadFromJSON(json, append=false) {
     // Reset the graph to its initial state
-    window.graph.reset()
+    if (append === false) window.graph.reset()
 
     // Parse the JSON string if needed
     if (typeof json === 'string') {
@@ -34,14 +34,28 @@ export function loadFromJSON(json) {
     }
 
     // Load the nodes
-    const nodes = json.nodes.map(n => new Node(n.x, n.y, n.id, n.r))
+    const nodes = json.nodes.map(n => {
+        const auxNode = new Node(n._x, n._y, n._id, n.r)
+        Object.assign(auxNode, n)
+        return auxNode
+    })
 
     // Load the edges
     const edges = json.edges.map(e => {
+        // Find the source and destination nodes
         const src = nodes.find(n => n.id === e.src)
         const dst = nodes.find(n => n.id === e.dst)
-        const directed = e.directed || false
-        return new Edge(src, dst, e.weight, directed)
+        // Create the edge object
+        const auxEdge = new Edge(src, dst, e.weight)
+
+        // Assign all the properties of the edge
+        Object.assign(auxEdge, e)
+
+        // Reassign the source and destination nodes
+        auxEdge.src = src
+        auxEdge.dst = dst
+
+        return auxEdge
     })
 
     // Add the nodes and edges to the graph

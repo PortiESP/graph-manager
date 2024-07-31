@@ -66,6 +66,7 @@ export default function Graph(props) {
             "Snapping: " + `${window.graph.snapReference?.x}, ${window.graph.snapReference?.y}`,
             "Hover: " + closestHoverElement() || "None",
             "Shortcut: " + getPressedShortcut(),  
+            `Dragging: ${window.graph.isDraggingElements === true ? "Yes" : window.graph.isDraggingElements === undefined ? "Preparing" : "No"}`,
             "----------- Edit -----------",
             "New node: " + window.graph.newNode,
             "New edge: " + !!window.graph.newEdge,

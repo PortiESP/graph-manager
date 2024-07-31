@@ -330,6 +330,11 @@ export class GraphGlobals {
     }
 
 
+    findElementById(id) {
+        return this.getElements().find(e => e.id === id) || null
+    }
+
+
     /**
      * Hides all elements but the given elements.
      * 
