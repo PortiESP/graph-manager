@@ -3,7 +3,7 @@ import { handleSelectDragging, startDragging, stopDragging } from "../dragging"
 import { closestHoverElement } from "../find_elements"
 import { recordMemento, discardLastSnapshot } from "../memento"
 import { deselectAll, endSelectionBox, startSelectionBox, updateSelectionBox } from "../selection"
-import { checkShortcut, handleShortcut } from "../../canvas-component/utils/keyboard"
+import { checkShortcut, getKeyFromCode, handleShortcut } from "../../canvas-component/utils/keyboard"
 import { copyToClipboard, pasteFromClipboard } from "../clipboard_buffer"
 
 
@@ -14,6 +14,9 @@ const SHORTCUTS_KEY_DOWN = {
     // Copy & Paste
     "control+c": () => copyToClipboard(),
     "control+v": () => pasteFromClipboard(),
+
+    // Tooltip 
+    "shift": () => window.ui.call("setToolTip", "Click on an element to toggle its selection"),
 }
 
 
@@ -114,4 +117,9 @@ export default {
     keyDownCallback: (code) => {
         return handleShortcut(SHORTCUTS_KEY_DOWN)
     },
+    // Handles the keys up of the keyboard
+    keyUpCallback: (code) => {
+        code = getKeyFromCode(code)
+        if (code === "shift") window.ui.call("setToolTip", undefined)
+    }
 }

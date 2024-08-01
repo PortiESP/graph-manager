@@ -50,7 +50,7 @@ export function generateSnapshot() {
  */
 export function undo() {
     if (window.graph.enableMemento === false) return
-    if (window.graph.memento.length === 0) return
+    if (!hasUndo()) return
 
     // Append the current state to the redo stack in case the user wants to revert the undo
     window.graph.mementoRedo.push(generateSnapshot())
@@ -64,13 +64,21 @@ export function undo() {
  */
 export function redo() {
     if (window.graph.enableMemento === false) return
-    if (window.graph.mementoRedo.length === 0) return
+    if (!hasRedo()) return
 
     // Append the current state to the undo stack in case the user wants to revert the redo
     window.graph.memento.push(generateSnapshot())
     // Restore the last snapshot
     const snapshot = window.graph.mementoRedo.pop()
     restoreSnapshot(snapshot)
+}
+
+export function hasUndo() {
+    return window.graph.memento.length > 0
+}
+
+export function hasRedo() {
+    return window.graph.mementoRedo.length > 0
 }
 
 /**

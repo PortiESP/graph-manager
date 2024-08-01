@@ -26,22 +26,25 @@ export function getActiveToolCallback(cbkName) {
         let callback = toolsCallbacks[window.graph.tool][cbkName]
 
         // --- Default actions ---
+        let preventDefault = false
         // First, run the handleShortcut function to run the default shortcuts, if a default action was executed inside this default functions, return (prevent the tool callback from being called)
-        if (cbkName === "keyDownCallback") if (handleShortcutKeyDown(...params)) return true
-        if (cbkName === "keyUpCallback") if (handleShortcutKeyUp(...params)) return true
-        if (cbkName === "mouseDoubleClickCallback") if (handleShortcutDoubleClick(...params)) return true
-        if (cbkName === "mouseDownCallback") if (handleShortcutMouseDown(...params)) return true 
-        if (cbkName === "mouseUpCallback") if (handleShortcutMouseUp(...params)) return true
-        if (cbkName === "mouseMoveCallback") if (handleShortcutMouseMove(...params)) return true
-        if (cbkName === "mouseScrollCallback") if (handleShortcutMouseScroll(...params)) return true
+        if (cbkName === "mouseMoveCallback") {if (handleShortcutMouseMove(...params)) preventDefault = true}
+        else if (cbkName === "mouseDoubleClickCallback") {if (handleShortcutDoubleClick(...params)) preventDefault = true}
+        else if (cbkName === "mouseDownCallback") {if (handleShortcutMouseDown(...params)) preventDefault = true }
+        else if (cbkName === "mouseUpCallback") {if (handleShortcutMouseUp(...params)) preventDefault = true}
+        else if (cbkName === "mouseScrollCallback") {if (handleShortcutMouseScroll(...params)) preventDefault = true}
+        else if (cbkName === "keyDownCallback") {if (handleShortcutKeyDown(...params)) preventDefault = true}
+        else if (cbkName === "keyUpCallback") {if (handleShortcutKeyUp(...params)) preventDefault = true}
         // Other callbacks do not have default actions, such as "clean", "setup", "blurCallback"
 
         // --- Custom actions ---
         
         // If the callback exists, call it
         if (callback) {
-            return callback(...params)
+            preventDefault = callback(...params)
         }
+
+        return preventDefault
     }
 }
 

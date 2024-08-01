@@ -27,7 +27,7 @@ export default {
             }
 
             // Tooltip
-            window.ui.call("setToolTip", "Release on top of a node to connect them")
+            window.ui.call("setToolTip", "Release on top of a node to connect them. Hold shift to create a directed edge")
         }
     },
     // If the user is creating a new edge, replace the fake node with the real destination node (hovered node) and add the edge to the graph
@@ -49,6 +49,9 @@ export default {
 
             // Remove the auxiliary edge
             window.graph.newEdge = null
+
+            // Tooltip
+            window.ui.call("setToolTip", undefined)
             return
         }
 
