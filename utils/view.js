@@ -65,12 +65,22 @@ export function getBoundingBoxOfAllNodes(){
     const graph = window.graph
 
     // Iterate over all the nodes to get the coordinates of a bounding box that contains all the nodes
+    let oneOrMoreNodes = false
     for (const node of graph.nodes){
         if (node.x === undefined || node.y === undefined) continue
         x1 = Math.min(x1, node.x-node.r)
         y1 = Math.min(y1, node.y-node.r)
         x2 = Math.max(x2, node.x+node.r)
         y2 = Math.max(y2, node.y+node.r)
+        oneOrMoreNodes = true
+    }
+
+    if (!oneOrMoreNodes){
+        // If there are no nodes, return a default bounding box
+        x1 = 0
+        y1 = 0
+        x2 = 0
+        y2 = 0
     }
 
     // Dimensions of the bounding box
