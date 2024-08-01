@@ -158,7 +158,7 @@ export class Edge extends Element{
 
         // Debug
         // If the destination node is not defined (e.g. when the node is not a real node, but an aux node for the edge being created), do not draw the distance
-        if (window.cvs.debug && this.dst.id === undefined){
+        if (window.cvs.debug && this.dst.id !== undefined){
             // Draw the distance to the edge
             window.ctx.fillStyle = "red"
             window.ctx.font = "10px Arial"

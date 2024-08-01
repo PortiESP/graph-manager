@@ -1,7 +1,7 @@
 import { undo, redo, recordMemento } from "./memento"
 import { setActivateTool } from "./tools/tools_callbacks"
 import { isPanning, panBy, startPanning, stopPanning } from "../canvas-component/utils/pan"
-import { getKeyFromCode, getPressedShortcut, handleShortcut } from "../canvas-component/utils/keyboard"
+import { handleShortcut } from "../canvas-component/utils/keyboard"
 import { saveToCache } from "./cache"
 import constants from "./constants"
 
@@ -73,7 +73,7 @@ const SHORTCUTS_KEY_UP = {
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutKeyDown(){
-    handleShortcut(SHORTCUTS_KEY_DOWN)
+    return handleShortcut(SHORTCUTS_KEY_DOWN)
 }
 
 
@@ -84,7 +84,7 @@ export function handleShortcutKeyDown(){
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutKeyUp(code) {
-    handleShortcut(SHORTCUTS_KEY_UP)
+    return handleShortcut(SHORTCUTS_KEY_UP)
 }
 
 /**
@@ -110,6 +110,7 @@ export function handleShortcutMouseUp(button, coords) {
     // If the user is panning the canvas
     if (isPanning()) {
         stopPanning()
+        return true
     }
 
 
@@ -127,7 +128,6 @@ export function handleShortcutMouseMove(e, coords) {
     // If the used double clicked in an empty space of the canvas, pan the canvas
     if (window.cvs.doubleClick){
         panBy(e.despX, e.despY)
-
         return true
     }
 
@@ -142,7 +142,7 @@ export function handleShortcutMouseMove(e, coords) {
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function. In this case, the default action is to zoom in or out, so it always returns true.
  */
 export function handleShortcutMouseScroll(delta, mouse) {
-    return true
+    return false
 }
 
 /**
@@ -153,8 +153,6 @@ export function handleShortcutMouseScroll(delta, mouse) {
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutDoubleClick(e, mouse) {
-    
     startPanning()
-
     return false
 }

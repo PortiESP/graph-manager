@@ -1,5 +1,3 @@
-import { anySpecialKeyPressed } from "../../canvas-component/utils/keyboard"
-import CONSTANTS from "../constants"
 import { handleShortcutMouseDown, handleShortcutKeyDown, handleShortcutKeyUp, handleShortcutMouseUp, handleShortcutMouseMove, handleShortcutMouseScroll, handleShortcutDoubleClick } from "../shortcuts"
 import add_nodes_tool from "./add_nodes_tool"
 import edges_tool from "./edges_tool"
@@ -29,27 +27,21 @@ export function getActiveToolCallback(cbkName) {
 
         // --- Default actions ---
         // First, run the handleShortcut function to run the default shortcuts, if a default action was executed inside this default functions, return (prevent the tool callback from being called)
-        if (cbkName === "keyDownCallback") if (handleShortcutKeyDown(...params)) return
-        if (cbkName === "keyUpCallback") if (handleShortcutKeyUp(...params)) return
-        if (cbkName === "mouseDoubleClickCallback") if (handleShortcutDoubleClick(...params)) return
-        if (cbkName === "mouseDownCallback") if (handleShortcutMouseDown(...params)) return 
-        if (cbkName === "mouseUpCallback") if (handleShortcutMouseUp(...params)) return
-        if (cbkName === "mouseMoveCallback") if (handleShortcutMouseMove(...params)) return
-        if (cbkName === "mouseScrollCallback") if (handleShortcutMouseScroll(...params)) return
+        if (cbkName === "keyDownCallback") if (handleShortcutKeyDown(...params)) return true
+        if (cbkName === "keyUpCallback") if (handleShortcutKeyUp(...params)) return true
+        if (cbkName === "mouseDoubleClickCallback") if (handleShortcutDoubleClick(...params)) return true
+        if (cbkName === "mouseDownCallback") if (handleShortcutMouseDown(...params)) return true 
+        if (cbkName === "mouseUpCallback") if (handleShortcutMouseUp(...params)) return true
+        if (cbkName === "mouseMoveCallback") if (handleShortcutMouseMove(...params)) return true
+        if (cbkName === "mouseScrollCallback") if (handleShortcutMouseScroll(...params)) return true
         // Other callbacks do not have default actions, such as "clean", "setup", "blurCallback"
 
         // --- Custom actions ---
         
         // If the callback exists, call it
         if (callback) {
-            callback(...params)
-            return
+            return callback(...params)
         }
-
-        // If the callback does not exist, call the default callback
-        if (toolsCallbacks["select"][cbkName]) toolsCallbacks["select"][cbkName](...params)
-
-        // If the default callback does not exist, do nothing
     }
 }
 

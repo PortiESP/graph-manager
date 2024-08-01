@@ -62,8 +62,13 @@ export default {
     keyDownCallback: function (key) {
         // If the user pressed the shift key, enable the directed property of the edge
         if (checkShortcut("shift")){
-            if (window.graph.isCreatingEdge()) window.graph.newEdge.edge.directed = true
+            if (window.graph.isCreatingEdge()) {
+                window.graph.newEdge.edge.directed = true
+                return true
+            }
         }
+
+        return false
     },
     // Listens to the shift key to change the directed property of the edge
     keyUpCallback: function (key) {

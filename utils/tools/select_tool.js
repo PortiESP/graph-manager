@@ -112,6 +112,6 @@ export default {
     },
     // Handles the keys down of the keyboard
     keyDownCallback: (code) => {
-        handleShortcut(SHORTCUTS_KEY_DOWN)
+        return handleShortcut(SHORTCUTS_KEY_DOWN)
     },
 }
