@@ -25,6 +25,9 @@ export default {
                 dst: dstNode, // Fake node (just to draw the edge)
                 edge: newEdge
             }
+
+            // Tooltip
+            window.ui.call("setToolTip", "Release on top of a node to connect them")
         }
     },
     // If the user is creating a new edge, replace the fake node with the real destination node (hovered node) and add the edge to the graph
@@ -48,6 +51,9 @@ export default {
             window.graph.newEdge = null
             return
         }
+
+        // Tooltip
+        window.ui.call("setToolTip", undefined)
     },
     // Updates the position of the fake node to the mouse position so the edge will follow the mouse
     mouseMoveCallback: function (e, coords) {

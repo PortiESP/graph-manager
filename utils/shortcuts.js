@@ -1,7 +1,7 @@
 import { undo, redo, recordMemento } from "./memento"
 import { setActivateTool } from "./tools/tools_callbacks"
 import { isPanning, panBy, startPanning, stopPanning } from "../canvas-component/utils/pan"
-import { handleShortcut } from "../canvas-component/utils/keyboard"
+import { getKeyFromCode, handleShortcut } from "../canvas-component/utils/keyboard"
 import { saveToCache } from "./cache"
 import constants from "./constants"
 
@@ -84,7 +84,13 @@ export function handleShortcutKeyDown(){
  * @returns {Boolean} Returns a boolean representing if a default action was executed in this function.
  */
 export function handleShortcutKeyUp(code) {
-    return handleShortcut(SHORTCUTS_KEY_UP)
+    const key = getKeyFromCode(code)
+    if (SHORTCUTS_KEY_UP[key]) {
+        SHORTCUTS_KEY_UP[key]()
+        return true
+    }
+
+    return false
 }
 
 /**

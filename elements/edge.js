@@ -67,7 +67,6 @@ export class Edge extends Element{
         this.color = constants.EDGE_COLOR
         this.weightColor = constants.EDGE_WEIGHT_COLOR
         this.weightBackgroundColor = constants.EDGE_WEIGHT_BACKGROUND_COLOR
-        this.hover = false
         this.thickness = constants.EDGE_THICKNESS
         this.arrowSizeFactor = constants.EDGE_ARROW_SIZE_FACTOR
         this.weightFontSize = constants.EDGE_WEIGHT_FONT_SIZE
@@ -160,7 +159,7 @@ export class Edge extends Element{
         // If the destination node is not defined (e.g. when the node is not a real node, but an aux node for the edge being created), do not draw the distance
         if (window.cvs.debug && this.dst.id !== undefined){
             // Draw the distance to the edge
-            window.ctx.fillStyle = "red"
+            window.ctx.fillStyle = "purple"
             window.ctx.font = "10px Arial"
             window.ctx.fillText(this.distance(window.cvs.x, window.cvs.y).toFixed(2), (this.src.x + this.dst.x) / 2, (this.src.y + this.dst.y) / 2 + 20)
         }
@@ -346,7 +345,6 @@ export class Edge extends Element{
         aux.selectedColor = this.selectedColor
         aux.weightColor = this.weightColor
         aux.weightBackgroundColor = this.weightBackgroundColor
-        aux.hover = this.hover
         aux.thickness = this.thickness
         aux.id = this.id
 

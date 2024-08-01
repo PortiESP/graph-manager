@@ -15,6 +15,7 @@ export function deselectAll() {
  * This function will set the initial coordinates of the selection box.
  */
 export function startSelectionBox(){
+    window.ui.call("setToolTip", "Drag to select multiple elements & release to confirm selection")
     window.graph.selectionBox = {
         x1: window.cvs.x,
         y1: window.cvs.y,
@@ -39,6 +40,9 @@ export function endSelectionBox(){
 
     // Reset the selection box
     window.graph.selectionBox = null
+
+    // Update the tooltip
+    window.ui.call("setToolTip", undefined)
 }
 
 
