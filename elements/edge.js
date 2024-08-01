@@ -333,22 +333,14 @@ export class Edge extends Element{
      * @returns Edge. A clone of the edge
      */
     clone() {
-        window.graph.disableListeners = true
+        window.graph.disableListeners = true // Disable the listeners temporarily
 
         // Create a new edge with the same properties
         const aux = new Edge(this.src, this.dst, this.weight, this.directed)
-        // Copy the rest of the properties
-        aux.selected = this.selected
-        aux.thickness = this.thickness
-        aux.color = this.color
-        aux.hoverColor = this.hoverColor
-        aux.selectedColor = this.selectedColor
-        aux.weightColor = this.weightColor
-        aux.weightBackgroundColor = this.weightBackgroundColor
-        aux.thickness = this.thickness
-        aux.id = this.id
+        // Copy the all the properties
+        Object.assign(aux, this)
 
-        window.graph.disableListeners = false
+        window.graph.disableListeners = false // Enable the listeners again
         return aux
     }
 

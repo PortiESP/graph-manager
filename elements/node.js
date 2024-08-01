@@ -248,20 +248,14 @@ export class Node extends Element{
      * @returns Node - The cloned node
      */
     clone() {
-        window.graph.disableListeners = true
+        window.graph.disableListeners = true // Temporarily disable listeners
 
+        // Clone the node
         const aux = new Node(this.x, this.y, this.label, this.r)
-        aux.backgroundColor = this.backgroundColor
-        aux.labelColor = this.labelColor
-        aux.borderColor = this.borderColor
-        aux.borderWidth = this.borderWidth
-        aux.hoverColor = this.hoverColor
-        aux.selectedColor = this.selectedColor
-        aux.fontSize = this.fontSize
-        aux.id = this.id
-        aux.selected = this.selected
+        // Copy all the properties
+        Object.assign(aux, this)
 
-        window.graph.disableListeners = false        
+        window.graph.disableListeners = false // Enable listeners again
         return aux
     }
 
