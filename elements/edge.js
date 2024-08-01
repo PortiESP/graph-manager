@@ -156,14 +156,14 @@ export class Edge extends Element{
             window.ctx.stroke()
         }
 
-        if (window.cvs.debug){
+        // Debug
+        // If the destination node is not defined (e.g. when the node is not a real node, but an aux node for the edge being created), do not draw the distance
+        if (window.cvs.debug && this.dst.id === undefined){
             // Draw the distance to the edge
             window.ctx.fillStyle = "red"
             window.ctx.font = "10px Arial"
             window.ctx.fillText(this.distance(window.cvs.x, window.cvs.y).toFixed(2), (this.src.x + this.dst.x) / 2, (this.src.y + this.dst.y) / 2 + 20)
-
         }
-
             
         window.ctx.restore()  // Restore the previous state of the canvas
     }

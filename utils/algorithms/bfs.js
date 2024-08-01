@@ -16,6 +16,9 @@ export default function bfs(graph, start, visited=undefined) {
     if (graph===undefined || start===undefined) throw new Error('Invalid graph or start node')
     if (graph[start] === undefined) throw new Error('Start node not found in the graph')
 
+    // Get start node ref
+    start = window.graph.nodes.find(node => node.id === start)
+
     // Initialize the variables
     const queue = [start]
     const result = []
