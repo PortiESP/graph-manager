@@ -75,8 +75,8 @@ export function getBoundingBoxOfAllNodes(){
         oneOrMoreNodes = true
     }
 
+    // If there are no nodes (with a valid possition), return a default bounding box
     if (!oneOrMoreNodes){
-        // If there are no nodes, return a default bounding box
         x1 = 0
         y1 = 0
         x2 = 0

@@ -149,9 +149,9 @@ export function findElementsWithin(x1, y1, x2, y2){
         let x, y
         // If the element is an edge, use the center of the edge, otherwise get the coordinates of the element
         if (eType === "Edge") {
-            const coords = e.nodesIntersectionBorderCoords()
-            x = (coords.src.x + coords.dst.x) / 2
-            y = (coords.src.y + coords.dst.y) / 2
+            const {borderSrc, borderDst} = e.nodesIntersectionBorderCoords()
+            x = (borderSrc.x + borderDst.x) / 2
+            y = (borderSrc.y + borderDst.y) / 2
         } else {
             x = e.x
             y = e.y

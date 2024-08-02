@@ -89,7 +89,7 @@ export class Edge extends Element{
         if (this.directed) {
             const rDst = this.dst.r
             const arrowSize = this.thickness * this.arrowSizeFactor
-            const { dst: offsetDst, angle } = this.nodesIntersectionBorderCoords(0, this.directed ? arrowSize*0.8 : 0) // Calculate the coordinates of the edge from border to border of the nodes instead of the center
+            const { dst: offsetDst, angle } = this.getAdvancedProperties(0, this.directed ? arrowSize*0.8 : 0) // Calculate the coordinates of the edge from border to border of the nodes instead of the center
     
             // Draw the edge
             window.ctx.beginPath()
@@ -160,11 +160,32 @@ export class Edge extends Element{
         if (window.cvs.debug && this.dst.id !== undefined){
             // Draw the distance to the edge
             window.ctx.fillStyle = "purple"
-            window.ctx.font = "10px Arial"
-            window.ctx.fillText(this.distance(window.cvs.x, window.cvs.y).toFixed(2), (this.src.x + this.dst.x) / 2, (this.src.y + this.dst.y) / 2 + 20)
+            window.ctx.font = "7px Arial"
+            const data = this.getAdvancedPropertiesByPoint(window.cvs.x, window.cvs.y)
+            window.ctx.fillText(this.id, (this.src.x + this.dst.x) / 2, (this.src.y + this.dst.y) / 2 + 15)
+            window.ctx.fillText(`${data.dist.toFixed(2)}; ${data.angle.toFixed(1)}rad; ${data.slope.toFixed(1)}`, (this.src.x + this.dst.x) / 2, (this.src.y + this.dst.y) / 2 + 25)
         }
             
         window.ctx.restore()  // Restore the previous state of the canvas
+    }
+
+
+    getAdvancedProperties() {
+        const {borderSrc, borderDst, angle} = this.nodesIntersectionBorderCoords(0, 0)
+
+        const leftNode = this.src.x < this.dst.x ? this.src : this.dst
+        const rightNode = this.src.x < this.dst.x ? this.dst : this.src
+        const slope = (rightNode.y - leftNode.y) / (rightNode.x - leftNode.x)
+
+        return {
+            borderSrc,
+            borderDst,
+            angle,
+            leftNode,
+            rightNode,
+            angle,
+            slope
+        }
     }
 
 
@@ -188,10 +209,130 @@ export class Edge extends Element{
         const newDst = { x: (rDst+offsetDst) * Math.cos(angle + Math.PI), y: (rDst+offsetDst) * Math.sin(angle + Math.PI) }  // Calculate the coordinates of the other end of the edge from the border of the node (if the edge is not directed, the arrowOffset is 0)
 
         return {
-            src: { x: this.src.x + newSrc.x, y: this.src.y + newSrc.y },
-            dst: { x: this.dst.x + newDst.x, y: this.dst.y + newDst.y },
+            borderSrc: { x: this.src.x + newSrc.x, y: this.src.y + newSrc.y },
+            borderDst: { x: this.dst.x + newDst.x, y: this.dst.y + newDst.y },
             angle
         }
+    }
+
+
+
+    /**
+     * Calculates several properties of the edge, relative to a point
+     * 
+     * @param {Number} x Coordinate x of the point
+     * @param {Number} y Coordinate y of the point
+     * 
+     * @returns {Object} Properties of the edge:
+     * @returns {Object.Number} `dist` - The distance between the edge and the point
+     * @returns {Object.Number} `slope` - The slope of the edge (between the source and destination nodes, the point is irrelevant here)
+     * @returns {Object.Number} `angle` - The angle of the edge (between the source and destination nodes, the point is irrelevant here)
+     * @returns {Object.Boolean} `isInsidePFuncs` - Whether the point is inside the perpendicular functions intersecting the nodes defining the edge
+     * @returns {Object.Number} `distToClosestNode` - The distance between the point and the closest node
+     * @returns {Object.Number} `distToSrc` - The distance between the point and the source node
+     * @returns {Object.Number} `distToDst` - The distance between the point and the destination node
+     * @returns {Object.Number} `distUnbounded` - The distance between the point and the edge without taking into account the perpendicular functions
+     */
+    getAdvancedPropertiesByPoint(x, y) {
+        // Src and dst coordinates of the edge (from border to border of the nodes instead of the center)
+        const {borderSrc, borderDst, angle, slope, leftNode, rightNode} = this.getAdvancedProperties()
+
+        // Calculate the slope of the edge
+        const angleSign = Math.sign(angle)                                // Sign of the angle (+/-) (used to determine in which side of the edge a point is)
+        const anglePerpendicular = angle + Math.PI / 2                    // Angle perpendicular to the edge (used to define the functions intersecting the nodes defining the edge, and that will be used to check if the mouse is inside a rotated bounding box of the edge)
+        const slopePerpendicular = Math.tan(anglePerpendicular)           // Slope of the perpendicular line to the edge
+        const boundsXByBorder = [Math.min(borderSrc.x, borderDst.x), Math.max(borderSrc.x, borderDst.x)] // The leftmost and rightmost x coordinates of the edge: [leftmost, rightmost]
+
+        let result;
+
+        // Check if the edge is vertical, and if so, calculate the distance using the formula for vertical lines
+        if (slope === Infinity || slope === -Infinity) {
+            const minY = Math.min(borderSrc.y, borderDst.y)
+            const maxY = Math.max(borderSrc.y, borderDst.y)
+            const isInsidePFuncs = minY < y && y < maxY
+            const distUnbounded = Math.abs(x - borderSrc.x)
+            const distToSrc = Math.hypot(x - borderSrc.x, y - borderSrc.y)
+            const distToDst = Math.hypot(x - borderDst.x, y - borderDst.y)
+            const distToClosestNode = Math.min(distToSrc, distToDst)
+            const dist = isInsidePFuncs
+                            ? distUnbounded
+                            : distToClosestNode
+            
+            result = {dist, isInsidePFuncs, distToClosestNode, distToSrc, distToDst, distUnbounded}
+        }
+        // Check if the edge is horizontal, and if so, calculate the distance using the formula for horizontal lines
+        else if (slope === 0) {
+            const minX = Math.min(borderSrc.x, borderDst.x)
+            const maxX = Math.max(borderSrc.x, borderDst.x)
+            const isInsidePFuncs = minX < x && x < maxX
+            const distUnbounded = Math.abs(y - borderSrc.y)
+            const distToSrc = Math.hypot(x - borderSrc.x, y - borderSrc.y)
+            const distToDst = Math.hypot(x - borderDst.x, y - borderDst.y)
+            const distToClosestNode = Math.min(distToSrc, distToDst)
+            const dist = isInsidePFuncs
+                            ? distUnbounded
+                            : distToClosestNode
+
+            result = {dist, isInsidePFuncs, distToClosestNode, distToSrc, distToDst, distUnbounded}
+        }
+        // If the edge is not vertical or horizontal, calculate the distance using the formula for any line
+        else {           
+            // Mathematical functions defining the edge and the perpendicular lines intersecting the nodes defining the edge
+            const f = (x) => slope * x + leftNode.y - slope * leftNode.x                                   // Function defining the edge
+            const fp1 = (x) => slopePerpendicular * x + (f(boundsXByBorder[0]) - slopePerpendicular * boundsXByBorder[0])  // Perpendicular function to f(x) intersecting the most left point of the edge
+            const fp2 = (x) => slopePerpendicular * x + (f(boundsXByBorder[1]) - slopePerpendicular * boundsXByBorder[1])  // Perpendicular function to f(x) intersecting the most right point of the edge
+    
+            // Functions to check the side of the edge a point is
+            // The `angleSign` is used to "flip" the inequality sign depending on the angle of the edge
+            const inverted = borderSrc.x > borderDst.x ? -1 : 1  // Invert the scr node is on the right of the dst node
+            const sign = angleSign*inverted
+            const inFp1 = (x, y) => sign*y > sign*fp1(x)  // Check if the point is below the perpendicular function intersecting the most left point of the edge
+            const inFp2 = (x, y) => sign*y < sign*fp2(x)  // Check if the point is above the perpendicular function intersecting the most right point of the edge
+    
+            // Distance from the mouse to closest point of the edge (well-known formula for distance from a point to a line)
+            const A = leftNode.y - rightNode.y
+            const B = rightNode.x - leftNode.x
+            const C = leftNode.x * rightNode.y - rightNode.x * leftNode.y
+            const distToEdgeFunc = (x,y) => Math.abs(A * x + B * y + C) / Math.sqrt(A * A + B * B)
+    
+            // Check if the point in between the two perpendicular lines intersecting the nodes defining the edge
+            const isInsidePFuncs = inFp1(x, y) && inFp2(x, y)
+            const distUnbounded = distToEdgeFunc(x, y)  // Distance to the edge without taking into account the perpendicular functions
+            const distToSrc = Math.hypot(x - borderSrc.x, y - borderSrc.y)
+            const distToDst = Math.hypot(x - borderDst.x, y - borderDst.y)
+            const distToClosestNode = Math.min(distToSrc, distToDst)  // Distance to the closest node
+    
+            // Calculate the distance to the edge, taking into account that if the point is not inside the perpendicular functions, the distance is the distance to the closest node
+            const dist = isInsidePFuncs
+                            ? distUnbounded 
+                            : distToClosestNode
+
+            result = {dist, isInsidePFuncs, distToClosestNode, distToSrc, distToDst, distUnbounded}
+
+            if (window.cvs.debug) {
+                window.cvs.debugFunctions[this.id] = () => {
+                    let color = inFp1(x, y) ? "green" : "red"
+                    window.ctx.strokeStyle = color
+                    window.ctx.fillStyle = color
+                    window.ctx.beginPath()
+                    const len = 20
+                    window.ctx.moveTo(boundsXByBorder[0]-len, fp1(boundsXByBorder[0]-len))
+                    window.ctx.lineTo(boundsXByBorder[0]+len, fp1(boundsXByBorder[0]+len))
+                    window.ctx.stroke()
+                    color = inFp2(x, y) ? "green" : "red"
+                    window.ctx.strokeStyle = color
+                    window.ctx.fillStyle = color
+                    window.ctx.beginPath()
+                    window.ctx.moveTo(boundsXByBorder[1]-len, fp2(boundsXByBorder[1]-len))
+                    window.ctx.lineTo(boundsXByBorder[1]+len, fp2(boundsXByBorder[1]+len))
+                    window.ctx.stroke()
+                }
+            }
+        }
+
+
+
+        return {...result, slope, angle, leftNode, rightNode}
     }
 
     /**
@@ -202,58 +343,9 @@ export class Edge extends Element{
      * @returns The distance between the edge and the point
      */
     distance(x, y) {
-        // Src and dst coordinates of the edge (from border to border of the nodes instead of the center)
-        const {src, dst} = this.nodesIntersectionBorderCoords()
-
-        // Calculate the slope of the edge
-        const slope = (dst.y - src.y) / (dst.x - src.x)
-
-        // Check if the edge is vertical, and if so, calculate the distance using the formula for vertical lines
-        if (slope === Infinity || slope === -Infinity) {
-            const minY = Math.min(src.y, dst.y)
-            const maxY = Math.max(src.y, dst.y)
-            if (minY < y && y < maxY) return Math.abs(x - src.x)
-            
-            return Math.min(this.src.distanceToCenter(x, y), this.dst.distanceToCenter(x, y))
-        }
-        // Check if the edge is horizontal, and if so, calculate the distance using the formula for horizontal lines
-        if (slope === 0) {
-            const minX = Math.min(src.x, dst.x)
-            const maxX = Math.max(src.x, dst.x)
-            if (minX < x && x < maxX) return Math.abs(y - src.y)
-
-            return Math.min(this.src.distanceToCenter(x, y), this.dst.distanceToCenter(x, y))
-        }
-
-        // Calculate the angle of the edge
-        const angle = Math.atan(slope)
-        const anglePerpendicular = angle + Math.PI / 2
-        const slopePerpendicular = Math.tan(anglePerpendicular)
-        const boundsX = [Math.min(src.x, dst.x), Math.max(src.x, dst.x)]
-
-        // Mathematical functions defining the edge and the perpendicular lines intersecting the nodes defining the edge
-        const f = (x) => slope * x + src.y - slope * src.x
-        const fp1 = (x) => slopePerpendicular * x + (f(boundsX[0]) - slopePerpendicular * boundsX[0])
-        const fp2 = (x) => slopePerpendicular * x + (f(boundsX[1]) - slopePerpendicular * boundsX[1])
-
-        // Functions to check the side of the edge a point is
-        const inFp1 = (x, y) => y > fp1(x)
-        const inFp2 = (x, y) => y < fp2(x)
-
-        // Distance from the point to the edge (well-known formula for distance from a point to a line)
-        const A = src.y - dst.y
-        const B = dst.x - src.x
-        const C = src.x * dst.y - dst.x * src.y
-        const dist = Math.abs(A * x + B * y + C) / Math.sqrt(A * A + B * B)
-
-        // Check if the point is inside the bounding box of the edge
-        if (inFp1(x, y) && inFp2(x, y)) return dist
-
-        // If the point is not inside
-        const d1 = Math.sqrt((src.x - x) ** 2 + (src.y - y) ** 2)
-        const d2 = Math.sqrt((dst.x - x) ** 2 + (dst.y - y) ** 2)
-        return Math.min(d1, d2)
-
+        const {dist} = this.getAdvancedPropertiesByPoint(x, y)
+        if (dist === undefined) throw new Error("Distance is undefined")
+        return dist
     }
 
     /**
@@ -273,52 +365,16 @@ export class Edge extends Element{
         const x = window.cvs.x
         const y = window.cvs.y
 
-        // Src and dst coordinates of the edge (from border to border of the nodes instead of the center)
-        const {src, dst} = this.nodesIntersectionBorderCoords()
-        
         // Define some constants
         const THRESHOLD = this.thickness * constants.EDGE_HOVER_THRESHOLD_FACTOR  // The threshold to consider the edge as hovered
 
-        // Calculate the slope of the edge
-        const slope = (dst.y - src.y) / (dst.x - src.x)
+        // Get the advanced properties of the edge
+        const {dist, isInsidePFuncs} = this.getAdvancedPropertiesByPoint(x, y)
 
-        // Check if the edge is vertical, and if so, check if the mouse is close to the edge using the method for vertical lines, regular non-rotated rectangles. 
-        // Checks if the mouse is inside the bounding box of the edge
-        if (slope === Infinity || slope === -Infinity) return Math.abs(x - src.x) < THRESHOLD && y > Math.min(src.y, dst.y) && y < Math.max(src.y, dst.y)
-        // Horizontal edge
-        if (slope === 0) return Math.abs(y - src.y) < THRESHOLD && x > Math.min(src.x, dst.x) && x < Math.max(src.x, dst.x)
-        
-
-        // If the edge is not vertical...
-
-        // Calculate some properties of the edge
-        const angle = Math.atan(slope)                                    // Angle of the edge
-        const angleSign = Math.sign(angle)                                // Sign of the angle (+/-) (used to determine in which side of the edge a point is)
-        const anglePerpendicular = angle + Math.PI / 2                    // Angle perpendicular to the edge (used to define the functions intersecting the nodes defining the edge, and that will be used to check if the mouse is inside a rotated bounding box of the edge)
-        const slopePerpendicular = Math.tan(anglePerpendicular)           // Slope of the perpendicular line to the edge
-        const boundsX = [Math.min(src.x, dst.x), Math.max(src.x, dst.x)] // The leftmost and rightmost x coordinates of the edge: [leftmost, rightmost]
-
-        // Mathematical functions defining the edge and the perpendicular lines intersecting the nodes defining the edge
-        const f = (x) => slope * x + src.y - slope * src.x                                   // Function defining the edge
-        const fp1 = (x) => slopePerpendicular * x + (f(boundsX[0]) - slopePerpendicular * boundsX[0])  // Perpendicular function to f(x) intersecting the most left point of the edge
-        const fp2 = (x) => slopePerpendicular * x + (f(boundsX[1]) - slopePerpendicular * boundsX[1])  // Perpendicular function to f(x) intersecting the most right point of the edge
-
-        // Functions to check the side of the edge a point is
-        // The `angleSign` is used to "flip" the inequality sign depending on the slope of the edge
-        const inFp1 = (x, y) => angleSign*y > angleSign*fp1(x)  // Check if the point is below the perpendicular function intersecting the most left point of the edge
-        const inFp2 = (x, y) => angleSign*y < angleSign*fp2(x)  // Check if the point is above the perpendicular function intersecting the most right point of the edge
-
-        // Distance from the mouse to closest point of the edge (well-known formula for distance from a point to a line)
-        const A = src.y - dst.y
-        const B = dst.x - src.x
-        const C = src.x * dst.y - dst.x * src.y
-        const dist = (x,y) => Math.abs(A * x + B * y + C) / Math.sqrt(A * A + B * B)
-
-        // Check if the point is close enough to the edge to be considered hovered
-        const isCloseToF = dist(x,y) < THRESHOLD
-
-        // The math functions and the distance to the edge are used to determine if the mouse is inside the bounding box of the edge
-        return inFp1(x, y) && inFp2(x, y) && isCloseToF
+        // Check if the distance to the edge is less than the threshold and the point is inside the bounding box
+        return isInsidePFuncs 
+                ? dist < THRESHOLD
+                : false
     }
 
     /**

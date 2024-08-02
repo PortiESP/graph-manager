@@ -170,14 +170,14 @@ export function generateSVG(){
     window.graph.edges.forEach(edge => {
         if (edge.hidden) return  // Skip hidden edges
 
-        let {src, dst} = edge.nodesIntersectionBorderCoords()
+        let {borderSrc, borderDst} = edge.nodesIntersectionBorderCoords()
         
         if (window.graph.showWeights){
             // Create the circle for the edge's weight
             const circle = document.createElementNS(svgNS, "circle")
             circle.setAttribute("class", "weight_container")
-            circle.setAttribute("cx", (src.x + dst.x) / 2)
-            circle.setAttribute("cy", (src.y + dst.y) / 2)
+            circle.setAttribute("cx", (borderSrc.x + borderDst.x) / 2)
+            circle.setAttribute("cy", (borderSrc.y + borderDst.y) / 2)
             circle.setAttribute("r", constants.EDGE_WEIGHT_CONTAINER_SIZE + (String(edge.weight).length*edge.weightFontSize/3))
             circle.setAttribute("id", "container-"+edge.id)
             edgesLabels.push(circle)
@@ -185,8 +185,8 @@ export function generateSVG(){
             // Create the label for the edge's weight
             const text = document.createElementNS(svgNS, "text")
             text.setAttribute("class", "weight")
-            text.setAttribute("x", (src.x + dst.x) / 2)
-            text.setAttribute("y", (src.y + dst.y) / 2 + 1)
+            text.setAttribute("x", (borderSrc.x + borderDst.x) / 2)
+            text.setAttribute("y", (borderSrc.y + borderDst.y) / 2 + 1)
             text.setAttribute("id", "weight-"+edge.id)
             text.textContent = edge.weight
             edgesLabels.push(text)
@@ -194,23 +194,23 @@ export function generateSVG(){
 
         if (edge.directed){
             const arrowSize = edge.thickness * edge.arrowSizeFactor
-            const {dst: dstDir, angle} = edge.nodesIntersectionBorderCoords(0, arrowSize*0.8)
+            const {borderDst: dstDir, angle} = edge.nodesIntersectionBorderCoords(0, arrowSize*0.8)
             const arrowAngle = Math.PI / 6
 
             // Create the line for the edge
             const line = document.createElementNS(svgNS, "line")
             line.setAttribute("class", "edge")
-            line.setAttribute("x1", src.x)
-            line.setAttribute("y1", src.y)
+            line.setAttribute("x1", borderSrc.x)
+            line.setAttribute("y1", borderSrc.y)
             line.setAttribute("x2", dstDir.x)
             line.setAttribute("y2", dstDir.y)
             line.setAttribute("stroke", edge.color)
             line.setAttribute("id", edge.id)
             edges.push(line)
 
-            const p1 = {x: dst.x, y: dst.y}
-            const p2 = {x: dst.x - arrowSize * Math.cos(angle - arrowAngle), y: dst.y - arrowSize * Math.sin(angle - arrowAngle)}
-            const p3 = {x: dst.x - arrowSize * Math.cos(angle + arrowAngle), y: dst.y - arrowSize * Math.sin(angle + arrowAngle)}
+            const p1 = {x: borderDst.x, y: borderDst.y}
+            const p2 = {x: borderDst.x - arrowSize * Math.cos(angle - arrowAngle), y: borderDst.y - arrowSize * Math.sin(angle - arrowAngle)}
+            const p3 = {x: borderDst.x - arrowSize * Math.cos(angle + arrowAngle), y: borderDst.y - arrowSize * Math.sin(angle + arrowAngle)}
 
             // Create the arrow for the edge
             const arrow = document.createElementNS(svgNS, "polygon")
@@ -224,10 +224,10 @@ export function generateSVG(){
             // Create the line for the edge
             const line = document.createElementNS(svgNS, "line")
             line.setAttribute("class", "edge")
-            line.setAttribute("x1", src.x)
-            line.setAttribute("y1", src.y)
-            line.setAttribute("x2", dst.x)
-            line.setAttribute("y2", dst.y)
+            line.setAttribute("x1", borderSrc.x)
+            line.setAttribute("y1", borderSrc.y)
+            line.setAttribute("x2", borderDst.x)
+            line.setAttribute("y2", borderDst.y)
             line.setAttribute("stroke", edge.color)
             line.setAttribute("id", edge.id)
             edges.push(line)
