@@ -184,7 +184,7 @@ function loadInitialGraph(){
         }
         // Load example graph, if any
         const exampleGraph = url.searchParams.get("example")
-        if (exampleGraph) {
+        if (!sharedGraph && exampleGraph) {
             fetch(`/examples/${exampleGraph}.json`)
                 .then(response => response.json())
                 .then(data => {
@@ -194,7 +194,10 @@ function loadInitialGraph(){
         }
 
         // --- LOAD FROM CACHE ---
-        const cacheLoaded = loadFromCache()
+        let cacheLoaded = false
+        if (!sharedGraph && !exampleGraph) {
+            cacheLoaded = loadFromCache()
+        }
         
         // --- LOAD DEFAULT GRAPH ---
         // Load the default graph if any of the above conditions are false

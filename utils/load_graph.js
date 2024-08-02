@@ -9,8 +9,8 @@ import constants from "./constants";
  * ```json
  * {
  *    "nodes": [
- *       {"_x": 0, "_y": 0, "r": 30, "_id": "A"},
- *       {"_x": 100, "_y": 0, "r": 30, "_id": "B"},
+ *       {"x": 0, "y": 0, "r": 30, "id": "A"},
+ *       {"x": 100, "y": 0, "r": 30, "id": "B"},
  *       ...
  *    ],
  *    "edges": [
@@ -35,7 +35,7 @@ export function loadFromJSON(json, append=false) {
 
     // Load the nodes
     const nodes = json.nodes.map(n => {
-        const auxNode = new Node(n._x, n._y, n._id, n.r)
+        const auxNode = new Node((n.x || n._x), (n.y || n._y), (n.id || n._id), (n.r || constants.NODE_RADIUS))
         Object.assign(auxNode, n)
 
         // If the node being loaded is selected, reset the selected property and trigger the select method
