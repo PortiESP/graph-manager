@@ -89,14 +89,14 @@ export class Edge extends Element{
         if (this.directed) {
             const rDst = this.dst.r
             const arrowSize = this.thickness * this.arrowSizeFactor
-            const { dst: offsetDst, angle } = this.getAdvancedProperties(0, this.directed ? arrowSize*0.8 : 0) // Calculate the coordinates of the edge from border to border of the nodes instead of the center
+            const { borderDst, angle } = this.nodesIntersectionBorderCoords(0, this.directed ? arrowSize*0.8 : 0) // Calculate the coordinates of the edge from border to border of the nodes instead of the center
     
             // Draw the edge
             window.ctx.beginPath()
             window.ctx.strokeStyle = this.color
             window.ctx.lineWidth = this.thickness
             window.ctx.moveTo(this.src.x, this.src.y)  // Move to the source node
-            window.ctx.lineTo(offsetDst.x, offsetDst.y)  // Draw a line to the destination node
+            window.ctx.lineTo(borderDst.x, borderDst.y)  // Draw a line to the destination node
             window.ctx.stroke()
 
             const arrowAngle = Math.PI / 6
