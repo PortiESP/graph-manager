@@ -341,7 +341,7 @@ export function generateCSS(){
         const node_styles = {
             fill: s.backgroundColor,
             stroke: s.borderColor,
-            "stroke-width": s.borderWidth,
+            "stroke-width": s.borderSize,
             "stroke-color": s.borderColor,
         }
         // Style of the label

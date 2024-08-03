@@ -190,7 +190,6 @@ export class Edge extends Element{
     }
 
     computeStyle() {
-        super.computeStyle()
         this.style.weightFontSize = this.weightContainerSize * 0.8
         this.style.fontSize = Math.min(this.style.thickness*2, this.style.weightFontSize)
         this.style.contSize = this.style.thickness*this.style.weightContainerFactor 

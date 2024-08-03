@@ -179,12 +179,6 @@ export class Element {
             opacity: 1
         }
 
-        this.computeStyle()
-    }
-
-    // Compute styles that are dependent on other properties and are stored in the `style` object
-    computeStyle() {
-        // Empty method
     }
 
     

@@ -70,7 +70,7 @@ export class Node extends Element{
         // Data properties
         this._x = x
         this._y = y
-        this.r = r
+        this._r = r
         this.label = label ?? this.id
 
         // Default style properties
@@ -108,7 +108,6 @@ export class Node extends Element{
         this.style.bubbleTextColor = this.bubbleTextColor
         this.style.bubbleTextSize = this.bubbleTextSize
         this.style.bubbleRadius = this.bubbleRadius
-        this.style.r = this.r
 
         // Computed
         this.computeStyle()
@@ -116,7 +115,6 @@ export class Node extends Element{
 
     // Update the style properties
     computeStyle() {
-        super.computeStyle()
         this.style.borderSize = this.r * this.style.borderRatio
     }
 
@@ -150,20 +148,21 @@ export class Node extends Element{
 
         ctx.globalAlpha = style.opacity
 
-        // Draw the border inside the circle
-        if (style.borderRatio > 0 && style.borderColor !== null) {
-            ctx.strokeStyle = style.borderColor
-            ctx.lineWidth = style.r*style.borderRatio
-            ctx.beginPath()
-            ctx.arc(this.x, this.y, style.r, 0, Math.PI * 2)
-            ctx.stroke()
-        }
-        
         // Draw the node as a circle
         ctx.fillStyle = style.backgroundColor
         ctx.beginPath()
-        ctx.arc(this.x, this.y, style.r, 0, Math.PI * 2)
+        ctx.arc(this.x, this.y, Math.max(0, this.r), 0, Math.PI * 2)
         ctx.fill()
+
+        // Draw the border inside the circle
+        if (style.borderRatio > 0 && style.borderColor !== null) {
+            ctx.strokeStyle = style.borderColor
+            ctx.lineWidth = style.borderSize
+            ctx.beginPath()
+            ctx.arc(this.x, this.y, this.r-style.borderSize/2, 0, Math.PI * 2)
+            ctx.stroke()
+        }
+        
         
         // Draw the label
         ctx.fillStyle = style.labelColor
@@ -180,13 +179,13 @@ export class Node extends Element{
             ctx.strokeStyle = color
             ctx.lineWidth = 2
             ctx.beginPath()
-            ctx.arc(this.x, this.y, style.r + 2, 0, Math.PI * 2)
+            ctx.arc(this.x, this.y, this.r + 2, 0, Math.PI * 2)
             ctx.stroke()
         }
 
         // Draw the bubble
         if (this.bubble !== null) {
-            const d = Math.sin(Math.PI / 4) * style.r
+            const d = Math.sin(Math.PI / 4) * this.r
             const x = this.x + d
             const y = this.y + d
             ctx.beginPath()
@@ -205,8 +204,8 @@ export class Node extends Element{
             ctx.fillStyle = "blue"
             ctx.font = "7px Arial"
             ctx.textAlign = "center"
-            ctx.fillText(this.id, this.x, this.y + style.r + 8)
-            ctx.fillText(this.distance(window.cvs.x, window.cvs.y).toFixed(2), this.x, this.y + style.r + 16)
+            ctx.fillText(this.id, this.x, this.y + this.r + 8)
+            ctx.fillText(this.distance(window.cvs.x, window.cvs.y).toFixed(2), this.x, this.y + this.r + 16)
         }
 
         ctx.restore()
@@ -333,5 +332,16 @@ export class Node extends Element{
 
     set y(y) {
         this._y = y
+    }
+
+    get r() {
+        return this._r
+    }
+
+    set r(r) {
+        this._r = r
+
+        // Compute the style
+        this.computeStyle()
     }
 }
