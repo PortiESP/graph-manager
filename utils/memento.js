@@ -94,8 +94,8 @@ export function restoreSnapshot(snapshot) {
 
     // Fix the references of the edges
     window.graph.edges.forEach(edge => {
-        edge.src = window.graph.nodes.find(node => node.id === edge.src.id)
-        edge.dst = window.graph.nodes.find(node => node.id === edge.dst.id)
+        edge.src = window.graph.findNodeById(edge.src.id)
+        edge.dst = window.graph.findNodeById(edge.dst.id)
     })
 }
 

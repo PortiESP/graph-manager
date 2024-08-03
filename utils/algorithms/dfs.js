@@ -16,7 +16,7 @@ export default function dfs(graph, start, visited = undefined) {
     if (graph[start] === undefined) throw new Error('Start node not found in the graph')
 
     // If the start node is a string, turn it into a Node
-    if (start.constructor === String) start = window.graph.nodes.find(node => node.id === start)
+    if (start.constructor === String) start = window.graph.findNodeById(start)
 
     // Initialize the variables
     const result = []

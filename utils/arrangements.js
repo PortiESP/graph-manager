@@ -9,7 +9,7 @@ import { getBoundingBoxOfAllNodes } from "./view"
 
 // ------------------------------- Helper functions -------------------------------
 export function getNodeById(id){
-    return window.graph.nodes.find(node => node.id == id)
+    return window.graph.findNodeById(id)
 }
 
 // ------------------------------- Arrange functions -------------------------------
