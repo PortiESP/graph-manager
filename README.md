@@ -80,7 +80,8 @@ The GraphManager component provides a way to subscribe to events that happen in 
 
 The available listeners are:
 - `selectedListener` - Calls the funcitons when the selection changes (element selected or deselected)
-- `graphListeners` - Calls the functions when the graph changes (element added, removed, moved, colored, etc)
+- `graphListeners` - Calls the functions when the graph changes (element added or removed)
+- `elementListeners` - Calls the functions when an element changes (properties of the element change: position, size, color, etc.)
 - `toolListeners` - Calls the functions when the tool changes
 - `allListeners` - Calls the functions when any of the above events happen
 

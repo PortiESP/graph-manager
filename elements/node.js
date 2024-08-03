@@ -171,10 +171,10 @@ export class Node extends Element{
         if (window.cvs.debug) {
             // Type
             ctx.fillStyle = "blue"
-            ctx.font = "10px Arial"
+            ctx.font = "7px Arial"
             ctx.textAlign = "center"
-            ctx.fillText(this.distance(window.cvs.x, window.cvs.y).toFixed(2), this.x, this.y + this.r + 10)
-
+            ctx.fillText(this.id, this.x, this.y + this.r + 8)
+            ctx.fillText(this.distance(window.cvs.x, window.cvs.y).toFixed(2), this.x, this.y + this.r + 16)
         }
 
         ctx.restore()

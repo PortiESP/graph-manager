@@ -41,11 +41,13 @@ import { setActivateTool } from "./utils/tools/tools_callbacks"
  * @property {function} triggerAllListeners - Function to trigger all listeners.
  * @property {function} triggerSelectedListeners - Function to trigger selected listeners.
  * @property {function} triggerGraphListeners - Function to trigger graph listeners.
+ * @property {function} triggerElementListeners - Function to trigger elements listeners.
  * @property {function} triggerToolListeners - Function to trigger tool listeners.
  * @property {boolean} disableListeners - Flag to disable listeners.
  * @property {function[]} allListeners - General listener (any kind of change).
  * @property {function[]} selectedListeners - Selected nodes listener.
- * @property {function[]} graphListeners - Graph listener (nodes and edges).
+ * @property {function[]} graphListeners - Graph listener (nodes and edges, just creation and removal).
+ * @property {function[]} elementListeners - Elements listener (nodes and edges, any change).
  * @property {function[]} toolListeners - Tool listener.
  * 
  * **Methods**:
@@ -124,7 +126,8 @@ export class GraphGlobals {
         this.disableListeners = false // Flag to disable listeners
         this.allListeners = []  // General listener (any kind of change)
         this.selectedListeners = []  // Selected nodes listener
-        this.graphListeners = []  // Graph listener (nodes and edges)
+        this.graphListeners = []  // Graph listener (nodes and edges, just creation and removal)
+        this.elementListeners = []  // Elements listener (nodes and edges, any change)
         this.toolListeners = []  // Tool listener
 
         // Listeners triggers (These functions will trigger its respective listeners and the general listener)
@@ -142,8 +145,14 @@ export class GraphGlobals {
         this.triggerGraphListeners = () => {
             if (this.disableListeners) return
             
-            this.allListeners.forEach(l => l(this.nodes))
-            this.graphListeners.forEach(l => l(this.nodes))
+            this.allListeners.forEach(l => l(this.getElements()))
+            this.graphListeners.forEach(l => l(this.getElements()))
+        }
+        this.triggerElementListeners = () => {
+            if (this.disableListeners) return
+
+            this.allListeners.forEach(l => l(this.getElements()))
+            this.elementListeners.forEach(l => l(this.getElements()))
         }
         this.triggerToolListeners = () => {
             if (this.disableListeners) return
@@ -203,7 +212,7 @@ export class GraphGlobals {
 
         setActivateTool(CONSTANTS.DEFAULT_TOOL)
 
-        this.triggerGraphListeners()
+        this.triggerElementListeners()
     }
 
     // --- Methods ---

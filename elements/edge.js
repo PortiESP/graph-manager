@@ -163,7 +163,7 @@ export class Edge extends Element{
             window.ctx.font = "7px Arial"
             const data = this.getAdvancedPropertiesByPoint(window.cvs.x, window.cvs.y)
             window.ctx.fillText(this.id, (this.src.x + this.dst.x) / 2, (this.src.y + this.dst.y) / 2 + 15)
-            window.ctx.fillText(`${data.dist.toFixed(2)}; ${data.angle.toFixed(1)}rad; ${data.slope.toFixed(1)}`, (this.src.x + this.dst.x) / 2, (this.src.y + this.dst.y) / 2 + 25)
+            window.ctx.fillText(data.dist.toFixed(2), (this.src.x + this.dst.x) / 2, (this.src.y + this.dst.y) / 2 + 25)
         }
             
         window.ctx.restore()  // Restore the previous state of the canvas
@@ -309,25 +309,25 @@ export class Edge extends Element{
 
             result = {dist, isInsidePFuncs, distToClosestNode, distToSrc, distToDst, distUnbounded}
 
-            if (window.cvs.debug) {
-                window.cvs.debugFunctions[this.id] = () => {
-                    let color = inFp1(x, y) ? "green" : "red"
-                    window.ctx.strokeStyle = color
-                    window.ctx.fillStyle = color
-                    window.ctx.beginPath()
-                    const len = 20
-                    window.ctx.moveTo(boundsXByBorder[0]-len, fp1(boundsXByBorder[0]-len))
-                    window.ctx.lineTo(boundsXByBorder[0]+len, fp1(boundsXByBorder[0]+len))
-                    window.ctx.stroke()
-                    color = inFp2(x, y) ? "green" : "red"
-                    window.ctx.strokeStyle = color
-                    window.ctx.fillStyle = color
-                    window.ctx.beginPath()
-                    window.ctx.moveTo(boundsXByBorder[1]-len, fp2(boundsXByBorder[1]-len))
-                    window.ctx.lineTo(boundsXByBorder[1]+len, fp2(boundsXByBorder[1]+len))
-                    window.ctx.stroke()
-                }
-            }
+            // if (window.cvs.debug) {
+            //     window.cvs.debugFunctions[this.id] = () => {
+            //         let color = inFp1(x, y) ? "green" : "red"
+            //         window.ctx.strokeStyle = color
+            //         window.ctx.fillStyle = color
+            //         window.ctx.beginPath()
+            //         const len = 20
+            //         window.ctx.moveTo(boundsXByBorder[0]-len, fp1(boundsXByBorder[0]-len))
+            //         window.ctx.lineTo(boundsXByBorder[0]+len, fp1(boundsXByBorder[0]+len))
+            //         window.ctx.stroke()
+            //         color = inFp2(x, y) ? "green" : "red"
+            //         window.ctx.strokeStyle = color
+            //         window.ctx.fillStyle = color
+            //         window.ctx.beginPath()
+            //         window.ctx.moveTo(boundsXByBorder[1]-len, fp2(boundsXByBorder[1]-len))
+            //         window.ctx.lineTo(boundsXByBorder[1]+len, fp2(boundsXByBorder[1]+len))
+            //         window.ctx.stroke()
+            //     }
+            // }
         }
 
 

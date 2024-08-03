@@ -173,7 +173,7 @@ export class Element {
         this._id = id
         
         // Listeners
-        window.graph.triggerGraphListeners()
+        window.graph.triggerElementListeners()
     }
     
     get id() {

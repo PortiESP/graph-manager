@@ -30,7 +30,7 @@ export function handleSelectDragging(e, mouse) {
     window.graph.selected.forEach(e => e.offsetPos = offset)
 
     // Update the setSelectedNodes
-    window.graph.triggerGraphListeners()
+    window.graph.triggerElementListeners()
 }
 
 

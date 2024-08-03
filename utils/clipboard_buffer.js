@@ -68,6 +68,8 @@ export function pasteFromClipboard(){
             let data;
             try {
                 data = JSON.parse(text)
+                // Check if the content is valid
+                if (!validateContent(data)) throw new Error('Invalid clipboard content')
             } catch (error) {
                 return console.error('Failed to parse clipboard content', error)   
             }
@@ -94,4 +96,15 @@ export function pasteFromClipboard(){
             loadFromJSON({nodes: pasteNodes, edges: pasteEdges}, true)
         })
         .catch(err => console.error('Failed to read clipboard', err))
+}
+
+
+
+export function validateContent(data){
+    if (!data.nodes || !data.edges) return false
+    if (!Array.isArray(data.nodes) || !Array.isArray(data.edges)) return false
+    if (data.nodes.some(e => !e.id && !e._id)) return false
+    if (data.edges.some(e => !e.src && !e.dst)) return false
+
+    return true
 }
