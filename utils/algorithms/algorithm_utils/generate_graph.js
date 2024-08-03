@@ -147,7 +147,7 @@ export function generateSVG(){
     svg.setAttribute("xmlns:xlink", xlinkns)
     svg.setAttribute("version", "1.1")
     const {x1, y1, width, height} = getBoundingBoxOfAllNodes()
-    const margin = constants.NODE_BORDER_WIDTH
+    const margin = constants.NODE_BORDER_RATIO
     svg.setAttribute("viewBox", `${x1-margin} ${y1-margin} ${width+margin*2} ${height+margin*2}`)
 
     // Create the defs element
@@ -178,7 +178,7 @@ export function generateSVG(){
             circle.setAttribute("class", "weight_container")
             circle.setAttribute("cx", (borderSrc.x + borderDst.x) / 2)
             circle.setAttribute("cy", (borderSrc.y + borderDst.y) / 2)
-            circle.setAttribute("r", constants.EDGE_WEIGHT_CONTAINER_SIZE + (String(edge.weight).length*edge.weightFontSize/3))
+            circle.setAttribute("r", constants.EDGE_WEIGHT_CONTAINER_FACTOR + (String(edge.weight).length*edge.weightFontSize/3))
             circle.setAttribute("id", "container-"+edge.id)
             edgesLabels.push(circle)
     

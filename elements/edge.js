@@ -32,7 +32,7 @@ import { Element } from "./element"
  * @property {string} weightBackgroundColor - The background color of the weight of the edge
  * @property {number} arrowSizeFactor - The size factor of the arrow of the edge (only for directed edges)
  * @property {number} weightFontSize - The font size of the weight of the edge
- * @property {number} weightContainerSize - The size of the background of the weight of the edge (radius)
+ * @property {number} weightContainerFactor - The size of the background of the weight of the edge (relative to the weight)
  * 
  * **Methods**
  * 
@@ -67,10 +67,10 @@ export class Edge extends Element{
         this.color = constants.EDGE_COLOR
         this.weightColor = constants.EDGE_WEIGHT_COLOR
         this.weightBackgroundColor = constants.EDGE_WEIGHT_BACKGROUND_COLOR
-        this.thickness = constants.EDGE_THICKNESS
+        this.thickness = Math.min(this.src.r, this.dst.r) * constants.EDGE_THICKNESS_RATIO
         this.arrowSizeFactor = constants.EDGE_ARROW_SIZE_FACTOR
         this.weightFontSize = constants.EDGE_WEIGHT_FONT_SIZE
-        this.weightContainerSize = constants.EDGE_WEIGHT_CONTAINER_SIZE
+        this.weightContainerFactor = constants.EDGE_WEIGHT_CONTAINER_FACTOR
     }
 
     /**
@@ -85,11 +85,13 @@ export class Edge extends Element{
         // Set the opacity of the edge
         window.ctx.globalAlpha = this.opacity
 
+        // Extract coordinates of the intersection of the nodes borders
+        const { borderSrc, borderDst, angle } = this.nodesIntersectionBorderCoords(0, this.directed ? arrowSize*0.8 : 0) // Calculate the coordinates of the edge from border to border of the nodes instead of the center
+
         // If the edge is directed, draw an arrow
         if (this.directed) {
             const rDst = this.dst.r
             const arrowSize = this.thickness * this.arrowSizeFactor
-            const { borderDst, angle } = this.nodesIntersectionBorderCoords(0, this.directed ? arrowSize*0.8 : 0) // Calculate the coordinates of the edge from border to border of the nodes instead of the center
     
             // Draw the edge
             window.ctx.beginPath()
@@ -122,11 +124,11 @@ export class Edge extends Element{
         // Paint the weight of the edge in the middle of the edge
         if (window.graph.showWeights) {
             // Calculate the center of the edge
-            const centerX = (this.src.x + this.dst.x) / 2
-            const centerY = (this.src.y + this.dst.y) / 2
+            const centerX = (borderSrc.x + borderDst.x) / 2
+            const centerY = (borderSrc.y + borderDst.y) / 2
             
-            const fontSize = this.weightFontSize
-            const contSize = this.weightContainerSize // The size of the container of the weight (used to draw the background of the weight
+            const fontSize = Math.min(this.thickness*2, this.weightFontSize)
+            const contSize = this.thickness*this.weightContainerFactor // The size of the container of the weight (used to draw the background of the weight
             window.ctx.font = fontSize + "px Arial"   
             window.ctx.textAlign = "center"
             window.ctx.textBaseline = "middle"
@@ -138,7 +140,7 @@ export class Edge extends Element{
             window.ctx.fill()
             // Draw the weight
             window.ctx.fillStyle = this.weightColor ?? "#0000"
-            window.ctx.fillText(this.weight, centerX, centerY+1)  // Add 1 to the y coordinate to center the text
+            window.ctx.fillText(this.weight, centerX, centerY)  // Add 1 to the y coordinate to center the text
         }
 
         // Draw the edge selection
@@ -162,8 +164,8 @@ export class Edge extends Element{
             window.ctx.fillStyle = "purple"
             window.ctx.font = "7px Arial"
             const data = this.getAdvancedPropertiesByPoint(window.cvs.x, window.cvs.y)
-            window.ctx.fillText(this.id, (this.src.x + this.dst.x) / 2, (this.src.y + this.dst.y) / 2 + 15)
-            window.ctx.fillText(data.dist.toFixed(2), (this.src.x + this.dst.x) / 2, (this.src.y + this.dst.y) / 2 + 25)
+            window.ctx.fillText(this.id, (borderSrc.x + borderDst.x) / 2, (borderSrc.y + borderDst.y) / 2 + 15)
+            window.ctx.fillText(data.dist.toFixed(2), (borderSrc.x + borderDst.x) / 2, (borderSrc.y + borderDst.y) / 2 + 25)
         }
             
         window.ctx.restore()  // Restore the previous state of the canvas

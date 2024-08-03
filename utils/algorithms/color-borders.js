@@ -31,6 +31,10 @@ export default function colorBorders(graph, start=false) {
 
     // If a start node is given, color the graph starting from that node
     colorRec(graph, start, groups)
+    
+    for (let node in graph) {
+        if (groups[node] === null) colorRec(graph, node, groups)
+    }
     return groups
 }
 

@@ -26,7 +26,7 @@ import { Element } from "./element"
  * @property {string} backgroundColor - The background color of the node
  * @property {string} color - The color of the label
  * @property {string} borderColor - The border color of the node
- * @property {number} borderWidth - The border width of the node
+ * @property {number} borderRatio - The border width of the node (Ratio of the radius)
  * @property {number} fontSize - The font size of the label
  * @property {string} bubble - The bubble attached to the node (String)
  * @property {string} bubbleColor - The color of the bubble
@@ -77,8 +77,8 @@ export class Node extends Element{
         this.backgroundColor = constants.NODE_BACKGROUND_COLOR
         this.labelColor = constants.NODE_LABEL_COLOR
         this.borderColor = constants.NODE_BORDER_COLOR
-        this.borderWidth = constants.NODE_BORDER_WIDTH
-        this.fontSize = this.label.length < 3 ? constants.NODE_LABEL_FONT_SIZE : Math.floor(constants.NODE_LABEL_FONT_SIZE * 3 / this.label.length)
+        this.borderRatio = constants.NODE_BORDER_RATIO
+        this.fontSize = constants.NODE_LABEL_FONT_SIZE
         this.bubbleColor = constants.NODE_BUBBLE_COLOR
         this.bubbleTextColor = constants.NODE_BUBBLE_TEXT_COLOR
         this.bubbleTextSize = constants.NODE_BUBBLE_TEXT_SIZE
@@ -119,20 +119,21 @@ export class Node extends Element{
 
         ctx.globalAlpha = this.opacity
 
+        // Draw the border inside the circle
+        if (this.borderRatio > 0 && this.borderColor !== null) {
+            ctx.strokeStyle = this.borderColor
+            ctx.lineWidth = this.r*this.borderRatio
+            ctx.beginPath()
+            ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
+            ctx.stroke()
+        }
+        
         // Draw the node as a circle
         ctx.fillStyle = this.backgroundColor
         ctx.beginPath()
         ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
         ctx.fill()
-        // Draw the border inside the circle
-        if (this.borderWidth > 0 && this.borderColor !== null) {
-            ctx.strokeStyle = this.borderColor
-            ctx.lineWidth = this.borderWidth
-            ctx.beginPath()
-            ctx.arc(this.x, this.y, this.r - this.borderWidth / 2, 0, Math.PI * 2)
-            ctx.stroke()
-        }
-
+        
         // Draw the label
         ctx.fillStyle = this.labelColor
         ctx.textAlign = 'center'
