@@ -147,7 +147,7 @@ export function generateSVG(){
     svg.setAttribute("xmlns:xlink", xlinkns)
     svg.setAttribute("version", "1.1")
     const {x1, y1, width, height} = getBoundingBoxOfAllNodes()
-    const margin = constants.NODE_BORDER_RATIO
+    const margin = constants.SVG_EXPORT_MARGIN
     svg.setAttribute("viewBox", `${x1-margin} ${y1-margin} ${width+margin*2} ${height+margin*2}`)
 
     // Create the defs element
@@ -178,7 +178,7 @@ export function generateSVG(){
             circle.setAttribute("class", "weight_container")
             circle.setAttribute("cx", (borderSrc.x + borderDst.x) / 2)
             circle.setAttribute("cy", (borderSrc.y + borderDst.y) / 2)
-            circle.setAttribute("r", constants.EDGE_WEIGHT_CONTAINER_FACTOR + (String(edge.weight).length*edge.weightFontSize/3))
+            circle.setAttribute("r", edge.style.contSize)
             circle.setAttribute("id", "container-"+edge.id)
             edgesLabels.push(circle)
     
@@ -186,7 +186,7 @@ export function generateSVG(){
             const text = document.createElementNS(svgNS, "text")
             text.setAttribute("class", "weight")
             text.setAttribute("x", (borderSrc.x + borderDst.x) / 2)
-            text.setAttribute("y", (borderSrc.y + borderDst.y) / 2 + 1)
+            text.setAttribute("y", (borderSrc.y + borderDst.y) / 2)
             text.setAttribute("id", "weight-"+edge.id)
             text.textContent = edge.weight
             edgesLabels.push(text)
@@ -204,7 +204,7 @@ export function generateSVG(){
             line.setAttribute("y1", borderSrc.y)
             line.setAttribute("x2", dstDir.x)
             line.setAttribute("y2", dstDir.y)
-            line.setAttribute("stroke", edge.color)
+            line.setAttribute("stroke", edge.style.color)
             line.setAttribute("id", edge.id)
             edges.push(line)
 
@@ -216,7 +216,7 @@ export function generateSVG(){
             const arrow = document.createElementNS(svgNS, "polygon")
             arrow.setAttribute("class", "edge")
             arrow.setAttribute("points", `${p1.x},${p1.y} ${p2.x},${p2.y} ${p3.x},${p3.y}`)
-            arrow.setAttribute("fill", edge.color)
+            arrow.setAttribute("fill", edge.style.color)
             arrow.setAttribute("id", "edge-arrow-"+edge.id)
             edges.push(arrow)
 
@@ -228,7 +228,7 @@ export function generateSVG(){
             line.setAttribute("y1", borderSrc.y)
             line.setAttribute("x2", borderDst.x)
             line.setAttribute("y2", borderDst.y)
-            line.setAttribute("stroke", edge.color)
+            line.setAttribute("stroke", edge.style.color)
             line.setAttribute("id", edge.id)
             edges.push(line)
         }
@@ -242,7 +242,7 @@ export function generateSVG(){
         circle.setAttribute("class", "node")
         circle.setAttribute("cx", node.x)
         circle.setAttribute("cy", node.y)
-        circle.setAttribute("r", node.r)
+        circle.setAttribute("r", node.style.r)
         circle.setAttribute("id", node.id)
         nodes.push(circle)
 
@@ -264,7 +264,7 @@ export function generateSVG(){
             bubble.setAttribute("class", "bubble")
             bubble.setAttribute("cx", x)
             bubble.setAttribute("cy", y)
-            bubble.setAttribute("r", constants.NODE_BUBBLE_RADIUS)
+            bubble.setAttribute("r", this.style.bubbleRadius)
             bubble.setAttribute("id", "bubble-"+node.id)
             nodes.push(bubble)
             // Create the label for the bubble
@@ -305,21 +305,24 @@ export function generateCSS(){
 
     // Add the styles for the edges
     window.graph.edges.forEach(edge => {
+        // Shortcut to the edge style
+        const s = edge.style
+
         // Style of the line
         const edge_styles = {
-            stroke: edge.color,
-            "stroke-width": edge.thickness,
+            stroke: s.color,
+            "stroke-width": s.thickness,
         }
         // Style of the weight label
         const edge_label_styles = {
-            fill: edge.weightColor,
-            "font-size": edge.weightFontSize+"px",
+            fill: s.weightColor,
+            "font-size": s.weightFontSize+"px",
             "text-anchor": "middle",
             "dominant-baseline": "middle",
         }
         // Style of the weight container
         const edge_container_styles = {
-            fill: edge.weightBackgroundColor,
+            fill: s.weightBackgroundColor,
         }
 
         // Add the styles to the array
@@ -332,29 +335,31 @@ export function generateCSS(){
 
     // Add the styles for the nodes
     window.graph.nodes.forEach(node => {
+        const s = node.style
+
         // Style of the node
         const node_styles = {
-            fill: node.backgroundColor,
-            stroke: node.borderColor,
-            "stroke-width": node.borderWidth,
-            "stroke-color": node.borderColor,
+            fill: s.backgroundColor,
+            stroke: s.borderColor,
+            "stroke-width": s.borderWidth,
+            "stroke-color": s.borderColor,
         }
         // Style of the label
         const node_label_styles = {
-            fill: node.labelColor,
-            "font-size": node.fontSize,
+            fill: s.labelColor,
+            "font-size": s.fontSize,
             "text-anchor": "middle",
             "dominant-baseline": "middle",
             "font-weight": "bold",
         }
         // Style of the bubble
         const bubble_styles = {
-            fill: constants.NODE_BUBBLE_COLOR,
+            fill: s.bubbleColor,
         }
         // Style of the bubble text
         const bubble_text_styles = {
-            fill: constants.NODE_BUBBLE_TEXT_COLOR,
-            "font-size": "12px",
+            fill: s.bubbleTextColor,
+            "font-size": `${s.bubbleTextSize}px`,
             "text-anchor": "middle",
             "dominant-baseline": "middle",
             "font-weight": "bold",

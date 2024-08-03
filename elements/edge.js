@@ -69,8 +69,11 @@ export class Edge extends Element{
         this.weightBackgroundColor = constants.EDGE_WEIGHT_BACKGROUND_COLOR
         this.thickness = Math.min(this.src.r, this.dst.r) * constants.EDGE_THICKNESS_RATIO
         this.arrowSizeFactor = constants.EDGE_ARROW_SIZE_FACTOR
-        this.weightFontSize = constants.EDGE_WEIGHT_FONT_SIZE
         this.weightContainerFactor = constants.EDGE_WEIGHT_CONTAINER_FACTOR
+        this.weightContainerSize = this.thickness * this.weightContainerFactor
+
+        // Initialize the style (after all the properties have been set)
+        this.resetStyle()
     }
 
     /**
@@ -82,21 +85,24 @@ export class Edge extends Element{
 
         window.ctx.save()  // Save the current state of the canvas
 
+        // Set the style properties
+        const style = this.style
+
         // Set the opacity of the edge
-        window.ctx.globalAlpha = this.opacity
+        window.ctx.globalAlpha = style.opacity
 
         // Extract coordinates of the intersection of the nodes borders
+        const arrowSize = style.thickness * style.arrowSizeFactor
         const { borderSrc, borderDst, angle } = this.nodesIntersectionBorderCoords(0, this.directed ? arrowSize*0.8 : 0) // Calculate the coordinates of the edge from border to border of the nodes instead of the center
 
         // If the edge is directed, draw an arrow
         if (this.directed) {
             const rDst = this.dst.r
-            const arrowSize = this.thickness * this.arrowSizeFactor
     
             // Draw the edge
             window.ctx.beginPath()
-            window.ctx.strokeStyle = this.color
-            window.ctx.lineWidth = this.thickness
+            window.ctx.strokeStyle = style.color
+            window.ctx.lineWidth = style.thickness
             window.ctx.moveTo(this.src.x, this.src.y)  // Move to the source node
             window.ctx.lineTo(borderDst.x, borderDst.y)  // Draw a line to the destination node
             window.ctx.stroke()
@@ -106,7 +112,7 @@ export class Edge extends Element{
 
             // Draw the arrow
             window.ctx.beginPath()
-            window.ctx.fillStyle = this.color
+            window.ctx.fillStyle = style.color
             window.ctx.moveTo(this.dst.x + offsetDstArrow.x, this.dst.y + offsetDstArrow.y)
             window.ctx.lineTo(this.dst.x + offsetDstArrow.x - arrowSize * Math.cos(angle - arrowAngle), this.dst.y + offsetDstArrow.y - arrowSize * Math.sin(angle - arrowAngle))
             window.ctx.lineTo(this.dst.x + offsetDstArrow.x - arrowSize * Math.cos(angle + arrowAngle), this.dst.y + offsetDstArrow.y - arrowSize * Math.sin(angle + arrowAngle))
@@ -114,8 +120,8 @@ export class Edge extends Element{
         } else {
             // Draw the edge
             window.ctx.beginPath()
-            window.ctx.strokeStyle = this.color
-            window.ctx.lineWidth = this.thickness
+            window.ctx.strokeStyle = style.color
+            window.ctx.lineWidth = style.thickness
             window.ctx.moveTo(this.src.x, this.src.y)  
             window.ctx.lineTo(this.dst.x, this.dst.y)
             window.ctx.stroke()
@@ -127,27 +133,25 @@ export class Edge extends Element{
             const centerX = (borderSrc.x + borderDst.x) / 2
             const centerY = (borderSrc.y + borderDst.y) / 2
             
-            const fontSize = Math.min(this.thickness*2, this.weightFontSize)
-            const contSize = this.thickness*this.weightContainerFactor // The size of the container of the weight (used to draw the background of the weight
-            window.ctx.font = fontSize + "px Arial"   
+            window.ctx.font = style.fontSize + "px Arial"   
             window.ctx.textAlign = "center"
             window.ctx.textBaseline = "middle"
-            window.ctx.fillStyle = (this.weightColor && this.weightBackgroundColor) || "#0000"
+            window.ctx.fillStyle = (style.weightColor && style.weightBackgroundColor) || "#0000"
             // Draw circle background
             window.ctx.beginPath()
-            window.ctx.arc(centerX, centerY, contSize, 0, 2 * Math.PI)
-            window.ctx.fillStyle = this.weightBackgroundColor ?? "#0000"
+            window.ctx.arc(centerX, centerY, style.contSize, 0, 2 * Math.PI)
+            window.ctx.fillStyle = style.weightBackgroundColor ?? "#0000"
             window.ctx.fill()
             // Draw the weight
-            window.ctx.fillStyle = this.weightColor ?? "#0000"
+            window.ctx.fillStyle = style.weightColor ?? "#0000"
             window.ctx.fillText(this.weight, centerX, centerY)  // Add 1 to the y coordinate to center the text
         }
 
         // Draw the edge selection
         if (this.selected || this.isHover()) {
-            const color = this.selected ? this.selectedColor 
-                        : window.graph.tool === "delete" ? this.deleteColor
-                        : this.hoverColor
+            const color = this.selected ? style.selectedColor 
+                        : window.graph.tool === "delete" ? style.deleteColor
+                        : style.hoverColor
 
             window.ctx.beginPath()
             window.ctx.strokeStyle = color
@@ -169,6 +173,27 @@ export class Edge extends Element{
         }
             
         window.ctx.restore()  // Restore the previous state of the canvas
+    }
+
+    resetStyle() {
+        super.resetStyle()
+        this.style.color = this.color
+        this.style.weightColor = this.weightColor
+        this.style.weightBackgroundColor = this.weightBackgroundColor
+        this.style.thickness = this.thickness
+        this.style.arrowSizeFactor = this.arrowSizeFactor
+        this.style.weightFontSize = this.weightFontSize
+        this.style.weightContainerFactor = this.weightContainerFactor
+
+        // Computed
+        this.computeStyle()
+    }
+
+    computeStyle() {
+        super.computeStyle()
+        this.style.weightFontSize = this.weightContainerSize * 0.8
+        this.style.fontSize = Math.min(this.style.thickness*2, this.style.weightFontSize)
+        this.style.contSize = this.style.thickness*this.style.weightContainerFactor 
     }
 
 

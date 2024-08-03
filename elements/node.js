@@ -73,7 +73,7 @@ export class Node extends Element{
         this.r = r
         this.label = label ?? this.id
 
-        // Style properties
+        // Default style properties
         this.backgroundColor = constants.NODE_BACKGROUND_COLOR
         this.labelColor = constants.NODE_LABEL_COLOR
         this.borderColor = constants.NODE_BORDER_COLOR
@@ -84,11 +84,40 @@ export class Node extends Element{
         this.bubbleTextSize = constants.NODE_BUBBLE_TEXT_SIZE
         this.bubbleRadius = constants.NODE_BUBBLE_RADIUS
 
+        
         // Bubble attached to the node
         this.bubble = null
-
+        
         // Auxiliar properties
         this.offsetPos = {x: 0, y: 0}  // A displacement of the original position
+
+        // Initialize the style (after all the properties have been set)
+        this.resetStyle()
+    }
+
+    // This method is used to copy the properties of the node into an object where those properties can be modified without affecting the original node (used for displaying temporarly the node with a different style)
+    // Any property that is not included in this method must be accessed directly from the node's original properties
+    resetStyle() {
+        super.resetStyle()
+        this.style.backgroundColor = this.backgroundColor
+        this.style.labelColor = this.labelColor
+        this.style.borderColor = this.borderColor
+        this.style.borderRatio = this.borderRatio
+        this.style.fontSize = this.fontSize
+        this.style.bubbleColor = this.bubbleColor
+        this.style.bubbleTextColor = this.bubbleTextColor
+        this.style.bubbleTextSize = this.bubbleTextSize
+        this.style.bubbleRadius = this.bubbleRadius
+        this.style.r = this.r
+
+        // Computed
+        this.computeStyle()
+    }
+
+    // Update the style properties
+    computeStyle() {
+        super.computeStyle()
+        this.style.borderSize = this.r * this.style.borderRatio
     }
 
     generateId() {
@@ -117,55 +146,57 @@ export class Node extends Element{
         const ctx = window.ctx
         ctx.save()
 
-        ctx.globalAlpha = this.opacity
+        const style = this.style
+
+        ctx.globalAlpha = style.opacity
 
         // Draw the border inside the circle
-        if (this.borderRatio > 0 && this.borderColor !== null) {
-            ctx.strokeStyle = this.borderColor
-            ctx.lineWidth = this.r*this.borderRatio
+        if (style.borderRatio > 0 && style.borderColor !== null) {
+            ctx.strokeStyle = style.borderColor
+            ctx.lineWidth = style.r*style.borderRatio
             ctx.beginPath()
-            ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
+            ctx.arc(this.x, this.y, style.r, 0, Math.PI * 2)
             ctx.stroke()
         }
         
         // Draw the node as a circle
-        ctx.fillStyle = this.backgroundColor
+        ctx.fillStyle = style.backgroundColor
         ctx.beginPath()
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
+        ctx.arc(this.x, this.y, style.r, 0, Math.PI * 2)
         ctx.fill()
         
         // Draw the label
-        ctx.fillStyle = this.labelColor
+        ctx.fillStyle = style.labelColor
         ctx.textAlign = 'center'
-        ctx.font = `bold ${this.fontSize}px Arial`
-        const posY = this.y + this.fontSize / 3
+        ctx.font = `bold ${style.fontSize}px Arial`
+        const posY = this.y + style.fontSize / 3
         ctx.fillText(this.label, this.x, posY)
 
         // Draw the selected border
-        if (this.selected || this.isHover()) {
-            const color = this.selected ? this.selectedColor 
-                        : window.graph.tool === "delete" ? this.deleteColor
-                        : this.hoverColor
+        if (style.selected || this.isHover()) {
+            const color = style.selected ? style.selectedColor 
+                        : window.graph.tool === "delete" ? style.deleteColor
+                        : style.hoverColor
             ctx.strokeStyle = color
             ctx.lineWidth = 2
             ctx.beginPath()
-            ctx.arc(this.x, this.y, this.r + 2, 0, Math.PI * 2)
+            ctx.arc(this.x, this.y, style.r + 2, 0, Math.PI * 2)
             ctx.stroke()
         }
 
         // Draw the bubble
         if (this.bubble !== null) {
-            const d = Math.sin(Math.PI / 4) * this.r
+            const d = Math.sin(Math.PI / 4) * style.r
             const x = this.x + d
             const y = this.y + d
             ctx.beginPath()
-            ctx.fillStyle = this.bubbleColor
-            ctx.arc(x, y, this.bubbleRadius, 0, Math.PI * 2)
+            ctx.fillStyle = style.bubbleColor
+            ctx.arc(x, y, style.bubbleRadius, 0, Math.PI * 2)
             ctx.fill()
-            ctx.fillStyle = this.bubbleTextColor
+            ctx.fillStyle = style.bubbleTextColor
             ctx.textAlign = 'center'
             ctx.textBaseline = 'middle'
-            ctx.font = `bold ${this.bubbleTextSize}px Arial`
+            ctx.font = `bold ${style.bubbleTextSize}px Arial`
             ctx.fillText(this.bubble, x , y+1)
         }
 
@@ -174,8 +205,8 @@ export class Node extends Element{
             ctx.fillStyle = "blue"
             ctx.font = "7px Arial"
             ctx.textAlign = "center"
-            ctx.fillText(this.id, this.x, this.y + this.r + 8)
-            ctx.fillText(this.distance(window.cvs.x, window.cvs.y).toFixed(2), this.x, this.y + this.r + 16)
+            ctx.fillText(this.id, this.x, this.y + style.r + 8)
+            ctx.fillText(this.distance(window.cvs.x, window.cvs.y).toFixed(2), this.x, this.y + style.r + 16)
         }
 
         ctx.restore()

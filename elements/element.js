@@ -1,3 +1,5 @@
+import constants from "../utils/constants"
+
 /**
  * Element class
  * 
@@ -47,12 +49,14 @@ export class Element {
         this.hidden = false
 
         // Style properties
-        this.hoverColor = '#0D99FF88'
-        this.selectedColor = '#0D99FF'
-        this.deleteColor = '#FF0000aa'
+        this.hoverColor = constants.HOVER_BORDER_COLOR
+        this.selectedColor = constants.SELECTED_BORDER_COLOR
+        this.deleteColor = constants.DELETE_BORDER_COLOR
         this.opacity = 1
-    }
 
+        // Style properties
+        this.style = {} // This values will override the default ones just for stetic purposes (not for logic or calculations) (private properties are not included since they are already managed by the getters and setters)
+    }
 
     /**
      * Generate a random id for the element using the format: `<ClassName>_<randomString>`
@@ -164,6 +168,23 @@ export class Element {
     // Delete (abstract method)
     delete() {
         window.graph.selected = window.graph.selected.filter(e => e !== this)
+    }
+
+    // Reset style (this method is useful both to have a temporary style, and to have a place to have computed properties that are not stored as properties since they are calculated)
+    resetStyle() {
+        this.style = {
+            hoverColor: constants.HOVER_BORDER_COLOR,
+            selectedColor: constants.SELECTED_BORDER_COLOR,
+            deleteColor: constants.DELETE_BORDER_COLOR,
+            opacity: 1
+        }
+
+        this.computeStyle()
+    }
+
+    // Compute styles that are dependent on other properties and are stored in the `style` object
+    computeStyle() {
+        // Empty method
     }
 
     

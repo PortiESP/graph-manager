@@ -27,7 +27,7 @@ export default {
     NODE_LABEL_COLOR: "#000",
     NODE_LABEL_FONT_SIZE: 20,
     NODE_BORDER_COLOR: "#000",
-    NODE_BORDER_RATIO: .1,
+    NODE_BORDER_RATIO: .15,
     NODE_BUBBLE_RADIUS: 10,
     NODE_BUBBLE_COLOR: "purple",
     NODE_BUBBLE_TEXT_COLOR: "white",
@@ -48,9 +48,18 @@ export default {
     SELECTION_BOX_FILL: "rgba(0, 0, 255, 0.1)",
     SELECTION_BOX_THICKNESS: 1,
 
+    // Border colors
+    HOVER_BORDER_COLOR: '#0D99FF88',
+    SELECTED_BORDER_COLOR: '#0D99FF',
+    DELETE_BORDER_COLOR: '#FF0000aa',
+
     // Focus
     FOCUS_MARGIN: 100,
 
+    // Export
+    SVG_EXPORT_MARGIN: 30,
+
+    // Colors
     COLORS_PALETTE: [
         "#ff0000",
         "#00ff00",
