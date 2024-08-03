@@ -1,3 +1,5 @@
+import conexComps from "./conex-comp"
+
 /**
  * Hamiltonian path algorithm.
  * 
@@ -12,6 +14,12 @@
 export default function hamiltonianPath(graph, start, all=false) {
     if (graph === undefined || start === undefined) throw new Error('Invalid graph or start node')
     if (graph[start] === undefined) throw new Error('Start node not found in the graph')
+
+    // Check if the graph is connected
+    const connected = conexComps(graph).length === 1
+
+    // If the graph is not connected, return undefined
+    if (!connected) return undefined
 
     // If the start node is a string, turn it into a Node
     if (start.constructor === String) start = window.graph.findNodeById(start)

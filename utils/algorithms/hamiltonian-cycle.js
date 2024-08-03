@@ -1,3 +1,5 @@
+import conexComps from "./conex-comp"
+
 /**
  * Hamiltonian cycle algorithm
  * 
@@ -15,6 +17,12 @@ export default function hamiltonianCycle(graph, start, all=false) {
     
     // If the start node is a string, turn it into a Node
     if (start.constructor === String) start = window.graph.findNodeById(start)
+
+    // Check if the graph is connected
+    const connected = conexComps(graph).length === 1
+
+    // If the graph is not connected, return undefined
+    if (!connected) return undefined
 
     const path = [start]
     const visited = new Set([start])

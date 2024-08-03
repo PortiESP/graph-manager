@@ -1,3 +1,6 @@
+import { Node } from "@components/graph-manager/elements/node"
+import conexComps from "./conex-comp"
+
 function bfs(graph, start, visited=undefined, skipNode=undefined) {
     // Initial checks
     if (graph===undefined || start===undefined) throw new Error('Invalid graph or start node')
@@ -11,6 +14,8 @@ function bfs(graph, start, visited=undefined, skipNode=undefined) {
     // If the visited object was not provided, create a new one with all the nodes set to false
     // The visited object represents the nodes that are already in the queue
     if (visited === undefined) visited = Object.fromEntries(Object.keys(graph).map(node => [node, false]))
+
+    if (skipNode.constructor === Node) skipNode = skipNode.id
 
     // Mark the start node as visited and set the previous node as null
     visited[start] = true
@@ -44,22 +49,31 @@ function bfs(graph, start, visited=undefined, skipNode=undefined) {
 export function criticalNodes(graph) {
     // Initial checks
     if (graph === undefined) throw new Error('Invalid graph')
-
+    
+    // Check if the graph is connected
+    const conectedComps = conexComps(graph)
     // Initialize the critical nodes
     const criticalNodes = []
 
-    // For each node in the graph
-    for (const node in graph) {
-        // Perform a BFS starting from the current node
-        const startNode = Object.keys(graph)[0] === node ? Object.keys(graph)[1] : Object.keys(graph)[0]
-        const {visited} = bfs(graph, startNode, undefined, node)
-        visited[node] = true
+    for (const comp of conectedComps){
+        // For each node in the graph
+        if (comp.length <= 1) continue
 
-        // If there is a node that is not visited, then the current node is a critical node
-        if (Object.values(visited).some(visited => !visited)) {
-            criticalNodes.push(node)
+        const compIds = comp.map(node => node.id)
+
+        for (const node of comp) {
+            // Perform a BFS starting from the current node
+            const startNode = comp[0] === node ? comp[1] : comp[0]
+            const {visited} = bfs(graph, startNode, undefined, node)
+            visited[node] = true
+    
+            // If there is a node that is not visited, then the current node is a critical node
+            if (Object.entries(visited).some(([node, visited]) => compIds.includes(node) && !visited)) {
+                criticalNodes.push(node)
+            }
         }
     }
+
 
     // Return the critical nodes
     return criticalNodes
