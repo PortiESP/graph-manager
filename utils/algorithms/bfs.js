@@ -4,20 +4,20 @@
  * - The algorithm will visit all the nodes accessible from the start node in the graph.
  * 
  * @param {Object} graph Graph represented as an adjacency list: {Node: [Edge, ...], ...]}
- * @param {String} start Start node. The node must be a key in the graph object
+ * @param {Node|String} start Start node. The node must be a key in the graph object
  * @param {Object} visited Object to store the visited nodes. The object must have the same keys as the graph object and the values must be booleans
  * @returns {Object} An object with the following properties:
- * - result: The nodes in the order they were visited
- * - visited: The visited nodes
- * - prevNode: The previous node for each node
+ * @returns {Object.Array} result: The nodes in the order they were visited
+ * @returns {Object.Object} visited: The visited nodes
+ * @returns {Object.Object} prevNode: The previous node for each node
  */
 export default function bfs(graph, start, visited=undefined) {
     // Initial checks
     if (graph===undefined || start===undefined) throw new Error('Invalid graph or start node')
     if (graph[start] === undefined) throw new Error('Start node not found in the graph')
 
-    // Get start node ref
-    start = window.graph.nodes.find(node => node.id === start)
+    // If the start node is a string, turn it into a Node
+    if (start.constructor === String) start = window.graph.nodes.find(node => node.id === start)
 
     // Initialize the variables
     const queue = [start]

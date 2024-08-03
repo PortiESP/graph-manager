@@ -4,7 +4,7 @@
  * - The algorithm will visit all the nodes accessible from the start node in the graph.
  * 
  * @param {Object} graph Graph represented as an adjacency list: {Node: [Edge, ...], ...]}
- * @param {String} start Start node. The node must be a key in the graph object
+ * @param {Node|String} start Start node. The node must be a key in the graph object
  * @param {Object} visited Object to store the visited nodes. The object must have the same keys as the graph object and the values must be booleans
  * @returns {Object} An object with the following properties:
  * - result: The nodes in the order they were visited
@@ -14,6 +14,9 @@
 export default function dfs(graph, start, visited = undefined) {
     if (graph === undefined || start === undefined) throw new Error('Invalid graph or start node')
     if (graph[start] === undefined) throw new Error('Start node not found in the graph')
+
+    // If the start node is a string, turn it into a Node
+    if (start.constructor === String) start = window.graph.nodes.find(node => node.id === start)
 
     // Initialize the variables
     const result = []

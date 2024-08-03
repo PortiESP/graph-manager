@@ -4,7 +4,7 @@
  * - The algorithm will visit all the nodes accessible from the start node in the graph.
  * 
  * @param {Object} graph Graph represented as an adjacency list: {Node: [Edge, ...], ...]}
- * @param {String} start Start node. The node must be a key in the graph object
+ * @param {Node|String} start Start node. The node must be a key in the graph object
  * @param {Object} visited Object to store the visited nodes. The object must have the same keys as the graph object and the values must be booleans
  * @returns {Object} An object where the Node(s) are the key and the value an object with the following properties:
  * - distance: The distance from the start node to the node

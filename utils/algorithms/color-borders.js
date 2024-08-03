@@ -4,7 +4,7 @@
  * Groups are represented by integers starting from 0.
  * 
  * @param {Object} graph - The graph to color. E.G.: {node1: [Edge, ...], ...}]}
- * @param {String} start - The node to start coloring from.
+ * @param {Node|String} start - The node to start coloring from.
  * @returns {Object} - An object with the nodes as keys and the groups as values.
  */
 export default function colorBorders(graph, start=false) {

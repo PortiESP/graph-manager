@@ -2,7 +2,7 @@
  * Hamiltonian path algorithm.
  * 
  * @param {Object} graph - The graph to search for a Hamiltonian path. E.G.: {node1: [Edge, ...], ...}
- * @param {String} start - The node to start the search from.
+ * @param {Node|String} start - The node to start the search from.
  * @param {Boolean} all - Whether to return all Hamiltonian paths or just the first one found.
  * @returns {Object} - An object with the path of the Hamiltonian path and all Hamiltonian paths if all is true.
  * - path: {Array[Nodes]} - The path of the Hamiltonian path. If all is true, this is the first Hamiltonian path found.
@@ -10,6 +10,12 @@
  * @returns {undefined} - If no Hamiltonian path is found.
  */
 export default function hamiltonianPath(graph, start, all=false) {
+    if (graph === undefined || start === undefined) throw new Error('Invalid graph or start node')
+    if (graph[start] === undefined) throw new Error('Start node not found in the graph')
+
+    // If the start node is a string, turn it into a Node
+    if (start.constructor === String) start = window.graph.nodes.find(node => node.id === start)
+
     const path = [start]
     const visited = new Set([start])
     const total = Object.keys(graph).length
