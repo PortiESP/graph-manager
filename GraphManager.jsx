@@ -13,11 +13,12 @@ import { toposortKahn } from './utils/algorithms/toposort'
 import bfs from './utils/algorithms/bfs'
 import { closestHoverElement } from './utils/find_elements'
 import { generateEdgesByPredecessors } from './utils/algorithms/algorithm_utils/convertions'
-import { loadFromCache } from './utils/cache'
+import { loadFromCache, saveToCache } from './utils/cache'
 import kruskal from './utils/algorithms/kruskal'
 import hamiltonianCycle from './utils/algorithms/hamiltonian-cycle'
 import colorBorders from './utils/algorithms/color-borders'
 import { getPressedShortcut } from './canvas-component/utils/keyboard'
+import { useNavigate } from 'react-router-dom'
 
 /**
  * Graph component
@@ -25,6 +26,8 @@ import { getPressedShortcut } from './canvas-component/utils/keyboard'
  * This component is responsible for setting up the graph tool.
  */
 export default function Graph(props) {
+
+    const navigator = useNavigate()  // Hook to navigate between routes
 
     useLayoutEffect(() => {
         // ---------------- Setup the canvas ----------------
@@ -38,7 +41,7 @@ export default function Graph(props) {
         window.cvs.autoResize = true
 
         // --- Initial graph ---
-        loadInitialGraph()
+        loadInitialGraph(navigator)
 
         // --- Setup automatic tool callbacks ---
         // Mouse down and up callbacks
@@ -173,7 +176,7 @@ export default function Graph(props) {
 
 
 
-function loadInitialGraph(){
+function loadInitialGraph(nav){
         // --- LOAD FROM URL ---
         // Load the graph from the URL, if any
         const url = new URL(window.location.href)
@@ -190,6 +193,8 @@ function loadInitialGraph(){
                 .then(data => {
                     loadFromJSON(data)
                     focusOnAllNodes()
+                    saveToCache()
+                    nav("/")
                 })
         }
 
