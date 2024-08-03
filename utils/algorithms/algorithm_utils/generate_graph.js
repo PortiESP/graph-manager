@@ -264,7 +264,7 @@ export function generateSVG(){
             bubble.setAttribute("class", "bubble")
             bubble.setAttribute("cx", x)
             bubble.setAttribute("cy", y)
-            bubble.setAttribute("r", this.style.bubbleRadius)
+            bubble.setAttribute("r", node.style.bubbleRadius)
             bubble.setAttribute("id", "bubble-"+node.id)
             nodes.push(bubble)
             // Create the label for the bubble
