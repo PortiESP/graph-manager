@@ -172,8 +172,8 @@ export class Node extends Element{
         ctx.fillText(this.label, this.x, posY)
 
         // Draw the selected border
-        if (style.selected || this.isHover()) {
-            const color = style.selected ? style.selectedColor 
+        if (this.selected || this.isHover()) {
+            const color = this.selected ? style.selectedColor 
                         : window.graph.tool === "delete" ? style.deleteColor
                         : style.hoverColor
             ctx.strokeStyle = color
