@@ -242,7 +242,7 @@ export function generateSVG(){
         circle.setAttribute("class", "node")
         circle.setAttribute("cx", node.x)
         circle.setAttribute("cy", node.y)
-        circle.setAttribute("r", node.style.r)
+        circle.setAttribute("r", node.r-node.style.borderSize/2)
         circle.setAttribute("id", node.id)
         nodes.push(circle)
 
@@ -341,7 +341,7 @@ export function generateCSS(){
         const node_styles = {
             fill: s.backgroundColor,
             stroke: s.borderColor,
-            "stroke-width": s.borderSize,
+            "stroke-width": `${s.borderSize}px`,
             "stroke-color": s.borderColor,
         }
         // Style of the label
