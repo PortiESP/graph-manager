@@ -26,8 +26,12 @@ export function heatmapColorGenerator(nColors){
     const min = 0    // Red
     const range = max - min
 
+    if (nColors === 1) return [`hsl(${max}, 100%, 50%)`]
+
     const colors = []
     const step = range/(nColors-1)
+
+
     for (let i = 0; i < nColors; i++) {
         colors.push(`hsl(${i * step}, 100%, 50%)`)
     }
