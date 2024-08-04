@@ -303,6 +303,32 @@ export function generateCSS(){
         "svg{font-size: 16px; font-family: Arial, sans-serif;}",  
     ]
 
+    // ============================== EDGES ==============================
+
+    // Default styles for the edges
+    const default_edge_styles = {
+        stroke: constants.EDGE_COLOR,
+        "stroke-width": `${constants.EDGE_THICKNESS_RATIO*constants.NODE_RADIUS}px`,
+    }
+
+    // Default styles for the edge labels
+    const default_edge_label_styles = {
+        fill: constants.EDGE_WEIGHT_COLOR,
+        "font-size": `${constants.EDGE_THICKNESS_RATIO*constants.NODE_RADIUS*2*0.8}px`,
+        "text-anchor": "middle",
+        "dominant-baseline": "middle",
+    }
+
+    // Default styles for the edge weight container
+    const default_edge_container_styles = {
+        fill: constants.EDGE_WEIGHT_BACKGROUND_COLOR,
+    }
+
+    // Add the default styles to the array
+    styles.push(`.edge {${Object.entries(default_edge_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
+    styles.push(`.weight {${Object.entries(default_edge_label_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
+    styles.push(`.weight_container {${Object.entries(default_edge_container_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
+
     // Add the styles for the edges
     window.graph.edges.forEach(edge => {
         // Shortcut to the edge style
@@ -311,7 +337,7 @@ export function generateCSS(){
         // Style of the line
         const edge_styles = {
             stroke: s.color,
-            "stroke-width": s.thickness,
+            "stroke-width": `${s.thickness}px`,
         }
         // Style of the weight label
         const edge_label_styles = {
@@ -326,12 +352,53 @@ export function generateCSS(){
         }
 
         // Add the styles to the array
-        styles.push(`.edge#${edge.id} {${Object.entries(edge_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
-        styles.push(`.weight#weight-${edge.id} {${Object.entries(edge_label_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
-        styles.push(`.weight_container#container-${edge.id} {${Object.entries(edge_container_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
+        const edgeStyle = Object.entries(edge_styles).map(([key, value]) => default_edge_styles[key] !== value && `${key}: ${value}`).filter(e => e).join("; ")
+        edgeStyle && styles.push(`.edge#${edge.id} {${edgeStyle}}`)
+        const edgeWeightStyle = Object.entries(edge_label_styles).map(([key, value]) => default_edge_label_styles[key] !== value && `${key}: ${value}`).filter(e => e).join("; ")
+        edgeWeightStyle && styles.push(`.weight#weight-${edge.id} {${edgeWeightStyle}}`)
+        const edgeWeigthContainerStyle = Object.entries(edge_container_styles).map(([key, value]) => default_edge_container_styles[key] !== value && `${key}: ${value}`).filter(e => e).join("; ")
+        edgeWeigthContainerStyle && styles.push(`.weight_container#container-${edge.id} {${edgeWeigthContainerStyle}}`)
 
     })
 
+    // ============================== NODES ==============================
+
+    // Default styles for the nodes
+    const default_node_styles = {
+        fill: constants.NODE_BACKGROUND_COLOR,
+        stroke: constants.NODE_BORDER_COLOR,
+        "stroke-width": `${constants.NODE_RADIUS*constants.NODE_BORDER_RATIO}px`,
+        "stroke-color": constants.NODE_BORDER_COLOR,
+    }
+
+    // Default styles for the node labels
+    const default_node_label_styles = {
+        fill: constants.NODE_LABEL_COLOR,
+        "font-size": `${constants.NODE_LABEL_FONT_SIZE}px`,
+        "text-anchor": "middle",
+        "dominant-baseline": "middle",
+        "font-weight": "bold",
+    }
+
+    // Default styles for the bubble
+    const default_bubble_styles = {
+        fill: constants.NODE_BUBBLE_COLOR,
+    }
+
+    // Default styles for the bubble text
+    const default_bubble_text_styles = {
+        fill: constants.NODE_BUBBLE_TEXT_COLOR,
+        "font-size": `${constants.NODE_BUBBLE_TEXT_SIZE}px`,
+        "text-anchor": "middle",
+        "dominant-baseline": "middle",
+        "font-weight": "bold",
+    }
+
+    // Add the default styles to the array
+    styles.push(`.node {${Object.entries(default_node_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
+    styles.push(`.node_label {${Object.entries(default_node_label_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
+    styles.push(`.bubble {${Object.entries(default_bubble_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
+    styles.push(`.bubble_text {${Object.entries(default_bubble_text_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
 
     // Add the styles for the nodes
     window.graph.nodes.forEach(node => {
@@ -347,7 +414,7 @@ export function generateCSS(){
         // Style of the label
         const node_label_styles = {
             fill: s.labelColor,
-            "font-size": s.fontSize,
+            "font-size": `${s.fontSize}px`,
             "text-anchor": "middle",
             "dominant-baseline": "middle",
             "font-weight": "bold",
@@ -366,10 +433,18 @@ export function generateCSS(){
         }
 
         // Add the styles to the array
-        styles.push(`.node#${node.id} {${Object.entries(node_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
-        styles.push(`.node_label#label-${node.id} {${Object.entries(node_label_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
-        styles.push(`.bubble#bubble-${node.id} {${Object.entries(bubble_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
-        styles.push(`.bubble_text#bubble-text-${node.id} {${Object.entries(bubble_text_styles).map(([key, value]) => `${key}: ${value}`).join("; ")}}`)
+        /*
+            Only add the styles that are different from the default styles.
+            If the element has the default style, it is not necessary to add it to the CSS
+         */
+        const nodeStyle = Object.entries(node_styles).map(([key, value]) => default_node_styles[key] !== value && `${key}: ${value}`).filter(e => e).join("; ")
+        nodeStyle.length && styles.push(`.node#${node.id} {${nodeStyle}}`)
+        const nodeLabelStyle = Object.entries(node_label_styles).map(([key, value]) => default_node_label_styles[key] !== value && `${key}: ${value}`).filter(e => e).join("; ")
+        nodeLabelStyle.length && styles.push(`.node_label#label-${node.id} {${nodeLabelStyle}}`)
+        const bubbleStyle = Object.entries(bubble_styles).map(([key, value]) => default_bubble_styles[key] !== value && `${key}: ${value}`).filter(e => e).join("; ")
+        bubbleStyle.length && styles.push(`.bubble#bubble-${node.id} {${bubbleStyle}}`)
+        const bubbleTextStyle = Object.entries(bubble_text_styles).map(([key, value]) => default_bubble_text_styles[key] !== value && `${key}: ${value}`).filter(e => e).join("; ")
+        bubbleTextStyle.length && styles.push(`.bubble_text#bubble-text-${node.id} {${bubbleTextStyle}}`)
     })
 
     return styles.join("\n")

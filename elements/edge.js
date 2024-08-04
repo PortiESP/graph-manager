@@ -67,10 +67,8 @@ export class Edge extends Element{
         this.color = constants.EDGE_COLOR
         this.weightColor = constants.EDGE_WEIGHT_COLOR
         this.weightBackgroundColor = constants.EDGE_WEIGHT_BACKGROUND_COLOR
-        this.thickness = Math.min(this.src.r, this.dst.r) * constants.EDGE_THICKNESS_RATIO
         this.arrowSizeFactor = constants.EDGE_ARROW_SIZE_FACTOR
         this.weightContainerFactor = constants.EDGE_WEIGHT_CONTAINER_FACTOR
-        this.weightContainerSize = this.thickness * this.weightContainerFactor
 
         // Initialize the style (after all the properties have been set)
         this.resetStyle()
@@ -180,18 +178,18 @@ export class Edge extends Element{
         this.style.color = this.color
         this.style.weightColor = this.weightColor
         this.style.weightBackgroundColor = this.weightBackgroundColor
-        this.style.thickness = this.thickness
         this.style.arrowSizeFactor = this.arrowSizeFactor
-        this.style.weightFontSize = this.weightFontSize
         this.style.weightContainerFactor = this.weightContainerFactor
-
+        
         // Computed
         this.computeStyle()
     }
-
+    
     computeStyle() {
+        this.style.weightContainerSize = this.thickness * this.weightContainerFactor
+        this.style.thickness = Math.min(this.src.r, this.dst.r) * constants.EDGE_THICKNESS_FACTOR
         this.style.weightFontSize = this.weightContainerSize * 0.8
-        this.style.fontSize = Math.min(this.style.thickness*2, this.style.weightFontSize)
+        this.style.fontSize = this.style.thickness*2
         this.style.contSize = this.style.thickness*this.style.weightContainerFactor 
     }
 
