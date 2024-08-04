@@ -24,7 +24,9 @@ import constants from "./constants";
  * @param {Object} json - The JSON object
  * 
  */
-export function loadFromJSON(json, append=false) {
+export function loadFromJSON(json, append = false) {
+
+
     // Reset the graph to its initial state
     if (append === false) window.graph.reset()
 
@@ -32,6 +34,8 @@ export function loadFromJSON(json, append=false) {
     if (typeof json === 'string') {
         json = JSON.parse(json)
     }
+
+    if (!validateJSON(json)) throw new Error("Invalid JSON Object")
 
     // Load the nodes
     const nodes = json.nodes.map(n => {
@@ -71,6 +75,40 @@ export function loadFromJSON(json, append=false) {
 }
 
 
+export function validateJSON(data) {
+    // Convert the JSON string to an object if needed
+    if (typeof data == 'string') try{data = JSON.parse(data)} catch(e) {return false}
+
+    // Check if the object has the nodes and edges properties
+    if (!data.nodes || !data.edges) return false
+    // Check if the nodes and edges properties are arrays
+    if (!Array.isArray(data.nodes) || !Array.isArray(data.edges)) return false
+
+    // - Functions -
+    // Check if the nodes have the required properties
+    function validateNode(node) {
+        if (!(node.id || node._id)) return false     // Missing id
+        if (!(node.x || node._x)) return false       // Missing x
+        if (!(node.y || node._y)) return false       // Missing y
+        if (!(node.r || node._r)) return false       // Missing r
+        if ((node.id || node._id).includes(' ')) return false  // IDs cannot contain spaces
+        return true
+    }
+    // Check if the edges have the required properties
+    function validateEdge(edge) {
+        if (!(edge.src || edge._src)) return false  // Missing src
+        if (!(edge.dst || edge._dst)) return false  // Missing dst
+        return true
+    }
+
+    // Check if the nodes and edges are valid
+    if (data.nodes.some(e => !validateNode(e))) return false
+    if (data.edges.some(e => !validateEdge(e))) return false
+
+    return true
+}
+
+
 /**
  * Load a graph from a plain text edge list
  * 
@@ -85,8 +123,8 @@ export function loadFromJSON(json, append=false) {
  * 
  * @param {string} edgeList - The edge list as a string: `src-{weight}->dst\nsrc->dst\nsrc-dst\nsrc`
  */
-export function loadFromEdgePlainTextList(edgeList, reuseNodes=undefined) {
-    
+export function loadFromEdgePlainTextList(edgeList, reuseNodes = undefined) {
+
     // Function to create a node if it does not exist
     const createNode = (label) => {
         if (reuseNodes && reuseNodes[label]) nodes[label] = reuseNodes[label]
@@ -94,7 +132,7 @@ export function loadFromEdgePlainTextList(edgeList, reuseNodes=undefined) {
             nodes[label] = new Node(undefined, undefined, label, constants.NODE_RADIUS)
         }
     }
-    
+
     // Reset the graph to its initial state
     window.graph.reset()
 
@@ -149,7 +187,7 @@ export function loadFromEdgePlainTextList(edgeList, reuseNodes=undefined) {
  * - dst: The destination node
  * - directed: A boolean indicating if the edge is directed
  */
-export function parseEdge(edgeString){
+export function parseEdge(edgeString) {
     // Regular expression to match the edge string
     const edgeRegex = /^(\w+)(?: ([\d.,]+))?[ >](\w+)$/
     // Evaluate the regex
@@ -163,15 +201,15 @@ export function parseEdge(edgeString){
     // Extract the source, weight, destination and directed properties
     const src = match[1]
     const weight = match[2] ? // If the weight is defined, try to parse it as a float, otherwise parse it as an integer
-                    match[2].match(/[,.]/) ? 
-                        parseFloat(match[2]) : 
-                        parseInt(match[2]) :
-                    undefined
+        match[2].match(/[,.]/) ?
+            parseFloat(match[2]) :
+            parseInt(match[2]) :
+        undefined
     const dst = match[3]
     // The edge is directed if the string contains the '->' substring
     const directed = edgeString.includes('>')
 
-    return { src, weight, dst, directed }    
+    return { src, weight, dst, directed }
 }
 
 
@@ -183,7 +221,7 @@ export function parseEdge(edgeString){
  * @param {string} edgeString - The edge string
  * @returns {boolean} True if the edge string is valid, false otherwise
  */
-export function isValidElement(edgeString){
+export function isValidElement(edgeString) {
     // Single node edge
     if (isSingleNodeEdge(edgeString)) return true
 
@@ -200,7 +238,7 @@ export function isValidElement(edgeString){
  * @param {string} edgeString - The edge string
  * @returns {boolean} True if the edge string is a single node edge, false otherwise
  */
-export function isSingleNodeEdge(edgeString){
+export function isSingleNodeEdge(edgeString) {
     return edgeString.match(/^\w+$/) !== null
 }
 
@@ -221,7 +259,7 @@ export function isSingleNodeEdge(edgeString){
  * @param {Array} edgeArray - The edge list as a multidimensional array
  * @param {boolean} directed - A boolean indicating if the edges are directed
  */
-export function loadFromEdgeArray(edgeArray, directed=false) {
+export function loadFromEdgeArray(edgeArray, directed = false) {
     // Reset the graph to its initial state
     window.graph.reset()
 
@@ -255,8 +293,27 @@ export function loadFromEdgeArray(edgeArray, directed=false) {
  * 
  * @param {string} url - The URL containing the graph data
  */
-export function loadFromURL(url){
+export function loadFromURL(url) {
+    if (!validateURL(url)) throw new Error("Invalid URL")
+
     const parsedURL = new URL(url)
     const graph = parsedURL.searchParams.get("graph")
+
     loadFromEdgePlainTextList(graph.replaceAll("_", "\n"))
+}
+
+
+
+export function validateURL(url) {
+    let parsedURL
+    try {parsedURL = new URL(url)} catch(e) {return false}
+
+    const g = parsedURL.searchParams.get("graph")
+
+    // Check if the URL contains the graph query parameter
+    if (g === null || g === undefined) return false
+    // Check if the host is valid
+    if (parsedURL.host !== location.host) return false
+
+    return true
 }
