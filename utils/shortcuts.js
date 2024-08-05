@@ -25,7 +25,7 @@ const SHORTCUTS_KEY_DOWN = {
     "shift": () => window.graph.snapToGrid = true,
 
     // Reset all states
-    "control+alt+z": () => window.graph.resetAll(),
+    "control+alt+z": () => window.graph.resetGraphAndCanvasStates(),
 
     // Pan the canvas
     "control+arrowleft": () => panBy(constants.SHORTCUT_ARROWS_PAN_SPEED, 0),

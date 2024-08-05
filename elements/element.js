@@ -15,13 +15,14 @@ import constants from "../utils/constants"
  * 
  * ---
  * 
- * @property {string} id - The id of the element. This is a random string generated when the element is created. This id is used to identify the element in the graph, quite useful when elements referencing other elements to keep track of them even if they are cloned.
- * @property {boolean} selected - Whether the element is selected or not
- * @property {boolean} hidden - Whether the element is hidden or not
- * @property {string} hoverColor - The color of the element when it is hovered
- * @property {string} selectedColor - The color of the element when it is selected
- * @property {string} deleteColor - The color of the element when it is marked for deletion
+ * @property {string} id - The id of the element
+ * @property {boolean} selected - The selection state of the element
+ * @property {boolean} hidden - The visibility state of the element
+ * @property {string} hoverColor - The color of the border when the element is hovered
+ * @property {string} selectedColor - The color of the border when the element is selected
+ * @property {string} deleteColor - The color of the border when the element is selected for deletion
  * @property {number} opacity - The opacity of the element
+ * @property {object} style - The style properties of the element
  * 
  * **Methods**
  * 
@@ -30,14 +31,18 @@ import constants from "../utils/constants"
  * @method select - Activates the selection state of the element and add it to the selected elements array in the graph
  * @method deselect - Deactivates the selection state of the element and remove it from the selected elements array in the graph
  * @method toggleSelect - Toggles the selection state of the element
- * @method distance - Abstract method. Calculates the distance between the element and the point (x, y)
+ * @method generateId - Generate a random id for the element using the format: `<ClassName>_<randomString>`
  * @method toString - Generate a string representation of the element
- * @method draw - Abstract method. Draw the element
- * @method moveBy - Move the node by dx, dy
- * @method isHover - Abstract method. Checks if the element is hover
- * @method clone - Abstract method. Clones the element
- * @method equals - Abstract method. Checks if the element is equal to another element
- * @method delete - Abstract method. Deletes the element
+ * @method moveBy (dx, dy) - Move the node by dx, dy
+ * @method moveToPoint (x, y) - Move the node to the point (x, y)
+ * @method copyFrom (element) - Copy the properties of the node to another element
+ * @method draw - Draw (abstract method)
+ * @method distance (x, y) - Distance (abstract method)
+ * @method isHover - IsHover (abstract method)
+ * @method clone - Clone (abstract method)
+ * @method equals - equals (abstract method)
+ * @method delete - Delete (abstract method)
+ * @method resetStyle - Reset style (this method is useful both to have a temporary style, and to have a place to have computed properties that are not stored as properties since they are calculated)
  */
 export class Element {
     constructor(id){
@@ -185,71 +190,31 @@ export class Element {
     
     // ======================================================= Getters and setters =======================================================
 
-    set id(id) {
-        this._id = id
-        
+    get id() { return this._id }
+    set id(id) { this._id = id 
         // Listeners
         window.graph.triggerElementListeners()
     }
+
+    get selected() { return this._selected }
+    set selected(selected) { this._selected = selected }
     
-    get id() {
-        return this._id
-    }
+    get hidden() { return this._hidden }
+    set hidden(hidden) { this._hidden = hidden }
 
-    set selected(selected) {
-        this._selected = selected
-    }
+    get hoverColor() { return this._hoverColor }
+    set hoverColor(hoverColor) { this._hoverColor = hoverColor }
 
-    get selected() {
-        return this._selected
-    }
-    
-    set hidden(hidden) {
-        this._hidden = hidden
-    }
+    get selectedColor() { return this._selectedColor }
+    set selectedColor(selectedColor) { this._selectedColor = selectedColor }
 
-    get hidden() {
-        return this._hidden
-    }
+    get deleteColor() { return this._deleteColor }
+    set deleteColor(deleteColor) { this._deleteColor = deleteColor }
 
-    set hoverColor(hoverColor) {
-        this._hoverColor = hoverColor
-    }
+    get opacity() { return this._opacity }
+    set opacity(opacity) { this._opacity = opacity }
 
-    get hoverColor() {
-        return this._hoverColor
-    }
-
-    set selectedColor(selectedColor) {
-        this._selectedColor = selectedColor
-    }
-
-    get selectedColor() {
-        return this._selectedColor
-    }
-
-    set deleteColor(deleteColor) {
-        this._deleteColor = deleteColor
-    }
-
-    get deleteColor() {
-        return this._deleteColor
-    }
-
-    set opacity(opacity) {
-        this._opacity = opacity
-    }
-
-    get opacity() {
-        return this._opacity
-    }
-
-    set style(style) {
-        this._style = style
-    }
-
-    get style() {
-        return this._style
-    }
+    get style() { return this._style }
+    set style(style) { this._style = style }
     
 }

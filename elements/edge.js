@@ -1,6 +1,5 @@
 import constants from "../utils/constants"
 import { Element } from "./element"
-import { Node } from "./node"
 
 /**
  * Edge class
@@ -9,43 +8,33 @@ import { Node } from "./node"
  * 
  * This class extends the Element class and defines the common properties and methods for edges
  * 
- * @param {Node} src - The source node
- * @param {Node} dst - The destination node
- * @param {number} weight - The weight of the edge
- * @param {boolean} directed - Whether the edge is directed or not
- * 
  * **Properties**
  * 
  * ---
  * 
- * @property {String} id - The id of the edge (inherited from Element)
  * @property {Node} src - The source node
  * @property {Node} dst - The destination node
- * @property {number} weight - The weight of the edge (default: 1)
+ * @property {number} weight - The weight of the edge
  * @property {boolean} directed - Whether the edge is directed or not
- * @property {boolean} hover - Whether the edge is being hovered or not
- * @property {boolean} selected - Whether the edge is selected or not (inherited from Element)
- * @property {number} thickness - The thickness of the edge
- * @property {string} edgeColor - The color of the edge
- * @property {string} edgeHoverColor - The color of the edge when hovered
- * @property {string} edgeSelectedColor - The color of the edge when selected
+ * @property {string} color - The color of the edge
  * @property {string} weightColor - The color of the weight of the edge
  * @property {string} weightBackgroundColor - The background color of the weight of the edge
- * @property {number} arrowSizeFactor - The size factor of the arrow of the edge (only for directed edges)
- * @property {number} weightFontSize - The font size of the weight of the edge
- * @property {number} weightContainerFactor - The size of the background of the weight of the edge (relative to the weight)
+ * @property {number} arrowSizeFactor - The size factor of the arrow of the edge
+ * @property {number} weightContainerFactor - The size factor of the container of the weight of the edge
  * 
  * **Methods**
  * 
  * ---
  * 
  * @method draw - Draw the edge
- * @method distance - Calculate the distance between the edge and a point
- * @method isHover - Check if the edge is being hovered
- * @method moveBy - Move the edge by a certain amount
- * @method clone - Clone the edge
- * @method equals - Check if two edges are equal
- * @method delete - Delete the edge
+ * @method resetStyle - Reset the style of the edge
+ * @method computeStyle - Compute the style of the edge
+ * @method getAdvancedProperties - Calculate some properties of the edge
+ * @method nodesIntersectionBorderCoords - Calculate the coordinates of the edge from the border of the nodes instead of the center
+ * @method getAdvancedPropertiesByPoint - Calculates several properties of the edge, relative to a point
+ * @method distance - Calculate the distance between the closest point of the edge and a point
+ * @method isHover - Determine if the edge is being hovered by the mouse
+ * @method moveBy - This method is not implemented for edges, but its necessary to keep the interface consistent with the Node class.
  */
 export class Edge extends Element{
     constructor(src, dst, weight = 1, directed = false) {
@@ -56,6 +45,7 @@ export class Edge extends Element{
             return
         }
         
+        // Parent constructor
         super()
 
         // Data properties
@@ -174,8 +164,14 @@ export class Edge extends Element{
         window.ctx.restore()  // Restore the previous state of the canvas
     }
 
+
+    /**
+     * Reset the style of the edge
+     * 
+     * This will set the values of the `this.style` object to the default values (defined in instance itself) and then call the `computeStyle` method to calculate the style properties based on the new values of the style object
+     */
     resetStyle() {
-        super.resetStyle()
+        super.resetStyle()  // Reset the style of the parent class
         this.style.color = this.color
         this.style.weightColor = this.weightColor
         this.style.weightBackgroundColor = this.weightBackgroundColor
@@ -186,6 +182,12 @@ export class Edge extends Element{
         this.computeStyle()
     }
     
+
+    /**
+     * Compute the style of the edge
+     * 
+     * This method is called after the style properties have been set to calculate the style properties based on the current values of the element
+     */
     computeStyle() {
         this.style.thickness = Math.min(this.src?.r, this.dst?.r) * constants.EDGE_THICKNESS_RATIO
         this.style.weightContainerSize = this.style.thickness * this.weightContainerFactor
@@ -193,6 +195,17 @@ export class Edge extends Element{
     }
 
 
+    /**
+     * Calculate some properties of the edge
+     * 
+     * @returns {Object} Properties of the edge:
+     * @returns {Object.Object} `borderSrc` - The coordinates of the edge from the border of the source node
+     * @returns {Object.Object} `borderDst` - The coordinates of the edge from the border of the destination node
+     * @returns {Object.Number} `angle` - The angle of the edge
+     * @returns {Object.Node} `leftNode` - The node on the left side of the edge
+     * @returns {Object.Node} `rightNode` - The node on the right side of the edge
+     * @returns {Object.Number} `slope` - The slope of the edge
+     */
     getAdvancedProperties() {
         const {borderSrc, borderDst, angle} = this.nodesIntersectionBorderCoords(0, 0)
 
@@ -331,29 +344,7 @@ export class Edge extends Element{
                             : distToClosestNode
 
             result = {dist, isInsidePFuncs, distToClosestNode, distToSrc, distToDst, distUnbounded}
-
-            // if (window.cvs.debug) {
-            //     window.cvs.debugFunctions[this.id] = () => {
-            //         let color = inFp1(x, y) ? "green" : "red"
-            //         window.ctx.strokeStyle = color
-            //         window.ctx.fillStyle = color
-            //         window.ctx.beginPath()
-            //         const len = 20
-            //         window.ctx.moveTo(boundsXByBorder[0]-len, fp1(boundsXByBorder[0]-len))
-            //         window.ctx.lineTo(boundsXByBorder[0]+len, fp1(boundsXByBorder[0]+len))
-            //         window.ctx.stroke()
-            //         color = inFp2(x, y) ? "green" : "red"
-            //         window.ctx.strokeStyle = color
-            //         window.ctx.fillStyle = color
-            //         window.ctx.beginPath()
-            //         window.ctx.moveTo(boundsXByBorder[1]-len, fp2(boundsXByBorder[1]-len))
-            //         window.ctx.lineTo(boundsXByBorder[1]+len, fp2(boundsXByBorder[1]+len))
-            //         window.ctx.stroke()
-            //     }
-            // }
         }
-
-
 
         return {...result, slope, angle, leftNode, rightNode}
     }
@@ -448,83 +439,38 @@ export class Edge extends Element{
 
     // ======================================================= Getters and Setters =======================================================
 
-    get src() {
-        return this._src
-    }
-
-    set src(src) {
-        this._src = src
-
+    get src() { return this._src }
+    set src(src) { this._src = src 
         // Update the style
         this.computeStyle()
     }
 
-    get dst() {
-        return this._dst
-    }
-
-    set dst(dst) {
-        this._dst = dst
-
+    get dst() { return this._dst }
+    set dst(dst) { this._dst = dst 
         // Update the style
         this.computeStyle()
     }
 
-    get weight() {
-        return this._weight
-    }
+    get weight() { return this._weight }
+    set weight(weight) { this._weight = weight }
 
-    set weight(weight) {
-        this._weight = weight
-    }
+    get directed() { return this._directed }
+    set directed(directed) { this._directed = directed }
 
-    get directed() {
-        return this._directed
-    }
+    get color() { return this._color }
+    set color(color) { this._color = color }
 
-    set directed(directed) {
-        this._directed = directed
-    }
+    get weightColor() { return this._weightColor }
+    set weightColor(weightColor) { this._weightColor = weightColor }
 
-    get color() {
-        return this._color
-    }
+    get weightBackgroundColor() { return this._weightBackgroundColor }
+    set weightBackgroundColor(weightBackgroundColor) { this._weightBackgroundColor = weightBackgroundColor }
 
-    set color(color) {
-        this._color = color
-    }
+    get arrowSizeFactor() { return this._arrowSizeFactor }
+    set arrowSizeFactor(arrowSizeFactor) { this._arrowSizeFactor = arrowSizeFactor }
 
-    get weightColor() {
-        return this._weightColor
-    }
-
-    set weightColor(weightColor) {
-        this._weightColor = weightColor
-    }
-
-    get weightBackgroundColor() {
-        return this._weightBackgroundColor
-    }
-
-    set weightBackgroundColor(weightBackgroundColor) {
-        this._weightBackgroundColor = weightBackgroundColor
-    }
-
-    get arrowSizeFactor() {
-        return this._arrowSizeFactor
-    }
-
-    set arrowSizeFactor(arrowSizeFactor) {
-        this._arrowSizeFactor = arrowSizeFactor
-    }
-
-    get weightContainerFactor() {
-        return this._weightContainerFactor
-    }
-
-    set weightContainerFactor(weightContainerFactor) {
-        this._weightContainerFactor = weightContainerFactor
-
+    get weightContainerFactor() { return this._weightContainerFactor }
+    set weightContainerFactor(weightContainerFactor) { this._weightContainerFactor = weightContainerFactor 
         // Update the style
         this.computeStyle()
     }

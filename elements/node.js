@@ -24,37 +24,16 @@ import { Element } from "./element"
  * @property {number} r - The radius of the node
  * @property {string} label - The label of the node
  * @property {string} backgroundColor - The background color of the node
- * @property {string} color - The color of the label
- * @property {string} borderColor - The border color of the node
- * @property {number} borderRatio - The border width of the node (Ratio of the radius)
- * @property {number} fontSize - The font size of the label
- * @property {string} bubble - The bubble attached to the node (String)
- * @property {string} bubbleColor - The color of the bubble
- * @property {string} bubbleTextColor - The color of the bubble text
- * @property {number} bubbleTextSize - The font size of the bubble text
- * @property {number} bubbleRadius - The radius of the bubble
- * @property {string} selectedColor - The color of the node when selected (Inherited from Element class)
- * @property {string} hoverColor - The color of the node when hover (Inherited from Element class)
- * @property {number} opacity - The opacity of the node (Inherited from Element class)
- * @property {boolean} selected - Whether the node is selected (Inherited from Element class)
- * @property {boolean} hidden - Whether the node is hidden (Inherited from Element class)
- * @property {string} id - The id of the node (Inherited from Element class)
- * 
- * 
- * **Methods**
- * 
- * ---
- * 
- * @method draw - Draw the node
- * @method contains - Check if the node contains the point (x, y)
- * @method moveBy - Move the node by dx, dy
- * @method distanceToCenter - Distance to center
- * @method distance - Distance to another any side (Inherited from Element class)
- * @method isHover - Check if the node is hover (Inherited from Element class)
- * @method clone - Clone (Inherited from Element class)
- * @method equals - Equals (Inherited from Element class)
- * @method delete - Delete the node (Inherited from Element class)
- * 
+ * @property {string} labelColor - The color of the label of the node
+ * @property {string} borderColor - The color of the border of the node
+ * @property {number} borderRatio - The ratio of the border of the node
+ * @property {number} fontSize - The font size of the label of the node
+ * @property {string} bubbleColor - The color of the bubble attached to the node
+ * @property {string} bubbleTextColor - The color of the text of the bubble attached to the node
+ * @property {number} bubbleTextSize - The font size of the text of the bubble attached to the node
+ * @property {number} bubbleRadius - The radius of the bubble attached to the node
+ * @property {string} bubble - The text of the bubble attached to the node
+ * @property {Object} offsetPos - The displacement of the original position of the node
  */
 export class Node extends Element {
     constructor(x, y, label = null, r = constants.NODE_RADIUS) {
@@ -321,135 +300,59 @@ export class Node extends Element {
         if (this._x === undefined) return undefined
         return this._x + this.offsetPos.x
     }
-
-    set x(x) {
-        this._x = x
-    }
+    set x(x) { this._x = x }
 
     get y() {
         if (this._y === undefined) return undefined
         return this._y + this.offsetPos.y
     }
+    set y(y) { this._y = y }
 
-    set y(y) {
-        this._y = y
-    }
-
-    get r() {
-        return this._r
-    }
-
-    set r(r) {
-        this._r = r
-
+    get r() { return this._r }
+    set r(r) { this._r = r 
         // Compute the style
         this.computeStyle()
     }
 
-    get label() {
-        return this._label
-    }
+    get label() { return this._label }
+    set label(label) { this._label = label }
 
-    set label(label) {
-        this._label = label
-    }
+    get backgroundColor() { return this._backgroundColor }
+    set backgroundColor(backgroundColor) { this._backgroundColor = backgroundColor }
 
-    get backgroundColor() {
-        return this._backgroundColor
-    }
+    get labelColor() { return this._labelColor }
+    set labelColor(labelColor) { this._labelColor = labelColor }
 
-    set backgroundColor(backgroundColor) {
-        this._backgroundColor = backgroundColor
-    }
+    get labelColor() { return this._labelColor }
+    set labelColor(labelColor) { this._labelColor = labelColor }
 
-    get labelColor() {
-        return this._labelColor
-    }
+    get borderColor() { return this._borderColor }
+    set borderColor(borderColor) { this._borderColor = borderColor }
 
-    set labelColor(labelColor) {
-        this._labelColor = labelColor
-    }
-
-    get labelColor() {
-        return this._labelColor
-    }
-
-    set labelColor(labelColor) {
-        this._labelColor = labelColor
-    }
-
-    get borderColor() {
-        return this._borderColor
-    }
-
-    set borderColor(borderColor) {
-        this._borderColor = borderColor
-    }
-
-    get borderRatio() {
-        return this._borderRatio
-    }
-
-    set borderRatio(borderRatio) {
-        this._borderRatio = borderRatio
-
+    get borderRatio() { return this._borderRatio }
+    set borderRatio(borderRatio) { this._borderRatio = borderRatio 
         // Compute the style
         this.computeStyle()
     }
 
-    get fontSize() {
-        return this._fontSize
-    }
+    get fontSize() { return this._fontSize }
+    set fontSize(fontSize) { this._fontSize = fontSize }
 
-    set fontSize(fontSize) {
-        this._fontSize = fontSize
-    }
+    get bubble() { return this._bubble }
+    set bubble(bubble) { this._bubble = bubble }
 
-    get bubble() {
-        return this._bubble
-    }
+    get bubbleColor() { return this._bubbleColor }
+    set bubbleColor(bubbleColor) { this._bubbleColor = bubbleColor }
 
-    set bubble(bubble) {
-        this._bubble = bubble
-    }
+    get bubbleTextColor() { return this._bubbleTextColor }
+    set bubbleTextColor(bubbleTextColor) { this._bubbleTextColor = bubbleTextColor }
 
-    get bubbleColor() {
-        return this._bubbleColor
-    }
+    get bubbleTextSize() { return this._bubbleTextSize }
+    set bubbleTextSize(bubbleTextSize) { this._bubbleTextSize = bubbleTextSize }
 
-    set bubbleColor(bubbleColor) {
-        this._bubbleColor = bubbleColor
-    }
+    get bubbleRadius() { return this._bubbleRadius }
+    set bubbleRadius(bubbleRadius) { this._bubbleRadius = bubbleRadius }
 
-    get bubbleTextColor() {
-        return this._bubbleTextColor
-    }
-
-    set bubbleTextColor(bubbleTextColor) {
-        this._bubbleTextColor = bubbleTextColor
-    }
-
-    get bubbleTextSize() {
-        return this._bubbleTextSize
-    }
-
-    set bubbleTextSize(bubbleTextSize) {
-        this._bubbleTextSize = bubbleTextSize
-    }
-
-    get bubbleRadius() {
-        return this._bubbleRadius
-    }
-
-    set bubbleRadius(bubbleRadius) {
-        this._bubbleRadius = bubbleRadius
-    }
-
-    get offsetPos() {
-        return this._offsetPos
-    }
-
-    set offsetPos(offsetPos) {
-        this._offsetPos = offsetPos
-    }
+    get offsetPos() { return this._offsetPos }
+    set offsetPos(offsetPos) { this._offsetPos = offsetPos }
 }

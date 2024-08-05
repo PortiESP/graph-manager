@@ -4,7 +4,7 @@ import { Node } from "../../elements/node"
 export default {
     // Resets the graph states, creates an auxiliary node to be used as a preview
     setup() {
-        window.graph.resetStates()
+        window.graph.resetGraphStates()
         const aux = new Node(window.graph.x, window.graph.y, "...")
         aux.opacity = 0.5
         window.graph.newNode = aux
@@ -42,6 +42,6 @@ export default {
     },
     // Removes the auxiliary node
     clean() {
-        window.graph.resetStates()
+        window.graph.resetGraphStates()
     }
 }

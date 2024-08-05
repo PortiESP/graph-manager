@@ -59,8 +59,8 @@ import { setActivateTool } from "./utils/tools/tools_callbacks"
  * @method pushNode - Pushes nodes to the graph.
  * @method pushEdge - Pushes edges to the graph.
  * @method getElements - Gets all elements in the graph.
- * @method resetAll - Resets all elements in the graph.
- * @method resetStates - Resets the states of the graph.
+ * @method resetGraphAndCanvasStates - Resets all elements in the graph.
+ * @method resetGraphStates - Resets the states of the graph.
  * @method showAll - Shows all elements in the graph.
  * @method addNodeToGraph - Adds a new node to the graph.
  * @method addEdgeToGraph - Adds a new edge to the graph.
@@ -91,7 +91,7 @@ export class GraphGlobals {
         // Tools 
         this._tool = undefined // Active tool
         this._toolCallbacks = undefined // Active tool callbacks
-                
+
         // Grid & Snap
         this._gridEnabled = constants.GRID_ENABLED // Show the grid
         this._gridSize = constants.GRID_SIZE // Size of the grid
@@ -111,16 +111,13 @@ export class GraphGlobals {
         this._memento = [] // Memento stack
         this._mementoRedo = [] // Redo stack
 
-        // Style
-        this._backgroundColor = constants.BACKGROUND_COLOR // Background color
-
         // Tools
-        window.graph.tool = undefined
-        window.graph.toolCallbacks = undefined
+        window.graph.tool = undefined  // Active tool name
+        window.graph.toolCallbacks = undefined  // Object with the active tool callbacks
 
         // History
-        this._memento = []
-        this._mementoRedo = []
+        this._memento = []  // Undo stack
+        this._mementoRedo = []  // Redo stack
 
         // --- Listeners ---
         this._disableListeners = false // Flag to disable listeners
@@ -133,18 +130,18 @@ export class GraphGlobals {
         // Listeners triggers (These functions will trigger its respective listeners and the general listener)
         this.triggerAllListeners = () => {
             if (this.disableListeners) return
-            
+
             this.allListeners.forEach(l => l(this))
         }
         this.triggerSelectedListeners = () => {
             if (this.disableListeners) return
-            
+
             this.allListeners.forEach(l => l(this.selected))
             this.selectedListeners.forEach(l => l(this.selected))
         }
         this.triggerGraphListeners = () => {
             if (this.disableListeners) return
-            
+
             this.allListeners.forEach(l => l(this.getElements()))
             this.graphListeners.forEach(l => l(this.getElements()))
         }
@@ -166,6 +163,7 @@ export class GraphGlobals {
         setActivateTool(CONSTANTS.DEFAULT_TOOL)
     }
 
+    // ============================================================[ Methods ]============================================================>>>
 
     /**
      * Resets the graph global variable to the default values.
@@ -188,7 +186,7 @@ export class GraphGlobals {
         // Tools 
         this.tool = undefined // Active tool
         this.toolCallbacks = undefined // Active tool callbacks
-        
+
         // Grid & Snap
         this.gridEnabled = constants.GRID_ENABLED // Show the grid
         this.gridSize = constants.GRID_SIZE // Size of the grid
@@ -207,15 +205,47 @@ export class GraphGlobals {
         // this.memento = [] // Memento stack
         // this.mementoRedo = [] // Redo stack
 
-        // Style
-        this.backgroundColor = constants.BACKGROUND_COLOR // Background color
-
         setActivateTool(CONSTANTS.DEFAULT_TOOL)
 
         this.triggerElementListeners()
     }
 
-    // --- Methods ---
+    /**
+     * Resets all: States, views, config in the graph and canvas.
+     * 
+     * This function resets the graph and canvas states. It deselects all nodes, resets the states, resets the pan and zoom, shows all elements, removes all bubbles, and shows all edges.
+     */
+    resetGraphAndCanvasStates() {
+        deselectAll()  // Deselect all nodes
+        this.resetGraphStates() // Reset the states
+        resetPan() // Reset the drag, go to the (0, 0) position
+        resetZoom() // Reset the zoom level to 1
+        this.resetView() // Reset the view
+    }
+
+    /**
+     * Resets the states of the graph.
+     * 
+     * This function resets the states of the graph to the default values. It sets the newEdge to null, newNode to false, isDraggingElements to false, selectionBox to null, and snapReference to null.
+     */
+    resetGraphStates() {
+        this.newEdge = null
+        this.newNode = false
+        this.isDraggingElements = false
+        this.selectionBox = null
+        this.snapReference = null
+        this.snapToGrid = false
+        deselectAll()
+    }
+
+    /**
+     * Resets the view, showing all nodes and edges. And removes the additional information.
+     */
+    resetView() {
+        this.showAll()
+        this.nodes.forEach(node => node.bubble = null)
+    }
+
 
     /**
      * Gets all elements in the graph (nodes and edges).
@@ -228,47 +258,14 @@ export class GraphGlobals {
 
 
     /**
-     * Resets all: States, views, config in the graph.
+     * Shows all elements in the graph.
      * 
-     * This function resets the graph to the default state. It deselects all nodes, resets the states, resets the pan and zoom, shows all elements, removes all bubbles, and shows all edges.
+     * This function shows all elements in the graph by setting the hidden property of all elements to false.
      */
-    resetAll() {
-        deselectAll()  // Deselect all nodes
-        this.resetStates() // Reset the states
-        resetPan() // Reset the drag, go to the (0, 0) position
-        resetZoom() // Reset the zoom level to 1
-        this.showAll() // Show all elements
-        this.nodes.forEach(n => n.bubble = null) // Remove all bubbles
-    }
-
-    /**
-     * Resets the states of the graph.
-     * 
-     * This function resets the states of the graph to the default values. It sets the newEdge to null, newNode to false, isDraggingElements to false, selectionBox to null, and snapReference to null.
-     */
-    resetStates() {
-        this.newEdge = null
-        this.newNode = false
-        this.isDraggingElements = false
-        this.selectionBox = null
-        this.snapReference = null
-        this.snapToGrid = false
-        deselectAll()
-    }
-
-    // Set the hidden property of all elements to false
     showAll() {
         this.getElements().forEach(e => e.hidden = false)
     }
 
-
-    /**
-     * Resets the view, showing all nodes and edges. And removes the additional information.
-     */
-    resetView() {
-        this.showAll()
-        this.nodes.forEach(node => node.bubble = null)
-    }
 
     /**
      * Adds a new node to the graph global variable.
@@ -281,10 +278,10 @@ export class GraphGlobals {
     addNodeToGraph(x, y, r, label = null) {
         // Memento
         recordMemento()
-        
+
         // Default radius
         if (r === undefined) r = constants.NODE_RADIUS
-        
+
         // Append the node to the list of nodes
         this.pushNode(new Node(x, y, label, r))
 
@@ -299,13 +296,13 @@ export class GraphGlobals {
      * @param {Node} dst - The destination node of the edge.
      * @param {number} weight - The weight of the edge.
      */
-    addEdgeToGraph(src, dst, weight=constants.EDGE_WEIGHT, directed=false) {
+    addEdgeToGraph(src, dst, weight = constants.EDGE_WEIGHT, directed = false) {
 
         // If the source and destination nodes are valid and different, add the edge to the list of edges
         if (src && dst && src !== dst) {
             // Memento
-            recordMemento() 
-            
+            recordMemento()
+
             this.pushEdge(new Edge(src, dst, weight, directed))
 
             // Cache
@@ -323,6 +320,15 @@ export class GraphGlobals {
     }
 
 
+    /**
+     * Finds an edge by its source and destination nodes.
+     * 
+     * If the edge is directed, the source and destination nodes must match the edge's source and destination nodes.
+     * 
+     * @param {Node|String} srcId - The source node or the id of the source node.
+     * @param {Node|String} dstId - The destination node or the id of the destination node.
+     * @returns {Edge} The edge with the given source and destination nodes.
+     */
     findEdgeByNodes(srcId, dstId) {
         // If the source and destination nodes are a Node object, get their id
         if (srcId instanceof Node) srcId = srcId.id
@@ -336,11 +342,25 @@ export class GraphGlobals {
     }
 
 
+    /**
+     * Finds a node or edge by its id.
+     * 
+     * @param {String} id - The id of the element.
+     * @returns {Element} The element with the given id.
+     * @returns {null} If no element is found with the given id.
+     */
     findElementById(id) {
         return this.getElements().find(e => e.id === id) || null
     }
 
 
+    /**
+     * Finds a node by its id.
+     * 
+     * @param {String} id - The id of the node.
+     * @returns {Node} The node with the given id.
+     * @returns {null} If no node is found with the given id.
+     */
     findNodeById(id) {
         return this.nodes.find(e => e.id === id) || null
     }
@@ -351,7 +371,7 @@ export class GraphGlobals {
      * 
      * @param {Array} elements - The elements to keep visible (array of nodes and edges).
      */
-    hideAllBut(elements){
+    hideAllBut(elements) {
         this.getElements().forEach(e => e.hidden = !elements.includes(e))
     }
 
@@ -364,7 +384,7 @@ export class GraphGlobals {
      * 
      * ⚠️ This function is not recommended for normal use due to the canvas being rerendered in the middle of some calculations.
      */
-    rerender(){
+    rerender() {
         window.cvs.clean()
         drawAll()
     }
@@ -372,28 +392,46 @@ export class GraphGlobals {
     // --- Getters & Setters ---
 
     get nodes() { return this._nodes }
-    set nodes(value) { this._nodes = value 
+    set nodes(value) {
+        this._nodes = value
         // Listeners
         this.triggerGraphListeners()
     }
+    /**
+     * Pushes nodes to the graph.
+     * 
+     * @param  {...Node} node - The node(s) to push to the graph.
+     */
     pushNode(...node) {
         this.nodes = [...this.nodes, ...node]
     }
 
     get edges() { return this._edges }
-    set edges(value) { this._edges = value 
+    set edges(value) {
+        this._edges = value
         // Listeners
         this.triggerGraphListeners()
     }
+    /**
+     * Pushes edges to the graph.
+     * 
+     * @param  {...Edge} edge - The edge(s) to push to the graph.
+     */
     pushEdge(...edge) {
         this.edges = [...this.edges, ...edge]
     }
 
     get selected() { return this._selected }
-    set selected(value) { this._selected = value 
+    set selected(value) {
+        this._selected = value
         // Listeners
         this.triggerSelectedListeners()
     }
+    /**
+     * Pushes elements to the selected nodes.
+     * 
+     * @param  {...Element} elements - The elements to push to the selected nodes.
+     */
     pushSelected(...elements) {
         this.selected = [...this.selected, ...elements]
     }
@@ -448,9 +486,6 @@ export class GraphGlobals {
 
     get hasView() { return this._hasView }
     set hasView(value) { this._hasView = value }
-
-    get backgroundColor() { return this._backgroundColor }
-    set backgroundColor(value) { this._backgroundColor = value }
 
     get memento() { return this._memento }
     set memento(value) { this._memento = value }

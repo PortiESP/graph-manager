@@ -57,7 +57,9 @@ export default function Graph(props) {
         window.cvs.blurCallback = getActiveToolCallback('blurCallback')
 
         // --- Debug ---
+        // Enable debug mode
         window.cvs.debug = true
+        // Add debug data (information that will be displayed in the debug panel)
         window.cvs.debugData = () => ([
             "----------- Data -----------",
             "Nodes: " + window.graph.nodes.length,
@@ -76,7 +78,7 @@ export default function Graph(props) {
             "----------- Config -----------",
             "Snap to grid: " + window.graph.snapToGrid,
         ])
-
+        // Add debug commands (commands that can be executed from the debug panel)
         window.cvs.debugCommands = window.cvs.debugCommands.concat([
             {
                 label: 'Generate graph array',
@@ -159,11 +161,9 @@ export default function Graph(props) {
             }
         ])
 
-        // --- Setup the canvas ---
-        document.getElementById("canvas").style.backgroundColor = window.graph.backgroundColor
-
         // ---------------- Main loop ----------------
-        mainLoop(() => {
+        // Start the main loop (then, the next calls will be made by the loop itself)
+        mainLoop(() => { // Main loop callback (repeats every frame)
             // Draw all elements
             drawAll()
 
@@ -175,7 +175,17 @@ export default function Graph(props) {
 }
 
 
-
+/**
+ * Load the initial graph
+ * 
+ * This function is responsible for loading the initial graph between the following options:
+ * - Load from URL
+ * - Load example graph
+ * - Load from cache
+ * - Load default graph
+ * 
+ * @param {Function} nav - Function to navigate between routes
+ */
 function loadInitialGraph(nav){
         // --- LOAD FROM URL ---
         // Load the graph from the URL, if any

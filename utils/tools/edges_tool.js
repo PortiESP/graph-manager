@@ -5,7 +5,7 @@ import { closestHoverNode } from "../find_elements"
 export default {
     // Ensures the graph doesn't have garbage in the states
     setup: function () {
-        window.graph.resetStates()
+        window.graph.resetGraphStates()
     },
     // Creates an auxiliary edge to be used as a preview from the hovered node to an auxiliary node for the edge to use as a destination. The auxiliary node will later be replaced by the real real destination node.
     mouseDownCallback: function (button, mouse) {
@@ -88,6 +88,6 @@ export default {
     },
     // Ensures the graph doesn't leave garbage in the states
     clean() {
-        window.graph.resetStates()
+        window.graph.resetGraphStates()
     }
 }

@@ -5,7 +5,7 @@ import { recordMemento } from "../memento"
 export default {
     // Ensures the graph doesn't have garbage in the states
     setup: function () {
-        window.graph.resetStates()
+        window.graph.resetGraphStates()
     },
     // Deletes the hovered node
     mouseDownCallback: function (button, mouse) {
@@ -27,6 +27,6 @@ export default {
     },
     // Resets the graph states
     clean: function () {
-        window.graph.resetStates()
+        window.graph.resetGraphStates()
     }
 }
