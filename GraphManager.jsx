@@ -184,6 +184,8 @@ function loadInitialGraph(nav){
         if (sharedGraph) {
             loadFromURL(window.location.href)
             circularArrange(window.graph.nodes)
+            saveToCache()
+            nav("/")
         }
         // Load example graph, if any
         const exampleGraph = url.searchParams.get("example")
