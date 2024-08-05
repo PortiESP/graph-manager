@@ -15,9 +15,10 @@ export default {
             if (!srcNode) return // If the user is not hovering a node, return
 
             // Create a fake node to be used as the destination of the edge
-            const dstNode = { x: mouse.x, y: mouse.y, r: 0 } // Fake node (just to draw the edge)
+            const dstNode = { x: mouse.x, y: mouse.y, r: 30, isFake: true } // Fake node (just to draw the edge)
             // Create an auxiliary edge from the hovered node to the fake node
             const newEdge = new Edge(srcNode, dstNode)
+            newEdge.style.thickness = 6
 
             // Save the auxiliary edge
             window.graph.newEdge = {

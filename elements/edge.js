@@ -86,7 +86,7 @@ export class Edge extends Element{
 
         // If the edge is directed, draw an arrow
         if (this.directed) {
-            const rDst = this.dst.r
+            const rDst = this.dst.isFake ? 0 : this.dst.r  // If the destination node is a fake node, set the radius to 0
     
             // Draw the edge
             window.ctx.beginPath()
@@ -235,7 +235,7 @@ export class Edge extends Element{
     nodesIntersectionBorderCoords(offsetSrc=0, offsetDst=0) {
         // Extract the radius of the nodes (used to draw the edge from border to border of the nodes instead of the center)
         const rSrc = this.src.r
-        const rDst = this.dst.r
+        const rDst = this.dst.isFake ? 0: this.dst.r  // If the destination node is a fake node, set the radius to 0
 
         // Calculate the angle between the two nodes
         const angle = Math.atan2(this.dst.y - this.src.y, this.dst.x - this.src.x)
