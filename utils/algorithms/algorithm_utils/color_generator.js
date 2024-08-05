@@ -1,12 +1,26 @@
 import constants from "../../constants"
 
+
+/**
+ * Generates a list of nColors colors
+ * 
+ * The first colors are taken from the COLORS_PALETTE constant, if nColors is greater than the length of the palette, random colors are generated
+ * 
+ * @param {number} nColors - Number of colors to generate
+ * 
+ * @returns {string[]} List of colors
+ */
 export function colorGenerator(nColors){
+    // The first colors are taken from the palette
     const colors = [...constants.COLORS_PALETTE]
     
+    // If the number of colors is less than the length of the palette, return the first nColors colors
     if (nColors <= colors.length) return colors
     
-    const letters = '0123456789ABCDEF'
+    // If the number of colors is greater than the length of the palette, generate random colors
 
+    // Random color generator
+    const letters = '0123456789ABCDEF'
     for (let i = colors.length; i < nColors; i++) {
         let color = "#"
         for (let i = 0; i < 6; i++) {
@@ -20,6 +34,13 @@ export function colorGenerator(nColors){
 }
 
 
+/**
+ * Generates a list of nColors colors in a gradient from red to green
+ * 
+ * @param {number} nColors - Number of colors to generate
+ * 
+ * @returns {string[]} List of colors
+ */
 export function heatmapColorGenerator(nColors){
     // HSL color generator
     const max = 120  // Green

@@ -9,7 +9,8 @@ export default {
     // Controls
     SHORTCUT_ARROWS_PAN_SPEED: 25,
 
-    // Graph
+    // --- Graph ---
+
     // Edges
     EDGE_HOVER_THRESHOLD_FACTOR: 2, // The factor to multiply the edge thickness to determine the hover threshold
     ARROW_SIZE: 15,
@@ -32,6 +33,8 @@ export default {
     NODE_BUBBLE_COLOR: "#bb00ff",
     NODE_BUBBLE_TEXT_COLOR: "#ffffff",
     NODE_BUBBLE_TEXT_SIZE: 12,
+
+    // --- Graph Manager ---
 
     // Grid (default values)
     GRID_ENABLED: true,
@@ -81,7 +84,8 @@ export default {
         "#80ff80",
     ],
 
-    // Debug
+    // --- Debug ---
+
     TEMPLATE_GRAPH: {
         nodes: [
             {x: 0, y: 0, r: 30, id: "A"},

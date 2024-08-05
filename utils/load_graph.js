@@ -22,7 +22,7 @@ import constants from "./constants";
  * ```
  * 
  * @param {Object} json - The JSON object
- * 
+ * @param {boolean} append - A boolean indicating if the graph should be appended to the current graph or if it should be replaced
  */
 export function loadFromJSON(json, append = false) {
 
@@ -78,6 +78,27 @@ export function loadFromJSON(json, append = false) {
 }
 
 
+/**
+ * Validate a JSON object
+ * 
+ * A JSON object is valid if it has the following properties:
+ * - nodes: An array of nodes
+ * - edges: An array of edges
+ * 
+ * Each node must have the following properties:
+ * - id: The id of the node
+ * - x: The x coordinate of the node
+ * - y: The y coordinate of the node
+ * - r: The radius of the node
+ * 
+ * Each edge must have the following properties:
+ * - src: The source node id
+ * - dst: The destination node id
+ * 
+ * @param {Object} data - The JSON object to validate
+ * 
+ * @returns {boolean} True if the JSON object is valid, false otherwise
+ */
 export function validateJSON(data) {
     // Convert the JSON string to an object if needed
     if (typeof data == 'string') try{data = JSON.parse(data)} catch(e) {return false}
@@ -306,7 +327,15 @@ export function loadFromURL(url) {
 }
 
 
-
+/**
+ * Validate a URL
+ * 
+ * A URL is valid if it contains the graph query parameter.
+ * 
+ * @param {string} url - The URL to validate
+ * 
+ * @returns {boolean} True if the URL is valid, false otherwise
+ */
 export function validateURL(url) {
     let parsedURL
     try {parsedURL = new URL(url)} catch(e) {return false}
