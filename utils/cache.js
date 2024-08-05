@@ -22,7 +22,9 @@ export function saveToCache() {
             return {
                 ...node,
                 // View related properties are set to its default value
-                bubble: null
+                bubble: null,
+                hidden: false,
+                selected: false,
             }
         }),
         // Save the edges, but discard the properties related to the current view
@@ -33,6 +35,7 @@ export function saveToCache() {
                 dst: edge.dst.id,
                 // View related properties are set to its default value
                 hidden: false,
+                selected: false,
             }
         }),
         // Save the selected nodes
