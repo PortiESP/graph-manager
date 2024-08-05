@@ -17,20 +17,20 @@ export default {
     EDGE_WEIGHT_CONTAINER_FACTOR: 2,  // Horizontal padding of the box containing the weight of the edge
     EDGE_WEIGHT_FONT_SIZE: 12, // Font size of the weight of the edge
     EDGE_THICKNESS_RATIO: .2,
-    EDGE_COLOR: "#000",
-    EDGE_WEIGHT_COLOR: "#fff",
-    EDGE_WEIGHT_BACKGROUND_COLOR: "#000",
+    EDGE_COLOR: "#000000",
+    EDGE_WEIGHT_COLOR: "#ffffff",
+    EDGE_WEIGHT_BACKGROUND_COLOR: "#000000",
     EDGE_ARROW_SIZE_FACTOR: 3,
     // Nodes
     NODE_RADIUS: 30,
-    NODE_BACKGROUND_COLOR: "#fff",
-    NODE_LABEL_COLOR: "#000",
+    NODE_BACKGROUND_COLOR: "#ffffff",
+    NODE_LABEL_COLOR: "#000000",
     NODE_LABEL_FONT_SIZE: 16,
-    NODE_BORDER_COLOR: "#000",
+    NODE_BORDER_COLOR: "#000000",
     NODE_BORDER_RATIO: .15,
     NODE_BUBBLE_RADIUS: 10,
-    NODE_BUBBLE_COLOR: "purple",
-    NODE_BUBBLE_TEXT_COLOR: "white",
+    NODE_BUBBLE_COLOR: "#bb00ff",
+    NODE_BUBBLE_TEXT_COLOR: "#ffffff",
     NODE_BUBBLE_TEXT_SIZE: 12,
 
     // Grid (default values)
@@ -44,7 +44,7 @@ export default {
     BACKGROUND_COLOR: "#eeeeee",
 
     // Selection box
-    SELECTION_BOX_STROKE: "blue",
+    SELECTION_BOX_STROKE: "#0000ff",
     SELECTION_BOX_FILL: "rgba(0, 0, 255, 0.1)",
     SELECTION_BOX_THICKNESS: 1,
 
