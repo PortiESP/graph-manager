@@ -87,17 +87,17 @@ export function validateJSON(data) {
     // - Functions -
     // Check if the nodes have the required properties
     function validateNode(node) {
-        if (!(node.id || node._id)) return false     // Missing id
-        if (!(node.x || node._x)) return false       // Missing x
-        if (!(node.y || node._y)) return false       // Missing y
-        if (!(node.r || node._r)) return false       // Missing r
-        if ((node.id || node._id).includes(' ')) return false  // IDs cannot contain spaces
+        if ((node.id ?? node._id) === undefined) return false     // Missing id
+        if ((node.x ?? node._x) === undefined) return false       // Missing x
+        if ((node.y ?? node._y) === undefined) return false       // Missing y
+        if ((node.r ?? node._r) === undefined) return false       // Missing r
+        if ((node.id ?? node._id).includes(' ')) return false  // IDs cannot contain spaces
         return true
     }
     // Check if the edges have the required properties
     function validateEdge(edge) {
-        if (!(edge.src || edge._src)) return false  // Missing src
-        if (!(edge.dst || edge._dst)) return false  // Missing dst
+        if (!(edge.src ?? edge._src)) return false  // Missing src
+        if (!(edge.dst ?? edge._dst)) return false  // Missing dst
         return true
     }
 

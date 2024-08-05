@@ -94,8 +94,8 @@ export function toposortArrange(g){
     const vGap = constants.NODE_RADIUS * 4  // Define the vertical space between the nodes (the distance between the rows)
 
     // Arrange the nodes
-    Object.keys(cols).sort().forEach((col, i) => {
-        cols[col].forEach((node, j) => {
+    Object.keys(cols).forEach((col, i) => {
+        cols[col].sort().forEach((node, j) => {
             nodes[node].x = topMargin + i * hGap
             nodes[node].y = leftMargin + j * vGap
         })

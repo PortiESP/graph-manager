@@ -178,7 +178,7 @@ export function generateSVG(){
             circle.setAttribute("class", "weight_container")
             circle.setAttribute("cx", (borderSrc.x + borderDst.x) / 2)
             circle.setAttribute("cy", (borderSrc.y + borderDst.y) / 2)
-            circle.setAttribute("r", edge.style.contSize)
+            circle.setAttribute("r", edge.style.weightContainerSize)
             circle.setAttribute("id", "container-"+edge.id)
             edgesLabels.push(circle)
     
@@ -193,8 +193,8 @@ export function generateSVG(){
         }
 
         if (edge.directed){
-            const arrowSize = edge.thickness * edge.arrowSizeFactor
-            const {borderDst: dstDir, angle} = edge.nodesIntersectionBorderCoords(0, arrowSize*0.8)
+            const arrowSize = edge.style.thickness * edge.style.arrowSizeFactor /2
+            const {borderDst: dstDir, angle} = edge.nodesIntersectionBorderCoords(0, arrowSize*.8)
             const arrowAngle = Math.PI / 6
 
             // Create the line for the edge
@@ -208,6 +208,8 @@ export function generateSVG(){
             line.setAttribute("id", edge.id)
             edges.push(line)
 
+            borderDst.x -= Math.cos(angle)*5  // Pull the arrow back
+            borderDst.y -= Math.sin(angle)*5  // Pull the arrow back
             const p1 = {x: borderDst.x, y: borderDst.y}
             const p2 = {x: borderDst.x - arrowSize * Math.cos(angle - arrowAngle), y: borderDst.y - arrowSize * Math.sin(angle - arrowAngle)}
             const p3 = {x: borderDst.x - arrowSize * Math.cos(angle + arrowAngle), y: borderDst.y - arrowSize * Math.sin(angle + arrowAngle)}
@@ -280,9 +282,9 @@ export function generateSVG(){
 
     // Append the nodes and edges to the SVG (in this order to make sure the edges are behind the nodes)
     edges.forEach(edge => svg.appendChild(edge))
+    edgesLabels.forEach(label => svg.appendChild(label))
     nodes.forEach(node => svg.appendChild(node))
     nodesLabels.forEach(label => svg.appendChild(label))
-    edgesLabels.forEach(label => svg.appendChild(label))
 
     return svg.outerHTML    
 }

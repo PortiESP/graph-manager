@@ -46,7 +46,7 @@ export class Element {
 
         // States
         this.selected = false
-        this.hidden = false
+        this._hidden = false
 
         // Style properties
         this.hoverColor = constants.HOVER_BORDER_COLOR
@@ -57,6 +57,7 @@ export class Element {
         // Style properties
         this.style = {} // This values will override the default ones just for stetic purposes (not for logic or calculations) (private properties are not included since they are already managed by the getters and setters)
     }
+
 
     /**
      * Generate a random id for the element using the format: `<ClassName>_<randomString>`
@@ -194,4 +195,14 @@ export class Element {
     get id() {
         return this._id
     }
+
+    
+    set hidden(hidden) {
+        this._hidden = hidden
+    }
+
+    get hidden() {
+        return this._hidden
+    }
+    
 }

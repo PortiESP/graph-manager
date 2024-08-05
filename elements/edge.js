@@ -131,13 +131,13 @@ export class Edge extends Element{
             const centerX = (borderSrc.x + borderDst.x) / 2
             const centerY = (borderSrc.y + borderDst.y) / 2
             
-            window.ctx.font = style.fontSize + "px Arial"   
+            window.ctx.font = style.weightContainerSize + "px Arial"   
             window.ctx.textAlign = "center"
             window.ctx.textBaseline = "middle"
             window.ctx.fillStyle = (style.weightColor && style.weightBackgroundColor) || "#0000"
             // Draw circle background
             window.ctx.beginPath()
-            window.ctx.arc(centerX, centerY, style.contSize, 0, 2 * Math.PI)
+            window.ctx.arc(centerX, centerY, style.weightContainerSize, 0, 2 * Math.PI)
             window.ctx.fillStyle = style.weightBackgroundColor ?? "#0000"
             window.ctx.fill()
             // Draw the weight
@@ -186,11 +186,9 @@ export class Edge extends Element{
     }
     
     computeStyle() {
-        this.style.weightContainerSize = this.thickness * this.weightContainerFactor
-        this.style.thickness = Math.min(this.src.r, this.dst.r) * constants.EDGE_THICKNESS_FACTOR
-        this.style.weightFontSize = this.weightContainerSize * 0.8
-        this.style.fontSize = this.style.thickness*2
-        this.style.contSize = this.style.thickness*this.style.weightContainerFactor 
+        this.style.thickness = Math.min(this.src.r, this.dst.r) * constants.EDGE_THICKNESS_RATIO
+        this.style.weightContainerSize = this.style.thickness * this.weightContainerFactor
+        this.style.weightFontSize = this.style.weightContainerSize * 0.8
     }
 
 
@@ -390,7 +388,7 @@ export class Edge extends Element{
         const y = window.cvs.y
 
         // Define some constants
-        const THRESHOLD = this.thickness * constants.EDGE_HOVER_THRESHOLD_FACTOR  // The threshold to consider the edge as hovered
+        const THRESHOLD = this.style.thickness * constants.EDGE_HOVER_THRESHOLD_FACTOR  // The threshold to consider the edge as hovered
 
         // Get the advanced properties of the edge
         const {dist, isInsidePFuncs} = this.getAdvancedPropertiesByPoint(x, y)
