@@ -1,5 +1,6 @@
 import constants from "../utils/constants"
 import { Element } from "./element"
+import { Node } from "./node"
 
 /**
  * Edge class
@@ -49,7 +50,7 @@ import { Element } from "./element"
 export class Edge extends Element{
     constructor(src, dst, weight = 1, directed = false) {
         // If the first argument is an object, copy the properties (clone constructor)
-        if (src.constructor?.name !== "Node") {
+        if (src instanceof Edge) {
             super()
             this.copyFrom(src)
             return
@@ -58,17 +59,17 @@ export class Edge extends Element{
         super()
 
         // Data properties
-        this.src = src
-        this.dst = dst
-        this.weight = weight
-        this.directed = directed
+        this._src = src
+        this._dst = dst
+        this._weight = weight
+        this._directed = directed
 
         // Style properties
-        this.color = constants.EDGE_COLOR
-        this.weightColor = constants.EDGE_WEIGHT_COLOR
-        this.weightBackgroundColor = constants.EDGE_WEIGHT_BACKGROUND_COLOR
-        this.arrowSizeFactor = constants.EDGE_ARROW_SIZE_FACTOR
-        this.weightContainerFactor = constants.EDGE_WEIGHT_CONTAINER_FACTOR
+        this._color = constants.EDGE_COLOR
+        this._weightColor = constants.EDGE_WEIGHT_COLOR
+        this._weightBackgroundColor = constants.EDGE_WEIGHT_BACKGROUND_COLOR
+        this._arrowSizeFactor = constants.EDGE_ARROW_SIZE_FACTOR
+        this._weightContainerFactor = constants.EDGE_WEIGHT_CONTAINER_FACTOR
 
         // Initialize the style (after all the properties have been set)
         this.resetStyle()
@@ -186,7 +187,7 @@ export class Edge extends Element{
     }
     
     computeStyle() {
-        this.style.thickness = Math.min(this.src.r, this.dst.r) * constants.EDGE_THICKNESS_RATIO
+        this.style.thickness = Math.min(this.src?.r, this.dst?.r) * constants.EDGE_THICKNESS_RATIO
         this.style.weightContainerSize = this.style.thickness * this.weightContainerFactor
         this.style.weightFontSize = this.style.weightContainerSize * 0.8
     }
@@ -442,5 +443,89 @@ export class Edge extends Element{
     delete() {
         super.delete()
         window.graph.edges = window.graph.edges.filter(e => e !== this)
+    }
+
+
+    // ======================================================= Getters and Setters =======================================================
+
+    get src() {
+        return this._src
+    }
+
+    set src(src) {
+        this._src = src
+
+        // Update the style
+        this.computeStyle()
+    }
+
+    get dst() {
+        return this._dst
+    }
+
+    set dst(dst) {
+        this._dst = dst
+
+        // Update the style
+        this.computeStyle()
+    }
+
+    get weight() {
+        return this._weight
+    }
+
+    set weight(weight) {
+        this._weight = weight
+    }
+
+    get directed() {
+        return this._directed
+    }
+
+    set directed(directed) {
+        this._directed = directed
+    }
+
+    get color() {
+        return this._color
+    }
+
+    set color(color) {
+        this._color = color
+    }
+
+    get weightColor() {
+        return this._weightColor
+    }
+
+    set weightColor(weightColor) {
+        this._weightColor = weightColor
+    }
+
+    get weightBackgroundColor() {
+        return this._weightBackgroundColor
+    }
+
+    set weightBackgroundColor(weightBackgroundColor) {
+        this._weightBackgroundColor = weightBackgroundColor
+    }
+
+    get arrowSizeFactor() {
+        return this._arrowSizeFactor
+    }
+
+    set arrowSizeFactor(arrowSizeFactor) {
+        this._arrowSizeFactor = arrowSizeFactor
+    }
+
+    get weightContainerFactor() {
+        return this._weightContainerFactor
+    }
+
+    set weightContainerFactor(weightContainerFactor) {
+        this._weightContainerFactor = weightContainerFactor
+
+        // Update the style
+        this.computeStyle()
     }
 }

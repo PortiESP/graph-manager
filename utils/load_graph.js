@@ -39,8 +39,11 @@ export function loadFromJSON(json, append = false) {
 
     // Load the nodes
     const nodes = json.nodes.map(n => {
-        const auxNode = new Node((n.x || n._x), (n.y || n._y), (n.id || n._id), (n.r || constants.NODE_RADIUS))
+        const auxNode = new Node()
         Object.assign(auxNode, n)
+
+        // If no label is provided, use the id as the label
+        if (n.label === undefined) auxNode.label = auxNode.id
 
         // If the node being loaded is selected, reset the selected property and trigger the select method
         if (n.selected) window.graph.pushSelected(auxNode)
@@ -54,7 +57,7 @@ export function loadFromJSON(json, append = false) {
         const src = nodes.find(n => n.id === e.src)
         const dst = nodes.find(n => n.id === e.dst)
         // Create the edge object
-        const auxEdge = new Edge(src, dst, e.weight)
+        const auxEdge = new Edge()
 
         // Assign all the properties of the edge
         Object.assign(auxEdge, e)

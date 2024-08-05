@@ -81,54 +81,54 @@ export class GraphGlobals {
 
         // Selection
         this._selected = [] // Selected nodes
-        this.selectionBox = null // Object representing the selection box: {x1, y1, x2, y2}
+        this._selectionBox = null // Object representing the selection box: {x1, y1, x2, y2}
 
         // Config
-        this.showWeights = constants.DEFAULT_SHOW_WEIGHTS // Show weights on edges
-        this.enableMemento = constants.DEFAULT_ENABLE_MEMENTO // Enable memento
-        this.enableCache = constants.DEFAULT_ENABLE_CACHE // Enable cache
+        this._showWeights = constants.DEFAULT_SHOW_WEIGHTS // Show weights on edges
+        this._enableMemento = constants.DEFAULT_ENABLE_MEMENTO // Enable memento
+        this._enableCache = constants.DEFAULT_ENABLE_CACHE // Enable cache
 
         // Tools 
-        this.tool = undefined // Active tool
-        this.toolCallbacks = undefined // Active tool callbacks
+        this._tool = undefined // Active tool
+        this._toolCallbacks = undefined // Active tool callbacks
                 
         // Grid & Snap
-        this.gridEnabled = constants.GRID_ENABLED // Show the grid
-        this.gridSize = constants.GRID_SIZE // Size of the grid
-        this.gridOpacity = constants.GRID_OPACITY // Opacity of the grid
-        this.gridThickness = constants.GRID_THICKNESS // Thickness of the grid
-        this.gridColor = constants.GRID_COLOR // Color of the grid
-        this.snapToGrid = false // Snap nodes to the grid (used with shift key)
-        this.snapReference = null // Reference point for snapping (used when dragging nodes while on snap mode)
+        this._gridEnabled = constants.GRID_ENABLED // Show the grid
+        this._gridSize = constants.GRID_SIZE // Size of the grid
+        this._gridOpacity = constants.GRID_OPACITY // Opacity of the grid
+        this._gridThickness = constants.GRID_THICKNESS // Thickness of the grid
+        this._gridColor = constants.GRID_COLOR // Color of the grid
+        this._snapToGrid = false // Snap nodes to the grid (used with shift key)
+        this._snapReference = null // Reference point for snapping (used when dragging nodes while on snap mode)
 
         // Flags
-        this.newNode = false // New node being created
-        this.newEdge = null // Auxiliar object for edge drawing {src:Node, dst:Object, edge:Edge}
-        this.isDraggingElements = false // Flag to check if the user is dragging elements (null: not dragging, undefined: clicked but not moved, true: dragging)
-        this.hasView = false // Flag to check if the graph has is showing a view (some elements may be hidden and others may be shown along with some additional information)
+        this._newNode = false // New node being created
+        this._newEdge = null // Auxiliar object for edge drawing {src:Node, dst:Object, edge:Edge}
+        this._isDraggingElements = false // Flag to check if the user is dragging elements (null: not dragging, undefined: clicked but not moved, true: dragging)
+        this._hasView = false // Flag to check if the graph has is showing a view (some elements may be hidden and others may be shown along with some additional information)
 
         // History
-        this.memento = [] // Memento stack
-        this.mementoRedo = [] // Redo stack
+        this._memento = [] // Memento stack
+        this._mementoRedo = [] // Redo stack
 
         // Style
-        this.backgroundColor = constants.BACKGROUND_COLOR // Background color
+        this._backgroundColor = constants.BACKGROUND_COLOR // Background color
 
         // Tools
         window.graph.tool = undefined
         window.graph.toolCallbacks = undefined
 
         // History
-        this.memento = []
-        this.mementoRedo = []
+        this._memento = []
+        this._mementoRedo = []
 
         // --- Listeners ---
-        this.disableListeners = false // Flag to disable listeners
-        this.allListeners = []  // General listener (any kind of change)
-        this.selectedListeners = []  // Selected nodes listener
-        this.graphListeners = []  // Graph listener (nodes and edges, just creation and removal)
-        this.elementListeners = []  // Elements listener (nodes and edges, any change)
-        this.toolListeners = []  // Tool listener
+        this._disableListeners = false // Flag to disable listeners
+        this._allListeners = []  // General listener (any kind of change)
+        this._selectedListeners = []  // Selected nodes listener
+        this._graphListeners = []  // Graph listener (nodes and edges, just creation and removal)
+        this._elementListeners = []  // Elements listener (nodes and edges, any change)
+        this._toolListeners = []  // Tool listener
 
         // Listeners triggers (These functions will trigger its respective listeners and the general listener)
         this.triggerAllListeners = () => {
@@ -371,51 +371,109 @@ export class GraphGlobals {
 
     // --- Getters & Setters ---
 
-    
-    get selected() {
-        return this._selected
-    }
-
-    set selected(value) {
-        this._selected = value
-
-        // Listeners
-        this.triggerSelectedListeners()
-    }
-
-    pushSelected(...elements) {
-        this.selected = [...this.selected, ...elements]
-    }
-
-    get nodes() {
-        return this._nodes
-    }
-
-    set nodes(value) {
-        this._nodes = value
-        
+    get nodes() { return this._nodes }
+    set nodes(value) { this._nodes = value 
         // Listeners
         this.triggerGraphListeners()
     }
-
     pushNode(...node) {
         this.nodes = [...this.nodes, ...node]
     }
 
-    get edges() {
-        return this._edges
-    }
-
-    set edges(value) {
-        this._edges = value
-
+    get edges() { return this._edges }
+    set edges(value) { this._edges = value 
         // Listeners
         this.triggerGraphListeners()
     }
-
     pushEdge(...edge) {
         this.edges = [...this.edges, ...edge]
     }
 
+    get selected() { return this._selected }
+    set selected(value) { this._selected = value 
+        // Listeners
+        this.triggerSelectedListeners()
+    }
+    pushSelected(...elements) {
+        this.selected = [...this.selected, ...elements]
+    }
+
+    get selectionBox() { return this._selectionBox }
+    set selectionBox(value) { this._selectionBox = value }
+
+    get showWeights() { return this._showWeights }
+    set showWeights(value) { this._showWeights = value }
+
+    get enableMemento() { return this._enableMemento }
+    set enableMemento(value) { this._enableMemento = value }
+
+    get enableCache() { return this._enableCache }
+    set enableCache(value) { this._enableCache = value }
+
+    get tool() { return this._tool }
+    set tool(value) { this._tool = value }
+
+    get toolCallbacks() { return this._toolCallbacks }
+    set toolCallbacks(value) { this._toolCallbacks = value }
+
+    get gridEnabled() { return this._gridEnabled }
+    set gridEnabled(value) { this._gridEnabled = value }
+
+    get gridSize() { return this._gridSize }
+    set gridSize(value) { this._gridSize = value }
+
+    get gridOpacity() { return this._gridOpacity }
+    set gridOpacity(value) { this._gridOpacity = value }
+
+    get gridThickness() { return this._gridThickness }
+    set gridThickness(value) { this._gridThickness = value }
+
+    get gridColor() { return this._gridColor }
+    set gridColor(value) { this._gridColor = value }
+
+    get snapToGrid() { return this._snapToGrid }
+    set snapToGrid(value) { this._snapToGrid = value }
+
+    get snapReference() { return this._snapReference }
+    set snapReference(value) { this._snapReference = value }
+
+    get newNode() { return this._newNode }
+    set newNode(value) { this._newNode = value }
+
+    get newEdge() { return this._newEdge }
+    set newEdge(value) { this._newEdge = value }
+
+    get isDraggingElements() { return this._isDraggingElements }
+    set isDraggingElements(value) { this._isDraggingElements = value }
+
+    get hasView() { return this._hasView }
+    set hasView(value) { this._hasView = value }
+
+    get backgroundColor() { return this._backgroundColor }
+    set backgroundColor(value) { this._backgroundColor = value }
+
+    get memento() { return this._memento }
+    set memento(value) { this._memento = value }
+
+    get mementoRedo() { return this._mementoRedo }
+    set mementoRedo(value) { this._mementoRedo = value }
+
+    get disableListeners() { return this._disableListeners }
+    set disableListeners(value) { this._disableListeners = value }
+
+    get allListeners() { return this._allListeners }
+    set allListeners(value) { this._allListeners = value }
+
+    get selectedListeners() { return this._selectedListeners }
+    set selectedListeners(value) { this._selectedListeners = value }
+
+    get graphListeners() { return this._graphListeners }
+    set graphListeners(value) { this._graphListeners = value }
+
+    get elementListeners() { return this._elementListeners }
+    set elementListeners(value) { this._elementListeners = value }
+
+    get toolListeners() { return this._toolListeners }
+    set toolListeners(value) { this._toolListeners = value }
 }
 

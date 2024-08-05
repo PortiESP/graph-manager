@@ -63,5 +63,6 @@ export function setActivateTool(tool){
     window.graph.toolCallbacks = toolsCallbacks[window.graph.tool]
     // Call the setup method of the tool
     getActiveToolCallback('setup')()
+    // Trigger the tool listeners
     window.graph.triggerToolListeners()
 }

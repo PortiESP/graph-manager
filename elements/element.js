@@ -45,17 +45,17 @@ export class Element {
         this._id = id ?? this.generateId()
 
         // States
-        this.selected = false
+        this._selected = false
         this._hidden = false
 
         // Style properties
-        this.hoverColor = constants.HOVER_BORDER_COLOR
-        this.selectedColor = constants.SELECTED_BORDER_COLOR
-        this.deleteColor = constants.DELETE_BORDER_COLOR
-        this.opacity = 1
+        this._hoverColor = constants.HOVER_BORDER_COLOR
+        this._selectedColor = constants.SELECTED_BORDER_COLOR
+        this._deleteColor = constants.DELETE_BORDER_COLOR
+        this._opacity = 1
 
         // Style properties
-        this.style = {} // This values will override the default ones just for stetic purposes (not for logic or calculations) (private properties are not included since they are already managed by the getters and setters)
+        this._style = {} // This values will override the default ones just for stetic purposes (not for logic or calculations) (private properties are not included since they are already managed by the getters and setters)
     }
 
 
@@ -196,6 +196,13 @@ export class Element {
         return this._id
     }
 
+    set selected(selected) {
+        this._selected = selected
+    }
+
+    get selected() {
+        return this._selected
+    }
     
     set hidden(hidden) {
         this._hidden = hidden
@@ -203,6 +210,46 @@ export class Element {
 
     get hidden() {
         return this._hidden
+    }
+
+    set hoverColor(hoverColor) {
+        this._hoverColor = hoverColor
+    }
+
+    get hoverColor() {
+        return this._hoverColor
+    }
+
+    set selectedColor(selectedColor) {
+        this._selectedColor = selectedColor
+    }
+
+    get selectedColor() {
+        return this._selectedColor
+    }
+
+    set deleteColor(deleteColor) {
+        this._deleteColor = deleteColor
+    }
+
+    get deleteColor() {
+        return this._deleteColor
+    }
+
+    set opacity(opacity) {
+        this._opacity = opacity
+    }
+
+    get opacity() {
+        return this._opacity
+    }
+
+    set style(style) {
+        this._style = style
+    }
+
+    get style() {
+        return this._style
     }
     
 }
