@@ -373,7 +373,7 @@ export class Edge extends Element{
      */
     isHover() {
         // Check if the edge is hidden, if so, return false
-        if (this.hidden) return false
+        if (this.hidden || this.dst.isFake) return false
 
         // Get the mouse coordinates
         const x = window.cvs.x

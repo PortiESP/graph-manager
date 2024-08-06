@@ -5,7 +5,7 @@ export default {
     // Resets the graph states, creates an auxiliary node to be used as a preview
     setup() {
         window.graph.resetGraphStates()
-        const aux = new Node(window.graph.x, window.graph.y, "...")
+        const aux = new Node(window.graph.x, window.graph.y, "New")
         aux.opacity = 0.5
         window.graph.newNode = aux
     },
@@ -13,8 +13,8 @@ export default {
     mouseDownCallback(button, mouse) {
         // If the user is creating a new node, drop it on the canvas
         if (button === 0 && window.graph.newNode) {
-            const x = window.graph.newNode.x
-            const y = window.graph.newNode.y
+            const x = window.cvs.x
+            const y = window.cvs.y
             const r = window.graph.newNode.r
             const label = null
             window.graph.addNodeToGraph(x, y, r, label)
