@@ -375,6 +375,16 @@ export class GraphGlobals {
         this.getElements().forEach(e => e.hidden = !elements.includes(e))
     }
 
+
+    /**
+     * Checks if the graph is empty.
+     * 
+     * @returns {boolean} Whether the graph is empty. If true, the graph is empty. If false, the graph is not empty.
+     */
+    isGraphEmpty() {
+        return this.nodes.length === 0
+    }
+
     /**
      * Rerenders the graph. (DEBUG)
      * 
