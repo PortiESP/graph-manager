@@ -87,39 +87,41 @@ export default {
     // --- Debug ---
 
     TEMPLATE_GRAPH: {
-        nodes: [
-            {x: 0, y: 0, r: 30, id: "A"},
-            {x: 100, y: -100, r: 30, id: "B"},
-            {x: 100, y: 0, r: 30, id: "C"},
-            {x: 100, y: 100, r: 30, id: "D"},
-            {x: 200, y: -200, r: 30, id: "E"},
-            {x: 200, y: -100, r: 30, id: "F"},
-            {x: 200, y: 0, r: 30, id: "G"},
-            {x: 200, y: 100, r: 30, id: "H"},
-            {x: 200, y: 200, r: 30, id: "I"},
-            {x: 300, y: -100, r: 30, id: "J"},
-            {x: 400, y: -100, r: 30, id: "K"},
-            {x: 300, y: 0, r: 30, id: "L"},
+        "nodes": [
+          { "x": 250, "y": -412, "id": "A", "r": 30 },
+          { "x": 330, "y": -277, "id": "B", "r": 30 },
+          { "x": 208, "y": -277, "id": "C", "r": 30 },
+          { "x": 120, "y": -435, "id": "D", "r": 30 },
+          { "x": 430, "y": -215, "id": "E", "r": 30 },
+          { "x": 429, "y": -390, "id": "F", "r": 30 },
+          { "x": 315, "y": -128, "id": "G", "r": 30 },
+          { "x": -1, "y": -522, "id": "H", "r": 30 },
+          { "x": 23, "y": -320, "id": "I", "r": 30 },
+          { "x": 598, "y": -162, "id": "J", "r": 30 },
+          { "x": 716, "y": -254, "id": "K", "r": 30 },
+          { "x": 434, "y": -37, "id": "L", "r": 30 }
         ],
-        edges: [
-            {src: "A", dst: "B", weight: 3},
-            {src: "A", dst: "C", weight: 7},
-            {src: "A", dst: "D", weight: 8},
-            {src: "B", dst: "E", weight: 7},
-            {src: "B", dst: "F", weight: 2},
-            {src: "B", dst: "G", weight: 1},
-            {src: "C", dst: "G", weight: 2},
-            {src: "D", dst: "H", weight: 3},
-            {src: "D", dst: "I", weight: 12},
-            {src: "D", dst: "G", weight: 5},
-            {src: "E", dst: "J", weight: 3},
-            {src: "F", dst: "J", weight: 6},
-            {src: "G", dst: "J", weight: 7},
-            {src: "G", dst: "L", weight: 4},
-            {src: "H", dst: "L", weight: 5},
-            {src: "J", dst: "K", weight: 2},
+        "edges": [
+          { "src": "A", "dst": "B", "weight": 3 },
+          { "src": "A", "dst": "C", "weight": 7 },
+          { "src": "A", "dst": "D", "weight": 8 },
+          { "src": "B", "dst": "E", "weight": 7 },
+          { "src": "B", "dst": "F", "weight": 2 },
+          { "src": "B", "dst": "G", "weight": 1 },
+          { "src": "C", "dst": "G", "weight": 2 },
+          { "src": "D", "dst": "H", "weight": 3 },
+          { "src": "D", "dst": "I", "weight": 12 },
+          { "src": "E", "dst": "J", "weight": 3 },
+          { "src": "F", "dst": "J", "weight": 7 },
+          { "src": "G", "dst": "J", "weight": 7 },
+          { "src": "G", "dst": "L", "weight": 4 },
+          { "src": "J", "dst": "K", "weight": 2 },
+          { "src": "A", "dst": "F", "weight": 4 },
+          { "src": "F", "dst": "K", "weight": 8 },
+          { "src": "C", "dst": "B", "weight": 5 },
+          { "src": "E", "dst": "F", "weight": 3 }
         ]
-    },
+      },
     TEMPLATE_GRAPH_2: `
         A 2 B
         A 4 C 
