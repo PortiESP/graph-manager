@@ -30,7 +30,7 @@ export default {
     NODE_BORDER_COLOR: "#000000",
     NODE_BORDER_RATIO: .15,
     NODE_BUBBLE_RADIUS: 10,
-    NODE_BUBBLE_COLOR: "#bb00ff",
+    NODE_BUBBLE_COLOR: "#9d00d6",
     NODE_BUBBLE_TEXT_COLOR: "#ffffff",
     NODE_BUBBLE_TEXT_SIZE: 12,
 
@@ -87,41 +87,21 @@ export default {
     // --- Debug ---
 
     TEMPLATE_GRAPH: {
-        "nodes": [
-          { "x": 250, "y": -412, "id": "A", "r": 30 },
-          { "x": 330, "y": -277, "id": "B", "r": 30 },
-          { "x": 208, "y": -277, "id": "C", "r": 30 },
-          { "x": 120, "y": -435, "id": "D", "r": 30 },
-          { "x": 430, "y": -215, "id": "E", "r": 30 },
-          { "x": 429, "y": -390, "id": "F", "r": 30 },
-          { "x": 315, "y": -128, "id": "G", "r": 30 },
-          { "x": -1, "y": -522, "id": "H", "r": 30 },
-          { "x": 23, "y": -320, "id": "I", "r": 30 },
-          { "x": 598, "y": -162, "id": "J", "r": 30 },
-          { "x": 716, "y": -254, "id": "K", "r": 30 },
-          { "x": 434, "y": -37, "id": "L", "r": 30 }
-        ],
-        "edges": [
-          { "src": "A", "dst": "B", "weight": 3 },
-          { "src": "A", "dst": "C", "weight": 7 },
-          { "src": "A", "dst": "D", "weight": 8 },
-          { "src": "B", "dst": "E", "weight": 7 },
-          { "src": "B", "dst": "F", "weight": 2 },
-          { "src": "B", "dst": "G", "weight": 1 },
-          { "src": "C", "dst": "G", "weight": 2 },
-          { "src": "D", "dst": "H", "weight": 3 },
-          { "src": "D", "dst": "I", "weight": 12 },
-          { "src": "E", "dst": "J", "weight": 3 },
-          { "src": "F", "dst": "J", "weight": 7 },
-          { "src": "G", "dst": "J", "weight": 7 },
-          { "src": "G", "dst": "L", "weight": 4 },
-          { "src": "J", "dst": "K", "weight": 2 },
-          { "src": "A", "dst": "F", "weight": 4 },
-          { "src": "F", "dst": "K", "weight": 8 },
-          { "src": "C", "dst": "B", "weight": 5 },
-          { "src": "E", "dst": "F", "weight": 3 }
-        ]
-      },
+      "nodes": [
+        { "_x": 711.3270298764752, "_y": 372.23639342606214, "_id": "A", "r": 30 },
+        { "_x": 874.7820195947514, "_y": 280.68021769792625, "_id": "B", "r": 30 },
+        { "_x": 894.4970669720427, "_y": 467.2912362595042, "_id": "C", "r": 30 },
+        { "_x": 1035.780951469077, "_y": 304.2276741110702, "_id": "D", "r": 30 },
+        { "_x": 1070.620735045643, "_y": 494.7897645189139, "_id": "E", "r": 30 }
+      ],
+      "edges": [
+        { "src": "A", "dst": "B", "weight": 1 },
+        { "src": "B", "dst": "C", "weight": 1 },
+        { "src": "C", "dst": "D", "weight": 1 },
+        { "src": "A", "dst": "C", "weight": 1 },
+        { "src": "D", "dst": "E", "weight": 1 }
+      ]
+    },
     TEMPLATE_GRAPH_2: `
         A 2 B
         A 4 C 
