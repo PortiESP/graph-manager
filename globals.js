@@ -433,6 +433,7 @@ export class GraphGlobals {
 
     get selected() { return this._selected }
     set selected(value) {
+        this._selected.filter(e => !value.includes(e)).forEach(e => e.selected = false)  // Deselect nodes that are not in the new selected list
         this._selected = value
         // Listeners
         this.triggerSelectedListeners()
