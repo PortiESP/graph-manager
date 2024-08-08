@@ -20,6 +20,8 @@ import colorBorders from './utils/algorithms/color-borders'
 import { getPressedShortcut } from './canvas-component/utils/keyboard'
 import { useNavigate } from 'react-router-dom'
 
+const isDev = import.meta.env.DEV
+
 /**
  * Graph component
  * 
@@ -58,108 +60,111 @@ export default function Graph(props) {
 
         // --- Debug ---
         // Enable debug mode
-        window.cvs.debug = true
-        // Add debug data (information that will be displayed in the debug panel)
-        window.cvs.debugData = () => ([
-            "----------- Data -----------",
-            "Nodes: " + window.graph.nodes.length,
-            "Edges: " + window.graph.edges.length,
-            "Selected: " + window.graph.selected.length,
-            "History stack: " + window.graph.memento.length,
-            "Redo stack: " + window.graph.mementoRedo.length,
-            "Active tool: " + window.graph.tool || "None",
-            "Snapping: " + `${window.graph.snapReference?.x}, ${window.graph.snapReference?.y}`,
-            "Hover: " + closestHoverElement() || "None",
-            "Shortcut: " + getPressedShortcut(),  
-            `Dragging: ${window.graph.isDraggingElements === true ? "Yes" : window.graph.isDraggingElements === undefined ? "Preparing" : "No"}`,
-            "----------- Edit -----------",
-            "New node: " + window.graph.newNode,
-            "New edge: " + !!window.graph.newEdge,
-            "----------- Config -----------",
-            "Snap to grid: " + window.graph.snapToGrid,
-        ])
-        // Add debug commands (commands that can be executed from the debug panel)
-        window.cvs.debugCommands = window.cvs.debugCommands.concat([
-            {
-                label: 'Generate graph array',
-                callback: () => {
-                    const g = generateAdjacencyList()
-                    console.log(g)
-                    console.log(toposortKahn(g))
+        window.cvs.debug = isDev // Enable debug mode only in development mode
+        // Debug data and commands
+        if (window.cvs.debug) {
+            // Add debug data (information that will be displayed in the debug panel)
+            window.cvs.debugData = () => ([
+                "----------- Data -----------",
+                "Nodes: " + window.graph.nodes.length,
+                "Edges: " + window.graph.edges.length,
+                "Selected: " + window.graph.selected.length,
+                "History stack: " + window.graph.memento.length,
+                "Redo stack: " + window.graph.mementoRedo.length,
+                "Active tool: " + window.graph.tool || "None",
+                "Snapping: " + `${window.graph.snapReference?.x}, ${window.graph.snapReference?.y}`,
+                "Hover: " + closestHoverElement() || "None",
+                "Shortcut: " + getPressedShortcut(),  
+                `Dragging: ${window.graph.isDraggingElements === true ? "Yes" : window.graph.isDraggingElements === undefined ? "Preparing" : "No"}`,
+                "----------- Edit -----------",
+                "New node: " + window.graph.newNode,
+                "New edge: " + !!window.graph.newEdge,
+                "----------- Config -----------",
+                "Snap to grid: " + window.graph.snapToGrid,
+            ])
+            // Add debug commands (commands that can be executed from the debug panel)
+            window.cvs.debugCommands = window.cvs.debugCommands.concat([
+                {
+                    label: 'Generate graph array',
+                    callback: () => {
+                        const g = generateAdjacencyList()
+                        console.log(g)
+                        console.log(toposortKahn(g))
+                    }
+                },
+                {
+                    label: 'Load test graph',
+                    callback: () => {
+                        loadFromEdgePlainTextList(constants.TEMPLATE_GRAPH_2)
+                        circularArrange(window.graph.nodes)
+                        focusOnAllNodes()
+                    }
+                },
+                {
+                    label: 'Load test graph for toposort',
+                    callback: () => {
+                        loadFromEdgePlainTextList(constants.TEMPLATE_GRAPH_TOPO)
+                        circularArrange(window.graph.nodes)
+                        focusOnAllNodes()
+                    }
+                },
+                {
+                    label: "Toposort arrange",
+                    callback: () => {
+                        const g = generateAdjacencyList()
+                        toposortArrange(g)
+                        focusOnAllNodes()
+                    }
+                },
+                {
+                    label: 'Tree BFS arrange',
+                    callback: () => {
+                        const g = generateAdjacencyList()
+                        const data = bfs(g, window.graph.nodes[0])
+                        treeArrangeFromPrevsList(window.graph.nodes, data.prevNode, window.graph.nodes[0])
+                        const edges = generateEdgesByPredecessors(data.prevNode)
+                        const elements = edges.concat(window.graph.nodes)
+                        window.graph.hideAllBut(elements)
+                        data.result.forEach((node, i) => {
+                            node.bubble = i
+                        })
+                        focusOnAllNodes()
+                    }
+                },
+                {
+                    label: 'Organic arrange',
+                    callback: () => {
+                        organicArrange()
+                        focusOnAllNodes()
+                    }
+    
+                },
+                {
+                    label: "Krsukal",
+                    callback: () => {
+                        const g = generateAdjacencyList()
+                        const data = kruskal(g)
+                        console.log(data)
+                    }
+                },
+                {
+                    label: "Hamiltonian cycle",
+                    callback: () => {
+                        const g = generateAdjacencyList()
+                        const data = hamiltonianCycle(g, window.graph.nodes[0], true)
+                        console.log(data)
+                    }
+                },
+                {
+                    label: "Color borders",
+                    callback: () => {
+                        const g = generateAdjacencyList()
+                        console.log(colorBorders(g))
+                        focusOnAllNodes()
+                    }
                 }
-            },
-            {
-                label: 'Load test graph',
-                callback: () => {
-                    loadFromEdgePlainTextList(constants.TEMPLATE_GRAPH_2)
-                    circularArrange(window.graph.nodes)
-                    focusOnAllNodes()
-                }
-            },
-            {
-                label: 'Load test graph for toposort',
-                callback: () => {
-                    loadFromEdgePlainTextList(constants.TEMPLATE_GRAPH_TOPO)
-                    circularArrange(window.graph.nodes)
-                    focusOnAllNodes()
-                }
-            },
-            {
-                label: "Toposort arrange",
-                callback: () => {
-                    const g = generateAdjacencyList()
-                    toposortArrange(g)
-                    focusOnAllNodes()
-                }
-            },
-            {
-                label: 'Tree BFS arrange',
-                callback: () => {
-                    const g = generateAdjacencyList()
-                    const data = bfs(g, window.graph.nodes[0])
-                    treeArrangeFromPrevsList(window.graph.nodes, data.prevNode, window.graph.nodes[0])
-                    const edges = generateEdgesByPredecessors(data.prevNode)
-                    const elements = edges.concat(window.graph.nodes)
-                    window.graph.hideAllBut(elements)
-                    data.result.forEach((node, i) => {
-                        node.bubble = i
-                    })
-                    focusOnAllNodes()
-                }
-            },
-            {
-                label: 'Organic arrange',
-                callback: () => {
-                    organicArrange()
-                    focusOnAllNodes()
-                }
-
-            },
-            {
-                label: "Krsukal",
-                callback: () => {
-                    const g = generateAdjacencyList()
-                    const data = kruskal(g)
-                    console.log(data)
-                }
-            },
-            {
-                label: "Hamiltonian cycle",
-                callback: () => {
-                    const g = generateAdjacencyList()
-                    const data = hamiltonianCycle(g, window.graph.nodes[0], true)
-                    console.log(data)
-                }
-            },
-            {
-                label: "Color borders",
-                callback: () => {
-                    const g = generateAdjacencyList()
-                    console.log(colorBorders(g))
-                    focusOnAllNodes()
-                }
-            }
-        ])
+            ])
+        }
 
         // ---------------- Main loop ----------------
         // Start the main loop (then, the next calls will be made by the loop itself)
