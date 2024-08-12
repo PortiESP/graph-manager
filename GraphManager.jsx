@@ -1,6 +1,6 @@
 import { setupCanvas, mainLoop } from './canvas-component/utils/setup'
 import { useLayoutEffect } from 'react'
-import Canvas from './canvas-component/Canvas'
+import Canvas, { setupAfterCanvas } from './canvas-component/Canvas'
 import { GraphGlobals } from './globals'
 import { getActiveToolCallback } from './utils/tools/tools_callbacks'
 import drawAll from './utils/draw'
@@ -38,6 +38,7 @@ export default function Graph(props) {
 
         // --- Setup the graph globals--- 
         new GraphGlobals()
+        setupAfterCanvas()
 
         // --- Config ---
         window.cvs.autoResize = true
