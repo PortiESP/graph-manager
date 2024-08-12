@@ -61,6 +61,9 @@ export default function Graph(props) {
         // --- Debug ---
         // Enable debug mode
         window.cvs.debug = isDev // Enable debug mode only in development mode
+        const urlDebug = new URL(window.location.href).searchParams.get("debug")
+        if (urlDebug) window.cvs.debug = urlDebug === "true"
+        
         // Debug data and commands
         if (window.cvs.debug) {
             // Add debug data (information that will be displayed in the debug panel)
@@ -140,7 +143,7 @@ export default function Graph(props) {
     
                 },
                 {
-                    label: "Krsukal",
+                    label: "Kruskal",
                     callback: () => {
                         const g = generateAdjacencyList()
                         const data = kruskal(g)
