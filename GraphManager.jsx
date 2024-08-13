@@ -19,6 +19,7 @@ import hamiltonianCycle from './utils/algorithms/hamiltonian-cycle'
 import colorBorders from './utils/algorithms/color-borders'
 import { getPressedShortcut } from './canvas-component/utils/keyboard'
 import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 const isDev = import.meta.env.DEV
 
@@ -88,6 +89,13 @@ export default function Graph(props) {
             ])
             // Add debug commands (commands that can be executed from the debug panel)
             window.cvs.debugCommands = window.cvs.debugCommands.concat([
+                {
+                    label: "Noti",
+                    callback: () => {
+                        console.log("Noti")
+                        toast.error("test")
+                    }
+                },
                 {
                     label: 'Generate graph array',
                     callback: () => {
