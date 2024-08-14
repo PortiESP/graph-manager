@@ -72,8 +72,6 @@ import { setActivateTool } from "./utils/tools/tools_callbacks"
  */
 export class GraphGlobals {
     constructor() {
-        // Set the global variable
-        window.graph = this // This is required since some external functions rely on the window.graph variable
 
         // --- Properties ---
         this._nodes = [] // All nodes
@@ -112,8 +110,8 @@ export class GraphGlobals {
         this._mementoRedo = [] // Redo stack
 
         // Tools
-        window.graph.tool = undefined  // Active tool name
-        window.graph.toolCallbacks = undefined  // Object with the active tool callbacks
+        this.tool = undefined  // Active tool name
+        this.toolCallbacks = undefined  // Object with the active tool callbacks
 
         // History
         this._memento = []  // Undo stack
@@ -157,10 +155,6 @@ export class GraphGlobals {
             this.allListeners.forEach(l => l(this.tool))
             this.toolListeners.forEach(l => l(this.tool))
         }
-
-
-        // --- Setup ---
-        setActivateTool(CONSTANTS.DEFAULT_TOOL)
     }
 
     // ============================================================[ Methods ]============================================================>>>

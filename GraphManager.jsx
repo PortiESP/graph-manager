@@ -1,7 +1,6 @@
-import { setupCanvas, mainLoop } from './canvas-component/utils/setup'
+import { setupCanvas, mainLoop, unmountCanvas } from './canvas-component/utils/setup'
 import { useLayoutEffect } from 'react'
-import Canvas, { setupAfterCanvas } from './canvas-component/Canvas'
-import { GraphGlobals } from './globals'
+import Canvas from './canvas-component/Canvas'
 import { getActiveToolCallback } from './utils/tools/tools_callbacks'
 import drawAll from './utils/draw'
 import { focusOnAllNodes } from './utils/view'
@@ -20,6 +19,7 @@ import colorBorders from './utils/algorithms/color-borders'
 import { getPressedShortcut } from './canvas-component/utils/keyboard'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import setupGraph from './utils/setup'
 
 const isDev = import.meta.env.DEV
 
@@ -35,11 +35,9 @@ export default function Graph(props) {
     useLayoutEffect(() => {
         // ---------------- Setup the canvas ----------------
         setupCanvas()
-        window.ctx.save()  // Save the initial state of the canvas after initializing it
 
         // --- Setup the graph globals--- 
-        new GraphGlobals()
-        setupAfterCanvas()
+        setupGraph()
 
         // --- Config ---
         window.cvs.autoResize = true
@@ -186,6 +184,11 @@ export default function Graph(props) {
 
             // There is nothing to update here since the events handle this for us (unless we want to update the graph in real-time or make some animations, etc.)
         })
+
+        // --- Unmount ---
+        return () => {
+            unmountCanvas()
+        }
     }, [])
 
     return <Canvas />
