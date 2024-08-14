@@ -4,6 +4,7 @@ import { isPanning, panBy, startPanning, stopPanning } from "../canvas-component
 import { getKeyFromCode, handleShortcut } from "../canvas-component/utils/keyboard"
 import { saveToCache } from "./cache"
 import constants from "./constants"
+import { focusOnAllNodes } from "./view"
 
 
 const SHORTCUTS_KEY_DOWN = {
@@ -24,8 +25,9 @@ const SHORTCUTS_KEY_DOWN = {
     // Activate snap to grid
     "shift": () => window.graph.snapToGrid = true,
 
-    // Reset all states
+    // Reset states
     "control+alt+z": () => window.graph.resetGraphAndCanvasStates(),
+    "control+shift+f": () => focusOnAllNodes(),
 
     // Pan the canvas
     "control+arrowleft": () => panBy(constants.SHORTCUT_ARROWS_PAN_SPEED, 0),
