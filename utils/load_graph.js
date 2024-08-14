@@ -104,7 +104,7 @@ export function validateJSON(data) {
     if (typeof data == 'string') try{data = JSON.parse(data)} catch(e) {return false}
 
     // Check if the object has the nodes and edges properties
-    if (!data.nodes || !data.edges) return false
+    if (!data || !data.nodes || !data.edges) return false
     // Check if the nodes and edges properties are arrays
     if (!Array.isArray(data.nodes) || !Array.isArray(data.edges)) return false
 
