@@ -29,7 +29,7 @@ export function colorGenerator(nColors){
         colors.push(color)
     }
 
-    return colors
+    return colors.slice(nColors)
 
 }
 
@@ -38,10 +38,11 @@ export function colorGenerator(nColors){
  * Generates a list of nColors colors in a gradient from red to green
  * 
  * @param {number} nColors - Number of colors to generate
+ * @param {boolean} reverse - Reverse the colors (false: red to green, true: green to red)
  * 
  * @returns {string[]} List of colors
  */
-export function heatmapColorGenerator(nColors){
+export function heatmapColorGenerator(nColors, reverse=true){
     // HSL color generator
     const max = 120  // Green
     const min = 0    // Red
@@ -58,5 +59,7 @@ export function heatmapColorGenerator(nColors){
     }
 
     // Reverse the colors since the first color is red (we want it to be green)
-    return colors.reverse()
+    return reverse 
+            ? colors.reverse() 
+            : colors
 }

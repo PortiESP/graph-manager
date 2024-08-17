@@ -20,6 +20,7 @@ import { getPressedShortcut } from './canvas-component/utils/keyboard'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import setupGraph from './utils/setup'
+import { pertCtm } from './utils/algorithms/pert-ctm'
 
 const isDev = import.meta.env.DEV
 
@@ -92,6 +93,13 @@ export default function Graph(props) {
                     callback: () => {
                         console.log("Noti")
                         toast.error("test")
+                    }
+                },
+                {
+                    label: "PERT/CTM",
+                    callback: () => {
+                        const g = generateAdjacencyList()
+                        console.log(pertCtm(g))
                     }
                 },
                 {
