@@ -61,10 +61,10 @@ export function pertCtm(graph) {
         const data = nodesData[node]
         data.successors.forEach(successor => {
             const successorData = nodesData[successor]
+            successorData.earlyStart = Math.max(data.earlyFinish, successorData.earlyStart)
+            successorData.earlyFinish = successorData.earlyStart + successorData.duration
             if (successorData.predecessors.every(predecessor => nodesData[predecessor].visited)) {
                 queue.push(successor)
-                successorData.earlyStart = Math.max(data.earlyFinish, data.earlyStart)
-                successorData.earlyFinish = successorData.earlyStart + successorData.duration
                 successorData.visited = true
             }
         })
