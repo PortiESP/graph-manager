@@ -191,7 +191,9 @@ export class Element {
     // ======================================================= Getters and setters =======================================================
 
     get id() { return this._id }
-    set id(id) { this._id = id 
+    set id(id) { 
+        window.ui.call("live-editor-updated-id", this.id, id)
+        this._id = id 
         // Listeners
         window.graph.triggerElementListeners()
     }

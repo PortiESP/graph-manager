@@ -246,9 +246,8 @@ export function organicArrange(positioned=undefined){
     // Every function in the array must return true for the node to be positioned
     // Every function in the array takes the Node as a parameter
     const validatePosition = []
-    Object.values(positioned).forEach(node => validatePosition.push(otherNode => node.distance(otherNode.x, otherNode.y) > constants.NODE_RADIUS * 3))
+    Object.values(positioned).forEach(node => validatePosition.push(otherNode => node.distance(otherNode.x, otherNode.y) > constants.NODE_RADIUS * 3 || node.id === otherNode.id))
     
-
     // Position the nodes around the center of mass of the graph
     const {x1, y1, width, height} = getBoundingBoxOfAllNodes()
     const initX = x1 + width / 2  // Middle at the X axis
