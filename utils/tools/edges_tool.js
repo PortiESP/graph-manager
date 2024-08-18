@@ -1,3 +1,4 @@
+import toast from "react-hot-toast"
 import { checkShortcut } from "../../canvas-component/utils/keyboard"
 import { Edge } from "../../elements/edge"
 import { closestHoverNode } from "../find_elements"
@@ -12,7 +13,12 @@ export default {
         // Checks if the user is hovering a node so it can start creating a new edge
         if (button === 0) {
             const srcNode = closestHoverNode()
-            if (!srcNode) return // If the user is not hovering a node, return
+            // If the user is not hovering a node, return
+            if (!srcNode) {
+                // Tooltip
+                toast.error("Edge mode: Click on top of a node to start creating an edge")    
+                return
+            } 
 
             // Create a fake node to be used as the destination of the edge
             const dstNode = { x: mouse.x, y: mouse.y, r: 30, isFake: true } // Fake node (just to draw the edge)
@@ -42,6 +48,13 @@ export default {
             const {src} = window.graph.newEdge
             // Get the destination node from the hovered node
             const dst = closestHoverNode()  
+            // If the destination node is the same as the source node, return
+            if (dst === src) {
+                // Tooltip
+                toast.error("Edge mode: The source and destination nodes can't be the same")
+                window.graph.newEdge = null
+                return
+            }
             // Get the directed property from the auxiliary edge (if the user was holding the shift key while creating the edge)
             const directed = window.graph.newEdge.edge.directed
 
